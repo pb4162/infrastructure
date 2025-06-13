@@ -1,0 +1,8 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: cluster-settings
+  namespace: flux-system
+data:
+  LOCAL_ROOT_DOMAIN: "cluster.local"
+  ROOT_DOMAIN: "pb4162.dev"
