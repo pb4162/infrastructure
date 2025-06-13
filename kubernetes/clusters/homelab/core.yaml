@@ -6,7 +6,7 @@ metadata:
   namespace: flux-system
 spec:
   interval: 5m
-  path: "./kubernetes/homelab/core"
+  path: "./kubernetes/clusters/homelab/core"
   prune: true
   sourceRef:
     kind: GitRepository
