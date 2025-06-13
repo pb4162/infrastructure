@@ -4,6 +4,6 @@ metadata:
   name: test
   namespace: flux-system
 data:
-  foo: "${TIMEZONE}"
-  bar: "${LOCAL_ROOT_DOMAIN}"
+  foo: ${TIMEZONE}
+  bar: ${LOCAL_ROOT_DOMAIN}
 
