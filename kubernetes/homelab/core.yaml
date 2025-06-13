@@ -6,7 +6,7 @@ metadata:
   namespace: flux-system
 spec:
   interval: 5m
-  path: "./kubernetes/homelab/core"
+  path: &core_path "./kubernetes/homelab/core"
   prune: true
   sourceRef:
     kind: GitRepository
@@ -25,7 +25,7 @@ spec:
   dependsOn:
     - name: core-secrets
   interval: 5m
-  path: "./core"
+  path: *core_path
   prune: true
   sourceRef:
     kind: GitRepository
