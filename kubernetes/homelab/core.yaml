@@ -19,7 +19,7 @@ metadata:
   namespace: flux-system
 spec:
   dependsOn:
-    - name: core-secets
+    - name: core-secrets
   interval: 5m
   path: "./core"
   prune: true
