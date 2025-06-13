@@ -1,9 +1,0 @@
-apiVersion: v1
-kind: ConfigMap
-metadata:
-  name: test
-  namespace: default
-data:
-  foo: ${TIMEZONE}
-  bar: ${LOCAL_ROOT_DOMAIN}
-
