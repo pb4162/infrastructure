@@ -6,7 +6,7 @@ metadata:
   namespace: flux-system
 spec:
   interval: 5m
-  path: &apps_path "./kubernetes/homelab/apps"
+  path: "./kubernetes/homelab/apps"
   prune: true
   sourceRef:
     kind: GitRepository
@@ -26,7 +26,7 @@ spec:
     - name: apps-secrets
     - name: core
   interval: 5m
-  path: *apps_path
+  path: "./kubernetes/homelab/apps"
   prune: true
   sourceRef:
     kind: GitRepository
