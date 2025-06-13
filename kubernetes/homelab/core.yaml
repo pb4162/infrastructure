@@ -11,6 +11,10 @@ spec:
   sourceRef:
     kind: GitRepository
     name: secrets
+  decryption:
+    provider: sops
+    secretRef:
+      name: sops-age
 ---
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
