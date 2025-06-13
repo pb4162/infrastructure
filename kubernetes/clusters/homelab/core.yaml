@@ -25,7 +25,7 @@ spec:
   dependsOn:
     - name: core-secrets
   interval: 5m
-  path: "./kubernetes/homelab/core"
+  path: "./kubernetes/core"
   prune: true
   sourceRef:
     kind: GitRepository
