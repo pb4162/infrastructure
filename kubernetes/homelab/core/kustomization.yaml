@@ -8,3 +8,4 @@ configMapGenerator:
       - bar=${LOCAL_ROOT_DOMAIN}
 generatorOptions:
   disableNameSuffixHash: true
+resources: []
