@@ -4,6 +4,11 @@ metadata:
   name: helmrelease-common
   namespace: flux-system
 spec:
+  interval: 5m
+  prune: true
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
   patches:
     - patch: |
         apiVersion: helm.toolkit.fluxcd.io/v2
