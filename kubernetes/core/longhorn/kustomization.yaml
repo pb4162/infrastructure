@@ -1,0 +1,28 @@
+---
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: longhorn-helm
+  namespace: longhorn-system
+spec:
+  interval: 5m
+  path: "./kubernetes/core/longhorn/helm"
+  prune: true
+  sourceRef:
+    kind: GitRepository
+    name: secrets
+---
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: longhorn-post
+  namespace: longhorn-system
+spec:
+  dependsOn:
+    - name: longhorn-helm
+  interval: 5m
+  path: "./kubernetes/core/longhorn/post"
+  prune: true
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
