@@ -3,7 +3,7 @@ apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
   name: longhorn-helm
-  namespace: longhorn-system
+  namespace: flux-system
 spec:
   interval: 5m
   path: "./kubernetes/core/longhorn/helm"
@@ -16,7 +16,6 @@ spec:
     substituteFrom:
       - kind: ConfigMap
         name: cluster-settings
-        namespace: flux-system
 ---
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
