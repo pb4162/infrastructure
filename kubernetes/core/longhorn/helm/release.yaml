@@ -14,40 +14,40 @@ spec:
         kind: HelmRepository
         name: longhorn
       interval: 5m
-    releaseName: longhorn
-    driftDetection:
-      mode: enabled
-    valuesFrom:
-      - kind: Secret
-        name: longhorn-values
-    values:
-      csi:
-        attacherReplicaCount: 2
-        provisionerReplicaCount: 2
-        resizerReplicaCount: 2
-        snapshotterReplicaCount: 2
-      defaultSettings:
-        backupTargetCredentialSecret: cifs-secret
-        defaultDataLocality: best-effort
-        replicaAutoBalance: least-effort
-        defaultReplicaCount: 2
-        autoDeletePodWhenVolumeDetachedUnexpectedly: true
-        nodeDownPodDeletionPolicy: delete-both-statefulset-and-deployment-pod
-        guaranteedInstanceManagerCPU: 6
-      persistence:
-        defaultClassReplicaCount: 2
-        reclaimPolicy: Retain
-        migratable: true
-        defaultDiskSelector:
-          enable: true
-          selector: ssd
-      ingress:
+  releaseName: longhorn
+  driftDetection:
+    mode: enabled
+  valuesFrom:
+    - kind: Secret
+      name: longhorn-values
+  values:
+    csi:
+      attacherReplicaCount: 2
+      provisionerReplicaCount: 2
+      resizerReplicaCount: 2
+      snapshotterReplicaCount: 2
+    defaultSettings:
+      backupTargetCredentialSecret: cifs-secret
+      defaultDataLocality: best-effort
+      replicaAutoBalance: least-effort
+      defaultReplicaCount: 2
+      autoDeletePodWhenVolumeDetachedUnexpectedly: true
+      nodeDownPodDeletionPolicy: delete-both-statefulset-and-deployment-pod
+      guaranteedInstanceManagerCPU: 6
+    persistence:
+      defaultClassReplicaCount: 2
+      reclaimPolicy: Retain
+      migratable: true
+      defaultDiskSelector:
+        enable: true
+        selector: ssd
+    ingress:
+      enabled: true
+      host: longhorn.${LOCAL_ROOT_DOMAIN}
+      annotations:
+        traefik.ingress.kubernetes.io/router.middlewares: authentik-authentik@kubernetescrd
+    metrics:
+      serviceMonitor:
         enabled: true
-        host: longhorn.${LOCAL_ROOT_DOMAIN}
-        annotations:
-          traefik.ingress.kubernetes.io/router.middlewares: authentik-authentik@kubernetescrd
-      metrics:
-        serviceMonitor:
-          enabled: true
-          additionalLabels:
-            release: kube-prometheus-stack
+        additionalLabels:
+          release: kube-prometheus-stack
