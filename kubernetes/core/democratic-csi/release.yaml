@@ -38,34 +38,6 @@ spec:
       name: "org.democratic-csi.smb"
       fsGroupPolicy: File
 
-    storageClasses:
-      - name: "truenas-smb"
-        defaultClass: false
-        reclaimPolicy: Retain
-        volumeBindingMode: Immediate
-        allowVolumeExpansion: true
-        parameters:
-          fsType: cifs
-        secrets:
-          provisioner-secret:
-          controller-publish-secret:
-          node-stage-secret:
-          node-publish-secret:
-          controller-expand-secret:
-      - name: "truenas-smb-nextcloud"
-        defaultClass: false
-        reclaimPolicy: Retain
-        volumeBindingMode: Immediate
-        allowVolumeExpansion: true
-        parameters:
-          fsType: cifs
-        secrets:
-          provisioner-secret:
-          controller-publish-secret:
-          node-stage-secret:
-          node-publish-secret:
-          controller-expand-secret:
-
     volumeSnapshotClasses:
       - name: "truenas-smb"
         labels:
