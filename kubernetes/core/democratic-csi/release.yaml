@@ -1,0 +1,105 @@
+---
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: snapshot-controller
+  namespace: democratic-csi
+spec:
+  chart:
+    spec:
+      chart: snapshot-controller
+      version: 0.3.0
+      sourceRef:
+        kind: HelmRepository
+        name: democratic-csi
+      interval: 5m
+  releaseName: snapshot-controller
+---
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: dcsi-truenas-api-smb
+  namespace: democratic-csi
+spec:
+  chart:
+    spec:
+      chart: democratic-csi
+      version: 0.15.0
+      sourceRef:
+        kind: HelmRepository
+        name: democratic-csi
+      interval: 5m
+  releaseName: dcsi-truenas-api-smb
+  values:
+    csiDriver:
+      name: "org.democratic-csi.smb"
+      fsGroupPolicy: File
+
+    storageClasses:
+      - name: "truenas-smb"
+        defaultClass: false
+        reclaimPolicy: Retain
+        volumeBindingMode: Immediate
+        allowVolumeExpansion: true
+        parameters:
+          fsType: cifs
+        secrets:
+          provisioner-secret:
+          controller-publish-secret:
+          node-stage-secret:
+          node-publish-secret:
+          controller-expand-secret:
+      - name: "truenas-smb-nextcloud"
+        defaultClass: false
+        reclaimPolicy: Retain
+        volumeBindingMode: Immediate
+        allowVolumeExpansion: true
+        parameters:
+          fsType: cifs
+        secrets:
+          provisioner-secret:
+          controller-publish-secret:
+          node-stage-secret:
+          node-publish-secret:
+          controller-expand-secret:
+
+    volumeSnapshotClasses:
+      - name: "truenas-smb"
+        labels:
+          velero.io/csi-volumesnapshot-class: "true"
+        parameters:
+        secrets:
+          snapshotter-secret:
+      - name: "truenas-smb-nextcloud"
+        labels:
+          velero.io/csi-volumesnapshot-class: "true"
+        parameters:
+        secrets:
+          snapshotter-secret:
+
+    driver:
+      config:
+        driver: freenas-api-smb
+        instance_id:
+        httpConnection:
+          protocol: https
+          port: 443
+          allowInsecure: true
+        zfs:
+          datasetParentName: tank/data/smb/volumes
+          detachedSnapshotsDatasetParentName: tank/data/smb/snapshots
+          datasetEnableQuotas: true
+          datasetEnableReservation: false
+          datasetPermissionsMode: "0777"
+        smb:
+          nameTemplate: "{{ parameters.[csi.storage.k8s.io/pvc/name] }}"
+          namePrefix: ""
+          nameSuffix: ""
+          shareHome: false
+          shareAllowedHosts: []
+          shareDeniedHosts: []
+          shareGuestOk: true
+          shareRecycleBin: true
+          shareBrowsable: false
+          shareAccessBasedEnumeration: true
+          shareTimeMachine: false
