@@ -34,6 +34,15 @@ spec:
     - kind: Secret
       name: democratic-csi-values
   values:
+    controller:
+      driver:
+        image:
+          tag: next
+    node:
+      driver:
+        image:
+          tag: next
+
     csiDriver:
       name: "org.democratic-csi.smb"
       fsGroupPolicy: File
