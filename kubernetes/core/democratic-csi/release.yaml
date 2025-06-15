@@ -30,6 +30,9 @@ spec:
         name: democratic-csi
       interval: 5m
   releaseName: dcsi-truenas-api-smb
+  valuesFrom:
+    - kind: Secret
+      name: democratic-csi-values
   values:
     csiDriver:
       name: "org.democratic-csi.smb"
