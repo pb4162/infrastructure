@@ -32,5 +32,5 @@ spec:
     metrics:
       serviceMonitor:
         enabled: true
-        additionalLabels:
-          release: kube-prometheus-stack
+        # additionalLabels:
+        #   release: kube-prometheus-stack
