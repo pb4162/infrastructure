@@ -26,6 +26,10 @@ spec:
             - paths: ["/spec/replicas"]
               target:
                 kind: Deployment
+            - paths:
+              - /spec/conversion/webhook/clientConfig/caBundle
+              target:
+                kind: CustomResourceDefinition
       target:
         kind: HelmRelease
     - patch: |
