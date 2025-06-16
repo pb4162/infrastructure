@@ -1,0 +1,39 @@
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: metallb
+  namespace: metallb-system
+spec:
+  chart:
+    spec:
+      chart: metallb
+      version: 0.14.9
+      sourceRef:
+        kind: HelmRepository
+        name: metallb
+      interval: 5m
+  releaseName: metallb
+  values:
+    controller:
+      resources:
+        limits:
+          memory: 128Mi
+    speaker:
+      resources:
+        limits:
+          memory: 128Mi
+    prometheus:
+      serviceAccount: kube-prometheus-stack-prometheus
+      namespace: monitoring
+      serviceMonitor:
+        enabled: true
+        speaker:
+          additionalLabels:
+            release: kube-prometheus-stack
+        controller:
+          additionalLabels:
+            release: kube-prometheus-stack
+      prometheusRule:
+        enabled: true
+        additionalLabels:
+          release: kube-prometheus-stack
