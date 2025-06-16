@@ -1,0 +1,22 @@
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: kube-vip
+  namespace: kube-system
+spec:
+  chart:
+    spec:
+      chart: kube-vip
+      version: 0.6.6
+      sourceRef:
+        kind: HelmRepository
+        name: kube-vip
+      interval: 5m
+  releaseName: kube-vip
+  valuesFrom:
+    - kind: Secret
+      name: kube-vip-values
+  values:
+    env:
+      cp_enable: true
+      svc_enable: false
