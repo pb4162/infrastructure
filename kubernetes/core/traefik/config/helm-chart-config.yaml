@@ -1,0 +1,166 @@
+apiVersion: helm.cattle.io/v1
+kind: HelmChartConfig
+metadata:
+  name: traefik
+  namespace: kube-system
+spec:
+  valuesContent: |-
+    deployment:
+      additionalContainers:
+      - name: ts-sidecar
+        imagePullPolicy: Always
+        image: "ghcr.io/tailscale/tailscale:latest"
+        env:
+        - name: TS_HOSTNAME
+          value: ts-sidecar
+        - name: TS_KUBE_SECRET
+          value: ""
+        - name: TS_AUTH_ONCE
+          value: "true"
+        - name: TS_USERSPACE
+          value: "false"
+        - name: TS_DEBUG_FIREWALL_MODE
+          value: auto
+        - name: TS_AUTHKEY
+          value: "${TS_SIDECAR_AUTHKEY}"
+        - name: TS_EXTRA_ARGS
+          value: "${TS_SIDECAR_FLAGS}"
+        - name: TS_STATE_DIR
+          value: /tailscale
+        securityContext:
+          privileged: true
+        volumeMounts:
+          - name: ts-sidecar-data
+            mountPath: /tailscale
+      additionalVolumes:
+        - name: ts-sidecar-data
+          persistentVolumeClaim:
+            claimName: ts-sidecar-data
+    metrics:
+      addInternals: true
+      prometheus:
+        serviceMonitor:
+          enabled: true
+          additionalLabels:
+            release: kube-prometheus-stack
+        prometheusRule:
+          enabled: true
+          rules:
+            - alert: TraefikDown
+              expr: up{job="traefik"} == 0
+              for: 5m
+              labels:
+                context: traefik
+                severity: warning
+              annotations:
+                summary: "Traefik Down"
+                description: "{{ $labels.pod }} on {{ $labels.nodename }} is down"
+          additionalLabels:
+            release: kube-prometheus-stack
+    providers:
+      kubernetesCRD:
+        allowCrossNamespace: true
+        allowExternalNameServices: true
+      kubernetesIngress:
+        allowExternalNameServices: true
+    service:
+      spec:
+        loadBalancerIP: "${TRAEFIK_IP}"
+        externalTrafficPolicy: Local
+    podSecurityContext:
+      runAsNonRoot: false
+      runAsGroup: 0
+      runAsUser: 0
+    ports:
+      web:
+        port: 80
+        redirections:
+          entryPoint:
+            to: websecure
+            scheme: https
+            permanent: true
+      websecure:
+        port: 443
+        forwardedHeaders:
+          trustedIPs:
+            - "${PROXY_VPS_TAILSCALE_IP}"
+            - "${PROXY_VPS_IP}"
+        middlewares:
+          - crowdsec-bouncer@kubernetescrd
+    tlsStore:
+      default:
+        defaultCertificate:
+          secretName: pb4162-dev-tls
+    additionalArguments:
+      - "--api.insecure=true"
+      - "--global.sendanonymoususage=false"
+    logs:
+      access:
+        enabled: true
+        format: common
+        fields:
+          headers: 
+            defaultmode: keep
+    experimental:
+      plugins:
+        bouncer:
+          moduleName: "github.com/maxlerebourg/crowdsec-bouncer-traefik-plugin"
+          version: "v1.3.5"
+    extraObjects:
+      - apiVersion: v1
+        kind: Service
+        metadata:
+          name: traefik-api
+        spec:
+          type: ClusterIP
+          selector:
+            app.kubernetes.io/name: traefik
+            app.kubernetes.io/instance: traefik-kube-system
+          ports:
+          - port: 8080
+            name: traefik
+            targetPort: 8080
+            protocol: TCP
+
+      - apiVersion: v1
+        kind: Service
+        metadata:
+          name: traefik-internal
+          namespace: kube-system
+        spec:
+          selector:
+            app.kubernetes.io/instance: traefik-kube-system
+            app.kubernetes.io/name: traefik 
+          ports:
+            - protocol: TCP
+              port: 8080
+
+      - apiVersion: networking.k8s.io/v1
+        kind: Ingress
+        metadata:
+          name: traefik-dashboard
+          annotations:
+            traefik.ingress.kubernetes.io/router.entrypoints: websecure
+            traefik.ingress.kubernetes.io/router.middlewares: authentik-authentik@kubernetescrd
+        spec:
+          rules:
+          - host: traefik.${LOCAL_ROOT_DOMAIN}
+            http:
+              paths:
+              - path: /
+                pathType: Prefix
+                backend:
+                  service:
+                    name: traefik-api
+                    port:
+                      name: traefik
+          - host: traefik.${ROOT_DOMAIN}
+            http:
+              paths:
+              - path: /
+                pathType: Prefix
+                backend:
+                  service:
+                    name: traefik-api
+                    port:
+                      name: traefik
