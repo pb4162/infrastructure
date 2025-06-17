@@ -1,0 +1,7 @@
+apiVersion: source.toolkit.fluxcd.io/v1
+kind: HelmRepository
+metadata:
+  name: vaultwarden
+  namespace: vaultwarden
+spec:
+  url: https://guerzon.github.io/vaultwarden
