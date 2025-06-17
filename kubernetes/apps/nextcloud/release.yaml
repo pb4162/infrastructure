@@ -115,6 +115,8 @@ spec:
       enabled: true
     imaginary:
       enabled: true
+      nodeSelector:
+        kubernetes.io/arch: amd64
     metrics:
       enabled: true
       info:
