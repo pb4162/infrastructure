@@ -1,0 +1,126 @@
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: nextcloud
+  namespace: nextcloud
+spec:
+  chart:
+    spec:
+      chart: nextcloud
+      version: 6.6.9
+      sourceRef:
+        kind: HelmRepository
+        name: nextcloud
+      interval: 5m
+  releaseName: nextcloud
+  valuesFrom:
+    - name: nextcloud-values
+      kind: Secret
+  values:
+    resources:
+      limits:
+        memory: 4Gi
+    ingress:
+      enabled: true
+    nextcloud:
+      extraEnv:
+        - name: APACHE_BODY_LIMIT
+          value: "0"
+      extraSidecarContainers:
+        - name: nextcloud-logger
+          image: busybox
+          command: [/bin/sh, -c, 'while ! test -f "/run/nextcloud/data/data/nextcloud.log"; do sleep 1; done; tail -n+1 -f /run/nextcloud/data/data/nextcloud.log']
+          volumeMounts:
+          - name: nextcloud-data
+            mountPath: /run/nextcloud/data
+      host: nextcloud.${LOCAL_ROOT_DOMAIN}
+      trustedDomains:
+        - nextcloud.pb4162.dev
+      mail:
+        enabled: true
+        smtp:
+          secure: ssl
+      phpConfigs:
+        www.conf: |-
+          [www]    
+          user = www-data
+          group = www-data
+          listen = 127.0.0.1:9000
+          pm = static
+          pm.max_children = 108
+          pm.start_servers = 27
+          pm.min_spare_servers = 27
+          pm.max_spare_servers = 81
+        zz-memory_limit.ini: |-
+          memory_limit=1G
+        zz-opcache.ini: |-
+          opcache.jit_buffer_size = 128M
+          opcache.interned_strings_buffer = 64
+          opcache.memory_consumption = 512M
+          opcache.max_accelerated_files = 30000
+          opcache.validate_timestamps = 0
+          opcache.revalidate_freq = 60
+          opcache.jit = 1255
+        zz-upload_limit.ini: |-
+          upload_max_filesize = 16G
+          post_max_size = 16G
+      defaultConfigs:
+        imaginary.config.php: true
+      configs:
+        logging.config.php: |-
+          <?php
+          $CONFIG = array (
+            'log_type' => 'file',
+            'logfile' => 'nextcloud.log',
+            'loglevel' => 2,
+            );
+        misc.config.php: |-
+          <?php
+          $CONFIG = array (
+          'overwrite.cli.url' => 'https://nextcloud.${ROOT_DOMAIN}',
+          'overwriteprotocol' => 'https',
+          );
+    internalDatabase:
+      enabled: false
+    externalDatabase:
+      enabled: true
+      type: postgresql
+    postgresql:
+      enabled: true
+      primary:
+        resources:
+          limits:
+            memory: 2Gi
+        persistence:
+          enabled: true
+    redis:
+      enabled: true
+      master:
+        resources:
+          limits:
+            memory: 2Gi
+      replica:
+        replicaCount: 0
+        resources:
+          limits:
+            memory: 1Gi
+    cronjob:
+      enabled: true
+    persistence:
+      enabled: true
+      nextcloudData:
+        enabled: true
+        existingClaim: nextcloud
+    startupProbe:
+      enabled: true
+    imaginary:
+      enabled: true
+    metrics:
+      enabled: true
+      info:
+        apps: true
+      serviceMonitor:
+        enabled: true
+        namespace: monitoring
+        labels:
+          release: kube-prometheus-stack
