@@ -3,9 +3,6 @@ kind: HelmRelease
 metadata:
   name: pihole
   namespace: pihole
-valuesFrom:
-  - kind: Secret
-    name: pihole-values
 spec:
   chart:
     spec:
@@ -16,6 +13,9 @@ spec:
         name: mojo2600
       interval: 5m
   releaseName: pihole
+  valuesFrom:
+    - kind: Secret
+      name: pihole-values
   values:
     resources:
       limits:
