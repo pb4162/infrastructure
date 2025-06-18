@@ -55,7 +55,7 @@ spec:
           value: 'k3s'
       envFrom:
         - secretRef:
-          name: crowdsec-secret
+            name: crowdsec-secret
       dashboard:
         enabled: true
         ingress:
