@@ -1,0 +1,101 @@
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: crowdsec
+  namespace: crowdsec
+spec:
+  chart:
+    spec:
+      chart: crowdsec
+      version: 0.19.2
+      sourceRef:
+        kind: HelmRepository
+        name: crowdsec
+      interval: 5m
+  releaseName: crowdsec
+  values:
+    container_runtime: containerd
+    config:
+      config.yaml.local: |
+        api:
+          server:
+            auto_registration:
+              enabled: true
+              token: "$${REGISTRATION_TOKEN}"
+              allowed_ranges:
+                - "127.0.0.1/32"
+                - "192.168.0.0/16"
+                - "10.0.0.0/8"
+                - "172.16.0.0/12"
+        db_config:
+          flush:
+            bouncers_autodelete:
+              cert: 60m
+              api_key: 60m
+            agents_autodelete:
+              cert: 60m
+              login_password: 60m
+    lapi:
+      metrics:
+        enabled: true
+        serviceMonitor:
+          enabled: true
+          additionalLabels:
+            release: kube-prometheus-stack
+      # metabase dashboard doesn't have a arm container
+      nodeSelector:
+        kubernetes.io/arch: amd64
+      env:
+        - name: BOUNCER_KEY_traefik
+          value: ${CROWDSEC_TRAEFIK_BOUNCER_KEY}
+          # static hostname makes homepage integration easier
+        - name: CUSTOM_HOSTNAME
+          value: "crowdsec-lapi"
+        - name: ENROLL_INSTANCE_NAME
+          value: 'k3s'
+      envFrom:
+        - secretRef:
+          name: crowdsec-secret
+      dashboard:
+        enabled: true
+        ingress:
+          enabled: true
+          ingressClassName: traefik
+          host: crowdsec.${LOCAL_ROOT_DOMAIN}
+    agent:
+      metrics:
+        enabled: true
+        serviceMonitor:
+          enabled: true
+          additionalLabels:
+            release: kube-prometheus-stack
+      isDeployment: true
+      additionalAcquisition:
+        - source: loki
+          log_level: info
+          url: http://loki.monitoring.svc.cluster.local:3100
+          limit: 1000
+          query: |
+            {container="traefik"}
+          labels:
+            type: traefik
+        - source: loki
+          log_level: info
+          url: http://loki.monitoring.svc.cluster.local:3100
+          limit: 1000
+          query: |
+            {container="nextcloud-logger"}
+          labels:
+            type: Nextcloud
+      extraVolumes:
+        - name: crowdsec-agent-data
+          persistentVolumeClaim:
+            claimName: crowdsec-agent-data
+      extraVolumeMounts:
+        - name: crowdsec-agent-data
+          mountPath: /var/lib/crowdsec/data
+      env:
+        - name: PARSERS
+          value: "crowdsecurity/cri-logs crowdsecurity/traefik-logs"
+        - name: COLLECTIONS
+          value: "crowdsecurity/linux crowdsecurity/traefik crowdsecurity/http-dos crowdsecurity/base-http-scenarios crowdsecurity/nextcloud"
