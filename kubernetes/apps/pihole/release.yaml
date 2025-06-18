@@ -3,6 +3,9 @@ kind: HelmRelease
 metadata:
   name: pihole
   namespace: pihole
+valuesFrom:
+  - kind: Secret
+    name: pihole-values
 spec:
   chart:
     spec:
