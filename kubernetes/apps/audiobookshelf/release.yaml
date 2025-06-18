@@ -24,11 +24,7 @@ spec:
               repository: ghcr.io/advplyr/audiobookshelf
               tag: latest
             env:
-              TZ:
-                valueFrom:
-                  secretKeyRef:
-                    name: cluster-secrets
-                    key: TIMEZONE
+              TZ: ${TIMEZONE}
               PORT: 13378
     service:
       main:
