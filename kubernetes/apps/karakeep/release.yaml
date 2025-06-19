@@ -1,0 +1,79 @@
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: karakeep
+  namespace: karakeep
+spec:
+  chart:
+    spec:
+      chart: app-template
+      version: 4.0.1
+      sourceRef:
+        kind: HelmRepository
+        name: bjw-s
+        namespace: flux-system
+      interval: 5m
+  releaseName: karakeep
+  values:
+    controllers:
+      main:
+        enabled: true
+        containers:
+          main:
+            image:
+              repository: ghcr.io/karakeep-app/karakeep
+              tag: latest
+            env:
+              MEILI_ADDR: meilisearch.karakeep.svc.cluster.local:7700
+              BROWSER_WEB_URL: chrome.karakeep.svc.cluster.local:9222
+              DATA_DIR: /data
+              HOARDER_VERSION: release
+              NEXTAUTH_SECRET:
+                valueFrom:
+                  secretKeyRef:
+                    name: karakeep-secret
+                    key: NEXTAUTH_SECRET
+              MEILI_MASTER_KEY:
+                valueFrom:
+                  secretKeyRef:
+                    name: karakeep-secret
+                    key: MEILI_MASTER_KEY
+              NEXTAUTH_URL: http://karakeep.pb4162.dev
+              # added after creating an account
+              DISABLE_SIGNUPS: true
+    service:
+      main:
+        enabled: true
+        controller: main
+        ports:
+          tcp:
+            enabled: true
+            port: 3000
+            protocol: TCP
+    ingress:
+      main:
+        enabled: true
+        hosts:
+          - host: karakeep.${LOCAL_ROOT_DOMAIN}
+            paths:
+              - path: /
+                pathType: Prefix
+                service:
+                  name: hoarder
+                  port: 3000
+          - host: karakeep.${ROOT_DOMAIN}
+            paths:
+              - path: /
+                pathType: Prefix
+                service:
+                  name: hoarder
+                  port: 3000
+    persistence:
+      data:
+        enabled: true
+        type: persistentVolumeClaim
+        accessMode: ReadWriteOnce
+        size: 10Gi
+        globalMounts:
+          - path: /data
+            readOnly: false
