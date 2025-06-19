@@ -24,8 +24,8 @@ spec:
               repository: ghcr.io/karakeep-app/karakeep
               tag: latest
             env:
-              MEILI_ADDR: meilisearch.karakeep.svc.cluster.local:7700
-              BROWSER_WEB_URL: chrome.karakeep.svc.cluster.local:9222
+              MEILI_ADDR: http://meilisearch.karakeep.svc.cluster.local:7700
+              BROWSER_WEB_URL: http://chrome.karakeep.svc.cluster.local:9222
               DATA_DIR: /data
               HOARDER_VERSION: release
               NEXTAUTH_SECRET:
