@@ -32,6 +32,7 @@ spec:
                         env:
                           - name: CUSTOM_HOSTNAME
                             value: crowdsec-lapi
+                            valueFrom: null
   values:
     container_runtime: containerd
     config:
