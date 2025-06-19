@@ -13,6 +13,25 @@ spec:
         name: crowdsec
       interval: 5m
   releaseName: crowdsec
+  postRenderers:
+    - kustomize:
+        patches:
+          - target:
+              kind: Deployment
+              name: crowdsec-lapi
+            patch: |
+              apiVersion: apps/v1
+              kind: Deployment
+              metadata:
+                name: crowdsec-lapi
+              spec:
+                template:
+                  spec:
+                    containers:
+                      - name: crowdsec-lapi
+                        env:
+                          - name: CUSTOM_HOSTNAME
+                            value: crowdsec-lapi
   values:
     container_runtime: containerd
     config:
@@ -49,8 +68,6 @@ spec:
         - name: BOUNCER_KEY_traefik
           value: ${CROWDSEC_TRAEFIK_BOUNCER_KEY}
           # static hostname makes homepage integration easier
-        - name: CUSTOM_HOSTNAME
-          value: "crowdsec-lapi"
         - name: ENROLL_INSTANCE_NAME
           value: 'k3s'
       envFrom:
