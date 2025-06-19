@@ -27,7 +27,7 @@ spec:
               MEILI_ADDR: http://meilisearch.karakeep.svc.cluster.local:7700
               BROWSER_WEB_URL: http://chrome.karakeep.svc.cluster.local:9222
               DATA_DIR: /data
-              HOARDER_VERSION: release
+              KARAKEEP_VERSION: release
               NEXTAUTH_SECRET:
                 valueFrom:
                   secretKeyRef:
@@ -59,14 +59,14 @@ spec:
               - path: /
                 pathType: Prefix
                 service:
-                  name: hoarder
+                  name: karakeep
                   port: 3000
           - host: karakeep.${ROOT_DOMAIN}
             paths:
               - path: /
                 pathType: Prefix
                 service:
-                  name: hoarder
+                  name: karakeep
                   port: 3000
     persistence:
       data:
