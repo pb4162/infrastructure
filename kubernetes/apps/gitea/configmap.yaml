@@ -1,0 +1,10 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: gitea-app-ini
+  namespace: gitea
+data:
+  service: |
+    DISABLE_REGISTRATION=true
+  repository: |
+    ENABLE_PUSH_CREATE_USER=true
