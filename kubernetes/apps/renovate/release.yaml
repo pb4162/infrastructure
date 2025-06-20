@@ -21,3 +21,5 @@ spec:
       configIsSecret: true
     redis:
       enabled: true
+    env:
+      LOG_LEVEL: debug
