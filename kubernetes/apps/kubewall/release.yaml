@@ -23,6 +23,9 @@ spec:
             image:
               repository: ghcr.io/kubewall/kubewall
               tag: latest
+            args:
+              - "--k8s-client-qps=200"
+              - "--k8s-client-burst=200"
     service:
       main:
         enabled: true
