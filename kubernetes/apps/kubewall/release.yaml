@@ -25,8 +25,8 @@ spec:
               tag: latest
             args:
               - "--no-open-browser"
-              - "--k8s-client-qps=200"
-              - "--k8s-client-burst=200"
+              - "--k8s-client-qps=500"
+              - "--k8s-client-burst=500"
     service:
       main:
         enabled: true
