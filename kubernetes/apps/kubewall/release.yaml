@@ -1,0 +1,61 @@
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: kubewall
+  namespace: kubewall-system
+spec:
+  chart:
+    spec:
+      chart: app-template
+      version: 4.0.1
+      sourceRef:
+        kind: HelmRepository
+        name: bjw-s
+        namespace: flux-system
+      interval: 5m
+  releaseName: kubewall
+  values:
+    controllers:
+      main:
+        enabled: true
+        containers:
+          main:
+            image:
+              repository: ghcr.io/kubewall/kubewall
+              tag: latest
+    service:
+      main:
+        enabled: true
+        controller: main
+        ports:
+          http:
+            enabled: true
+            protocol: http
+            port: 7080
+    ingress:
+      main:
+        enabled: true
+        hosts:
+          - host: kubernetes.${LOCAL_ROOT_DOMAIN}
+            paths:
+              - path: /
+                pathType: Prefix
+                service:
+                  name: kubewall
+                  port: 7080
+          - host: kubernetes.${ROOT_DOMAIN}
+            paths:
+              - path: /
+                pathType: Prefix
+                service:
+                  name: kubewall
+                  port: 7080
+    persistence:
+      config:
+        enabled: true
+        type: persistentVolumeClaim
+        accessMode: ReadWriteOnce
+        size: 1Gi
+        globalMounts:
+          - path: /.kubewall
+            readOnly: false
