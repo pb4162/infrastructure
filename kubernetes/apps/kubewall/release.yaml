@@ -59,3 +59,13 @@ spec:
         globalMounts:
           - path: /.kubewall
             readOnly: false
+    rbac:
+      bindings:
+        cluster-admin-binding:
+          enabled: true
+          type: ClusterRoleBinding
+          roleRef:
+            kind: ClusterRole
+            name: cluster-admin
+          subjects:
+            - identifier: default
