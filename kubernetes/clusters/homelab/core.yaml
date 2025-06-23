@@ -66,6 +66,6 @@ spec:
         - op: add
           path: /metadata/labels
           value:
-            goldilocks.fairwinds.com/enabled: true
+            goldilocks.fairwinds.com/enabled: "true"
       target:
         kind: Namespace
