@@ -68,4 +68,6 @@ spec:
             kind: ClusterRole
             name: cluster-admin
           subjects:
-            - identifier: default
+            - kind: ServiceAccount
+              name: default
+              namespace: kubewall-system
