@@ -30,7 +30,7 @@ spec:
         ports:
           http:
             enabled: true
-            protocol: http
+            protocol: HTTP
             port: 7080
     ingress:
       main:
