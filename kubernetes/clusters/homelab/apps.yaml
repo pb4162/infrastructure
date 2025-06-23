@@ -63,3 +63,12 @@ spec:
           interval: 5m
       target:
         kind: HelmRepository
+    - patch: |
+        apiVersion: v1
+        kind: Namespace
+        metadata:
+          name: all
+          labels:
+            goldilocks.fairwinds.com/enabled=true
+      target:
+        kind: Namespace
