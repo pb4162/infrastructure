@@ -24,6 +24,7 @@ spec:
               repository: ghcr.io/kubewall/kubewall
               tag: latest
             args:
+              - "--no-open-browser"
               - "--k8s-client-qps=200"
               - "--k8s-client-burst=200"
     service:
