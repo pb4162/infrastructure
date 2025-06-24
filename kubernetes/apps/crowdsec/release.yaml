@@ -38,6 +38,8 @@ spec:
     config:
       config.yaml.local: |
         api:
+          client:
+            unregister_on_exit: true
           server:
             auto_registration:
               enabled: true
