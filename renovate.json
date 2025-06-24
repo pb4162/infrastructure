@@ -5,5 +5,8 @@
   ],
   "flux": {
     "managerFilePatterns": ["/kubernetes/.+\\.yaml$/"]
+  },
+  "helm-values": {
+    "managerFilePatterns": ["/kubernetes/.+\\.yaml$/"]
   }
 }
