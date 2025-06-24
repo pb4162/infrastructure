@@ -22,7 +22,7 @@ spec:
           main:
             image:
               repository: miguelndecarvalho/speedtest-exporter
-              tag: latest
+              tag: v3.5.4
     service:
       main:
         controller: main
