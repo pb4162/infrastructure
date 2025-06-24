@@ -4,6 +4,6 @@
     ":dependencyDashboard"
   ],
   "flux": {
-    "managerFilePatterns": ["^/?kubernetes/.+\\.yaml$/"]
+    "managerFilePatterns": ["/kubernetes/.+\\.yaml$/"]
   }
 }
