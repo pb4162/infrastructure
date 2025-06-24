@@ -5,3 +5,4 @@ resources:
   - ./ingress.yaml
   - ./prometheus-rule.yaml
   - ./volume-snapshot-class.yaml
+  - ./fs-trim-job.yaml
