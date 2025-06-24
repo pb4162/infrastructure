@@ -22,7 +22,7 @@ spec:
           main:
             image:
               repository: gcr.io/zenika-hub/alpine-chrome
-              tag: latest
+              tag: 124
             command:
               - chromium-browser
               - --headless
