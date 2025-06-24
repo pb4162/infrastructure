@@ -22,7 +22,7 @@ spec:
           main:
             image:
               repository: ghcr.io/kubewall/kubewall
-              tag: latest
+              tag: 0.0.11
             args:
               - "--no-open-browser"
               - "--k8s-client-qps=500"
