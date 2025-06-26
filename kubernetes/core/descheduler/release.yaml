@@ -29,10 +29,17 @@ spec:
               args:
                 podRestartThreshold: 100
                 includingInitContainers: true
+            - name: LowNodeUtilization
+              args:
+                thresholds:
+                  memory: 20
+                targetThresholds:
+                  memory: 70
           plugins:
             balance:
               enabled:
                 - RemoveDuplicates
+                - LowNodeUtilization
             deschedule:
               enabled:
                 - RemovePodsViolatingInterPodAntiAffinity
