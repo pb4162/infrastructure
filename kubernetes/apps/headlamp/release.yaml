@@ -15,6 +15,12 @@ spec:
   releaseName: headlamp
   values:
     config:
+      oidc:
+        secret:
+          create: false
+        externalSecret:
+          enabled: true
+          name: headlamp-oidc
       watchPlugins: true
     persistentVolumeClaim:
       enabled: true
