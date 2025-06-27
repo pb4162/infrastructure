@@ -30,7 +30,10 @@ spec:
       replicas: 1
       resources:
         limits:
-          memory: 750Mi
+          memory: 1Gi
+      extraEnv:
+        - name: GOMEMLIMIT
+          value: 800MiB
     loki:
       limits_config:
         retention_period: 120d
