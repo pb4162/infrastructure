@@ -24,6 +24,7 @@ spec:
       watchPlugins: true
     persistentVolumeClaim:
       enabled: true
+      storageClassName: longhorn
       accessModes:
         - ReadWriteOnce
       size: 5Gi
