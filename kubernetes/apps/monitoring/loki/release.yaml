@@ -31,9 +31,6 @@ spec:
         limits:
           memory: 750Mi
     loki:
-      memberlistConfig:
-        service:
-          publishNotReadyAddresses: true
       limits_config:
         retention_period: 120d
       compactor:
@@ -74,6 +71,9 @@ spec:
     chunksCache:
       allocatedMemory: 128
       writebackSizeLimit: 10MB
+    memberlist:
+      service:
+        publishNotReadyAddresses: true
     backend:
       replicas: 0
     read:
