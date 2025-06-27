@@ -27,6 +27,7 @@ spec:
         limits:
           memory: 32Mi
     singleBinary:
+      replicas: 1
       resources:
         limits:
           memory: 750Mi
