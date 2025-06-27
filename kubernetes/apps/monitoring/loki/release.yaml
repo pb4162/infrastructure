@@ -31,6 +31,9 @@ spec:
         limits:
           memory: 750Mi
     loki:
+      memberlistConfig:
+        service:
+          publishNotReadyAddresses: true
       limits_config:
         retention_period: 120d
       compactor:
