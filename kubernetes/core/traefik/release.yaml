@@ -15,7 +15,9 @@ spec:
   releaseName: traefik
   dependsOn:
     - name: cert-manager
+      namespace: cert-manager
     - name: longhorn  # TODO: stateful reverse proxy?! might not be ideal
+      namespace: longhorn-system
   values:
     priorityClassName: "system-cluster-critical"  # inherited from k3s HelmChart
     deployment:
