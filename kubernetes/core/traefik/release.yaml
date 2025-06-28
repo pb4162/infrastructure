@@ -1,10 +1,23 @@
-apiVersion: helm.cattle.io/v1
-kind: HelmChartConfig
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
 metadata:
   name: traefik
-  namespace: kube-system
+  namespace: traefik
 spec:
-  valuesContent: |-
+  chart:
+    spec:
+      chart: traefik
+      version: 36.2.0
+      sourceRef:
+        kind: HelmRepository
+        name: traefik
+      interval: 5m
+  releaseName: traefik
+  dependsOn:
+    - name: cert-manager
+    - name: longhorn  # TODO: stateful reverse proxy?! might not be ideal
+  values:
+    priorityClassName: "system-cluster-critical"  # inherited from k3s HelmChart
     deployment:
       additionalContainers:
       - name: ts-sidecar
@@ -21,12 +34,11 @@ spec:
           value: "false"
         - name: TS_DEBUG_FIREWALL_MODE
           value: auto
-        - name: TS_AUTHKEY
-          value: "${TS_SIDECAR_AUTHKEY}"
-        - name: TS_EXTRA_ARGS
-          value: "${TS_SIDECAR_FLAGS}"
         - name: TS_STATE_DIR
           value: /tailscale
+        envFrom:
+          - secretRef:
+              name: traefik-ts-sidecar-secret
         securityContext:
           privileged: true
         volumeMounts:
@@ -62,11 +74,15 @@ spec:
         allowCrossNamespace: true
         allowExternalNameServices: true
       kubernetesIngress:
+        publishedService:
+          enabled: true
         allowExternalNameServices: true
     service:
+      ipFamilyPolicy: "PreferDualStack"
       spec:
         loadBalancerIP: "${TRAEFIK_IP}"
         externalTrafficPolicy: Local
+    # TODO: figure out how to get ts-sidecar to run with stricter permissions
     podSecurityContext:
       runAsNonRoot: false
       runAsGroup: 0
@@ -91,9 +107,10 @@ spec:
       default:
         defaultCertificate:
           secretName: pb4162-dev-tls
+    global:
+      sendAnonymousUsage: false
     additionalArguments:
       - "--api.insecure=true"
-      - "--global.sendanonymoususage=false"
     logs:
       access:
         enabled: true
@@ -106,61 +123,3 @@ spec:
         bouncer:
           moduleName: "github.com/maxlerebourg/crowdsec-bouncer-traefik-plugin"
           version: "v1.3.5"
-    extraObjects:
-      - apiVersion: v1
-        kind: Service
-        metadata:
-          name: traefik-api
-        spec:
-          type: ClusterIP
-          selector:
-            app.kubernetes.io/name: traefik
-            app.kubernetes.io/instance: traefik-kube-system
-          ports:
-          - port: 8080
-            name: traefik
-            targetPort: 8080
-            protocol: TCP
-
-      - apiVersion: v1
-        kind: Service
-        metadata:
-          name: traefik-internal
-          namespace: kube-system
-        spec:
-          selector:
-            app.kubernetes.io/instance: traefik-kube-system
-            app.kubernetes.io/name: traefik 
-          ports:
-            - protocol: TCP
-              port: 8080
-
-      - apiVersion: networking.k8s.io/v1
-        kind: Ingress
-        metadata:
-          name: traefik-dashboard
-          annotations:
-            traefik.ingress.kubernetes.io/router.entrypoints: websecure
-            traefik.ingress.kubernetes.io/router.middlewares: authentik-authentik@kubernetescrd
-        spec:
-          rules:
-          - host: traefik.${LOCAL_ROOT_DOMAIN}
-            http:
-              paths:
-              - path: /
-                pathType: Prefix
-                backend:
-                  service:
-                    name: traefik-api
-                    port:
-                      name: traefik
-          - host: traefik.${ROOT_DOMAIN}
-            http:
-              paths:
-              - path: /
-                pathType: Prefix
-                backend:
-                  service:
-                    name: traefik-api
-                    port:
-                      name: traefik

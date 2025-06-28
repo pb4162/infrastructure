@@ -2,7 +2,7 @@ apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
   name: ts-sidecar-data
-  namespace: kube-system
+  namespace: traefik
 spec:
   accessModes:
     - ReadWriteOnce
