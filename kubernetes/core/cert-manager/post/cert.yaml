@@ -2,7 +2,7 @@ apiVersion: cert-manager.io/v1
 kind: Certificate
 metadata:
   name: pb4162-dev
-  namespace: kube-system
+  namespace: traefik
 spec:
   secretName: pb4162-dev-tls
   issuerRef:
