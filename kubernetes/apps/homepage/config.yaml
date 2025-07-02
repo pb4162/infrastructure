@@ -1,0 +1,221 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: homepage-config
+  namespace: homepage
+data:
+  settings.yaml: |
+    headerStyle: boxedWidgets
+    quicklaunch:
+      searchDescriptions: true
+      hideInternetSearch: true
+    providers:
+      longhorn:
+        url: http://longhorn-frontend.longhorn-system.svc.cluster.local
+    useEqualHeights: true
+    target: _self
+    statusStyle: dot
+    layout:
+      System:
+        tab: Core
+      Monitoring:
+        tab: Core
+      Media:
+        tab: Media
+      Services:
+        tab: Services
+  widgets.yaml: |
+    - kubernetes:
+        cluster:
+          show: true
+          cpu: true
+          memory: true
+          showLabel: true
+          label: "cluster"
+        nodes:
+          show: true
+          cpu: true
+          memory: true
+          showLabel: true
+    - longhorn:
+        expanded: true
+        total: true
+        labels: true
+        nodes: true
+    - datetime:
+        text_size: xl
+        format:
+          dateStyle: long
+          timeStyle: long
+  kubernetes.yaml: |
+    mode: cluster
+    ingress: true
+  bookmarks.yaml: ""
+  services.yaml: |
+    # TODO: add headlamp, kubewall and weave-gitops
+    - System:
+      - Traefik:
+          href: https://traefik.cluster.local
+          siteMonitor: http://traefik-api.traefik.svc.cluster.local:8080
+          icon: traefik.svg
+          description: Reverse proxy
+          widget:
+            type: traefik
+            url: http://traefik-api.kube-system.svc.cluster.local:8080
+      - Longhorn:
+          href: https://longhorn.cluster.local
+          siteMonitor: http://longhorn-frontend.longhorn-system.svc.cluster.local
+          icon: longhorn.svg
+          description: Clustered storage
+      - Authentik:
+          href: https://authentik.cluster.local
+          siteMonitor: http://authentik-server.authentik.svc.cluster.local
+          icon: authentik.png
+          description: Authentication management
+          widget:
+            type: authentik
+            url: http://authentik-server.authentik.svc.cluster.local
+            key: "{{ HOMEPAGE_VAR_AUTHENTIK_API_KEY }}"
+      - Portainer:
+          href: https://portainer.cluster.local
+          siteMonitor: http://portainer.portainer.svc.cluster.local:9000
+          icon: portainer.svg
+          description: Container management
+      - Minio:
+          href: https://minio.cluster.local
+          siteMonitor: http://minio.minio.svc.cluster.local:9000
+          icon: minio.svg
+          description: Object storage
+      - Crowdsec:
+          href: https://crowdsec.cluster.local
+          siteMonitor: http://crowdsec-service.crowdsec.svc.cluster.local:3000
+          icon: crowdsec.svg
+          description: Threat intelligence
+          widget:
+            type: crowdsec
+            url: http://crowdsec-service.crowdsec.svc.cluster.local:8080
+            username: crowdsec-lapi
+            password: "{{ HOMEPAGE_VAR_CROWDSEC_LAPI_KEY }}"
+      - Goldilocks:
+          href: https://goldilocks.cluster.local
+          siteMonitor: http://goldilocks-dashboard.goldilocks.svc.cluster.local
+          icon: mdi-memory
+          description: Kubernetes resource recommendations
+    - Monitoring:
+      - Prometheus:
+          href: https://prometheus.cluster.local
+          siteMonitor: http://kube-prometheus-stack-prometheus.monitoring.svc.cluster.local:9090
+          icon: prometheus.svg
+          description: Monitoring and alerts
+          widget:
+            type: prometheus
+            fields: ["targets_up", "targets_down", "targets_total"]
+            url: http://kube-prometheus-stack-prometheus.monitoring.svc.cluster.local:9090
+      - Grafana:
+          href: https://grafana.cluster.local
+          siteMonitor: http://kube-prometheus-stack-grafana.monitoring.svc.cluster.local
+          icon: grafana.svg
+          description: Data visualization
+          widget:
+            type: grafana
+            url: http://kube-prometheus-stack-grafana.monitoring.svc.cluster.local
+            username: "{{ HOMEPAGE_VAR_GRAFANA_USERNAME }}"
+            password: "{{ HOMEPAGE_VAR_GRAFANA_PASSWORD }}"
+      - ntfy:
+          href: https://ntfy.cluster.local
+          siteMonitor: http://ntfy.ntfy.svc.cluster.local
+          icon: ntfy.svg
+          description: Notifications
+          widget:
+            type: customapi
+            url: http://ntfy.ntfy.svc.cluster.local/v1/stats
+            mappings:
+              - field: messages
+                label: Messages
+                format: number
+              - field: messages_rate
+                label: Messages/s
+                format: number
+    - Media:
+      - Jellyfin:
+          href: https://jellyfin.cluster.local
+          siteMonitor: http://jellyfin.jellyfin.svc.cluster.local:8096
+          icon: jellyfin.svg
+          description: Media library
+          widget:
+            type: jellyfin
+            url: http://jellyfin.jellyfin.svc.cluster.local:8096
+            key: "{{ HOMEPAGE_VAR_JELLYFIN_API_KEY }}"
+            enableBlocks: true
+            enableUser: true
+            showEpisodeNumber: true
+      - AudioBookShelf:
+          href: https://audiobookshelf.cluster.local
+          siteMonitor: http://audiobookshelf.audiobookshelf.svc.cluster.local:13378
+          icon: audiobookshelf.svg
+          description: Books and audiobooks
+          widget:
+            type: audiobookshelf
+            url: http://audiobookshelf.audiobookshelf.svc.cluster.local:13378
+            key: "{{ HOMEPAGE_VAR_AUDIOBOOKSHELF_API_KEY }}"
+    - Services:
+      - Linkwarden:
+          href: https://linkwarden.cluster.local
+          siteMonitor: http://linkwarden.linkwarden.svc.cluster.local:3000
+          icon: linkwarden.png
+          description: Bookmark management
+          widget:
+            type: linkwarden
+            url: http://linkwarden.linkwarden.svc.cluster.local:3000
+            key: "{{ HOMEPAGE_VAR_LINKWARDEN_API_KEY }}"
+      - Karakeep:
+          href: https://karakeep.cluster.local
+          siteMonitor: http://karakeep.karakeep.svc.cluster.local:3000
+          icon: karakeep.svg
+          description: Bookmark anything and everything
+          widget:
+            type: karakeep
+            url: http://karakeep.karakeep.svc.cluster.local:3000
+            key: "{{ HOMEPAGE_VAR_KARAKEEP_API_KEY }}"
+      - Vaultwarden:
+          href: https://vaultwarden.cluster.local
+          siteMonitor: http://vaultwarden.vaultwarden.svc.cluster.local
+          icon: vaultwarden.svg
+          description: Password manager
+      - Nextcloud:
+          href: https://nextcloud.cluster.local
+          siteMonitor: http://nextcloud.nextcloud.svc.cluster.local:8080
+          icon: nextcloud.svg
+          description: Cloud storage
+          widget:
+            type: nextcloud
+            url: https://nextcloud.pb4162.dev
+            key: "{{ HOMEPAGE_VAR_NEXTCLOUD_API_KEY }}"
+      - Home Assistant:
+          href: https://home-assistant.cluster.local
+          siteMonitor: http://home-assistant.home-assistant.svc.cluster.local:8080
+          icon: home-assistant.svg
+          description: Home automation
+          widget:
+            type: homeassistant
+            url: http://home-assistant.home-assistant.svc.cluster.local:8080
+            key: "{{ HOMEPAGE_VAR_HOME_ASSISTANT_API_KEY }}"
+      - PiHole:
+          href: https://pihole.cluster.local
+          siteMonitor: http://pihole-web.pihole.svc.cluster.local
+          icon: pi-hole.svg
+          description: DNS
+          widget:
+            type: pihole
+            url: http://pihole-web.pihole.svc.cluster.local
+            version: 6
+            key: "{{ HOMEPAGE_VAR_PIHOLE_PASSWORD }}"
+      - Gitea:
+          href: https://gitea.cluster.local
+          siteMonitor: http://gitea-http.gitea.svc.cluster.local:3000
+          icon: gitea.svg
+          description: Git server
+          widget:
+            type: gitea
+            url: http://gitea-http.gitea.svc.cluster.local:3000
+            key: "{{ HOMEPAGE_VAR_GITEA_API_KEY }}"

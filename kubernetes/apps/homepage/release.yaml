@@ -1,0 +1,143 @@
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: homepage
+  namespace: homepage
+spec:
+  chart:
+    spec:
+      chart: app-template
+      version: 4.1.2
+      sourceRef:
+        kind: HelmRepository
+        name: bjw-s
+        namespace: flux-system
+      interval: 5m
+  releaseName: homepage
+  values:
+    controllers:
+      main:
+        enabled: true
+        replicas: 2
+        serviceAccount:
+          name: homepage
+        containers:
+          main:
+            image:
+              repository: ghcr.io/gethomepage/homepage
+              tag: v1.3.2
+            env:
+              HOMEPAGE_ALLOWED_HOSTS: "homepage.${LOCAL_ROOT_DOMAIN},homepage.${ROOT_DOMAIN}"
+            envFrom:
+              - secretRef:
+                  name: homepage-secret
+            resources:
+              limits:
+                memory: 1Gi
+    service:
+      main:
+        enabled: true
+        controller: main
+        annotations:
+           traefik.ingress.kubernetes.io/service.sticky.cookie: "true"
+        ports:
+          http:
+            enabled: true
+            port: 3000
+            protocol: TCP
+    ingress:
+      main:
+        enabled: true
+        annotations:
+          traefik.ingress.kubernetes.io/router.middlewares: authentik-authentik@kubernetescrd
+        hosts:
+          - host: homepage.${LOCAL_ROOT_DOMAIN}
+            paths:
+              - path: /
+                pathType: Prefix
+                service:
+                  name: homepage
+                  port: 3000
+          - host: homepage.${ROOT_DOMAIN}
+            paths:
+              - path: /
+                pathType: Prefix
+                service:
+                  name: homepage
+                  port: 3000
+    persistence:
+      config:
+        enabled: true
+        type: configMap
+        name: homepage-config
+        globalMounts:
+          - subPath: settings.yaml
+            path: /app/config/settings.yaml
+          - subPath: widgets.yaml
+            path: /app/config/widgets.yaml
+          - subPath: kubernetes.yaml
+            path: /app/config/kubernetes.yaml
+          - subPath: bookmarks.yaml
+            path: /app/config/bookmarks.yaml
+          - subPath: services.yaml
+            path: /app/config/services.yaml
+    serviceAccount:
+      homepage:
+        enabled: true
+    rbac:
+      bindings:
+        homepage:
+          enabled: true
+          type: ClusterRoleBinding
+          roleRef:
+            name: homepage
+            kind: ClusterRole
+          subjects:
+            - kind: ServiceAccount
+              name: homepage
+              namespace: "{{ .Release.Namespace }}"
+      roles:
+        homepage:
+          enabled: true
+          type: ClusterRole
+          rules:
+            - apiGroups:
+                - ""
+              resources:
+                - namespaces
+                - pods
+                - nodes
+              verbs:
+                - get
+                - list
+            - apiGroups:
+                - extensions
+                - networking.k8s.io
+              resources:
+                - ingresses
+              verbs:
+                - get
+                - list
+            - apiGroups:
+                - traefik.io
+              resources:
+                - ingressroutes
+              verbs:
+                - get
+                - list
+            - apiGroups:
+                - gateway.networking.k8s.io
+              resources:
+                - httproutes
+                - gateways
+              verbs:
+                - get
+                - list
+            - apiGroups:
+                - metrics.k8s.io
+              resources:
+                - nodes
+                - pods
+              verbs:
+                - get
+                - list
