@@ -18,12 +18,20 @@ data:
     layout:
       System:
         tab: Core
+        style: row
+        columns: 4
       Monitoring:
         tab: Core
+        style: row
+        columns: 4
       Media:
         tab: Media
+        style: row
+        columns: 4
       Services:
         tab: Services
+        style: row
+        columns: 4
   widgets.yaml: |
     - kubernetes:
         cluster:
