@@ -75,7 +75,7 @@ data:
           widget:
             type: authentik
             url: http://authentik-server.authentik.svc.cluster.local
-            key: "{{ HOMEPAGE_VAR_AUTHENTIK_API_KEY }}"
+            key: "{{HOMEPAGE_VAR_AUTHENTIK_API_KEY}}"
       - Portainer:
           href: https://portainer.cluster.local
           siteMonitor: http://portainer.portainer.svc.cluster.local:9000
@@ -95,7 +95,7 @@ data:
             type: crowdsec
             url: http://crowdsec-service.crowdsec.svc.cluster.local:8080
             username: crowdsec-lapi
-            password: "{{ HOMEPAGE_VAR_CROWDSEC_LAPI_KEY }}"
+            password: "{{HOMEPAGE_VAR_CROWDSEC_LAPI_KEY}}"
       - Goldilocks:
           href: https://goldilocks.cluster.local
           siteMonitor: http://goldilocks-dashboard.goldilocks.svc.cluster.local
@@ -119,8 +119,8 @@ data:
           widget:
             type: grafana
             url: http://kube-prometheus-stack-grafana.monitoring.svc.cluster.local
-            username: "{{ HOMEPAGE_VAR_GRAFANA_USERNAME }}"
-            password: "{{ HOMEPAGE_VAR_GRAFANA_PASSWORD }}"
+            username: "{{HOMEPAGE_VAR_GRAFANA_USERNAME}}"
+            password: "{{HOMEPAGE_VAR_GRAFANA_PASSWORD}}"
       - ntfy:
           href: https://ntfy.cluster.local
           siteMonitor: http://ntfy.ntfy.svc.cluster.local
@@ -145,7 +145,7 @@ data:
           widget:
             type: jellyfin
             url: http://jellyfin.jellyfin.svc.cluster.local:8096
-            key: "{{ HOMEPAGE_VAR_JELLYFIN_API_KEY }}"
+            key: "{{HOMEPAGE_VAR_JELLYFIN_API_KEY}}"
             enableBlocks: true
             enableUser: true
             showEpisodeNumber: true
@@ -157,7 +157,7 @@ data:
           widget:
             type: audiobookshelf
             url: http://audiobookshelf.audiobookshelf.svc.cluster.local:13378
-            key: "{{ HOMEPAGE_VAR_AUDIOBOOKSHELF_API_KEY }}"
+            key: "{{HOMEPAGE_VAR_AUDIOBOOKSHELF_API_KEY}}"
     - Services:
       - Linkwarden:
           href: https://linkwarden.cluster.local
@@ -167,7 +167,7 @@ data:
           widget:
             type: linkwarden
             url: http://linkwarden.linkwarden.svc.cluster.local:3000
-            key: "{{ HOMEPAGE_VAR_LINKWARDEN_API_KEY }}"
+            key: "{{HOMEPAGE_VAR_LINKWARDEN_API_KEY}}"
       - Karakeep:
           href: https://karakeep.cluster.local
           siteMonitor: http://karakeep.karakeep.svc.cluster.local:3000
@@ -176,7 +176,7 @@ data:
           widget:
             type: karakeep
             url: http://karakeep.karakeep.svc.cluster.local:3000
-            key: "{{ HOMEPAGE_VAR_KARAKEEP_API_KEY }}"
+            key: "{{HOMEPAGE_VAR_KARAKEEP_API_KEY}}"
       - Vaultwarden:
           href: https://vaultwarden.cluster.local
           siteMonitor: http://vaultwarden.vaultwarden.svc.cluster.local
@@ -190,7 +190,7 @@ data:
           widget:
             type: nextcloud
             url: https://nextcloud.pb4162.dev
-            key: "{{ HOMEPAGE_VAR_NEXTCLOUD_API_KEY }}"
+            key: "{{HOMEPAGE_VAR_NEXTCLOUD_API_KEY}}"
       - Home Assistant:
           href: https://home-assistant.cluster.local
           siteMonitor: http://home-assistant.home-assistant.svc.cluster.local:8080
@@ -199,7 +199,7 @@ data:
           widget:
             type: homeassistant
             url: http://home-assistant.home-assistant.svc.cluster.local:8080
-            key: "{{ HOMEPAGE_VAR_HOME_ASSISTANT_API_KEY }}"
+            key: "{{HOMEPAGE_VAR_HOME_ASSISTANT_API_KEY}}"
       - PiHole:
           href: https://pihole.cluster.local
           siteMonitor: http://pihole-web.pihole.svc.cluster.local
@@ -209,7 +209,7 @@ data:
             type: pihole
             url: http://pihole-web.pihole.svc.cluster.local
             version: 6
-            key: "{{ HOMEPAGE_VAR_PIHOLE_PASSWORD }}"
+            key: "{{HOMEPAGE_VAR_PIHOLE_PASSWORD}}"
       - Gitea:
           href: https://gitea.cluster.local
           siteMonitor: http://gitea-http.gitea.svc.cluster.local:3000
@@ -218,4 +218,4 @@ data:
           widget:
             type: gitea
             url: http://gitea-http.gitea.svc.cluster.local:3000
-            key: "{{ HOMEPAGE_VAR_GITEA_API_KEY }}"
+            key: "{{HOMEPAGE_VAR_GITEA_API_KEY}}"
