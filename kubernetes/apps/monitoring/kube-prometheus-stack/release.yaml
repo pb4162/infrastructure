@@ -73,6 +73,7 @@ spec:
           - prometheus.${LOCAL_ROOT_DOMAIN}
           - prometheus.${ROOT_DOMAIN}
       prometheusSpec:
+        maximumStartupDurationSeconds: 600
         resources:
           limits:
             memory: 4Gi
