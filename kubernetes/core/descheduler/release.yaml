@@ -15,11 +15,11 @@ spec:
   releaseName: descheduler
   values:
     schedule: "*/10 * * * *"
-    metricsCollector:
-      enabled: true
-    metricsProviders:
-      - source: "KubernetesMetrics"
     deschedulerPolicy:
+      metricsCollector:
+        enabled: true
+      metricsProviders:
+        - source: "KubernetesMetrics"
       profiles:
         - name: default
           pluginConfig:
