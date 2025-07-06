@@ -16,8 +16,6 @@ spec:
   values:
     schedule: "*/10 * * * *"
     deschedulerPolicy:
-      metricsCollector:
-        enabled: true
       metricsProviders:
         - source: "KubernetesMetrics"
       profiles:
