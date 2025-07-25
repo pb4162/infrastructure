@@ -14,6 +14,9 @@ spec:
       interval: 5m
   releaseName: portainer
   values:
+    trusted_origins:
+      enabled: true
+      domains: "portainer.${LOCAL_ROOT_DOMAIN},portainer.${ROOT_DOMAIN}"
     resources:
       limits:
         memory: 512Mi
