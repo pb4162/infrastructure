@@ -13,6 +13,8 @@ spec:
         name: prometheus-community
       interval: 5m
   releaseName: kube-prometheus-stack
+  upgrade:
+    crds: CreateReplace
   valuesFrom:
     - kind: Secret
       name: kube-prometheus-stack-values
