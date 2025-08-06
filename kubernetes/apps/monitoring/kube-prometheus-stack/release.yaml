@@ -74,6 +74,7 @@ spec:
           - prometheus.${ROOT_DOMAIN}
       prometheusSpec:
         maximumStartupDurationSeconds: 600
+        retentionSize: 62GB
         resources:
           limits:
             memory: 4Gi
