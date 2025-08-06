@@ -21,7 +21,7 @@ spec:
           interval: 10m
           timeout: 5m
           driftDetection:
-            mode: enabled
+            mode: disabled
             ignore:
             - paths: ["/spec/replicas"]
               target:
