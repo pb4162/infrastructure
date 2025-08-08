@@ -6,3 +6,4 @@ resources:
   - ./prometheus-rule.yaml
   - ./volume-snapshot-class.yaml
   - ./fs-trim-job.yaml
+  - ./snapshot-cleanup.yaml
