@@ -30,6 +30,10 @@ spec:
       autoDeletePodWhenVolumeDetachedUnexpectedly: true
       nodeDownPodDeletionPolicy: delete-both-statefulset-and-deployment-pod
       guaranteedInstanceManagerCPU: 6
+      autoCleanupSystemGeneratedSnapshot: true
+      autoCleanupRecurringJobBackupSnapshot: true
+      autoCleanupSnapshotWhenDeleteBackup: true
+      autoCleanupSnapshotAfterOnDemandBackupCompleted: true
     persistence:
       defaultClassReplicaCount: 2
       reclaimPolicy: Retain
