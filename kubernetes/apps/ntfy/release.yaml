@@ -22,7 +22,7 @@ spec:
           main:
             image:
               repository: binwiederhier/ntfy
-              tag: v2.12
+              tag: v2.14
             args:
               - "serve"
     service:
