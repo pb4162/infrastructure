@@ -24,6 +24,9 @@ spec:
       instances: 1
       storage:
         size: 8Gi
+      walStorage:
+        enabled: true
+        size: 1Gi
       monitoring:
         enabled: true
         prometheusRule:
