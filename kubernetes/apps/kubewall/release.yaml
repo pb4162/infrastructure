@@ -28,7 +28,7 @@ spec:
               tag: 0.0.12
             args:
               - "--no-open-browser"
-              - "--listen 0.0.0.0:7080"
+              - "--listen='0.0.0.0:7080'"
               - "--k8s-client-qps=500"
               - "--k8s-client-burst=500"
     service:
