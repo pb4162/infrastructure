@@ -38,6 +38,10 @@ spec:
       enabled: true
       s3:
         bucket: cnpg
+      wal:
+        encryption: ""
+      dats:
+        encryption: ""
       scheduledBackups:
         - name: daily-backup
           schedule: "0 0 0 * * *"
