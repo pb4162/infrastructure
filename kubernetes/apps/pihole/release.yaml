@@ -7,7 +7,7 @@ spec:
   chart:
     spec:
       chart: pihole
-      version: 2.31.0
+      version: 2.34.0
       sourceRef:
         kind: HelmRepository
         name: mojo2600
@@ -41,5 +41,3 @@ spec:
         - ReadWriteMany
     antiaff:
       enabled: true
-    extraEnvVars:
-      FTLCONF_dns_listeningMode: all
