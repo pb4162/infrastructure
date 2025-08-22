@@ -41,5 +41,3 @@ spec:
         - ReadWriteMany
     antiaff:
       enabled: true
-    extraEnvVars:
-      FTLCONF_dns_listeningMode: all
