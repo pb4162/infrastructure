@@ -26,7 +26,8 @@ spec:
       initdb:
         database: gitea
         owner: gitea
-        secret: cnpg-gitea-password
+        secret:
+          name: cnpg-gitea-password
       storage:
         size: 10Gi
       walStorage:
