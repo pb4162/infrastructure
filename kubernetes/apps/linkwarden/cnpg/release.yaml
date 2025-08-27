@@ -16,7 +16,7 @@ spec:
   releaseName: cnpg-linkwarden
   valuesFrom:
     - kind: Secret
-      name: cnpg-values
+      name: cnpg-backup-values
   values:
     version:
       postgresql: "16"
