@@ -21,7 +21,7 @@ spec:
       name: cnpg-backup-values
   values:
     version:
-      postgresql: "16"
+      postgresql: "17"
     cluster:
       storage:
         size: 10Gi
