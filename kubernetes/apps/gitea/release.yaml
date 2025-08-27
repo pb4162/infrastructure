@@ -41,7 +41,7 @@ spec:
       create: true
       mount: true
       size: 50Gi
-    redis-cluster:
+    valkey-cluster:
       enabled: false
     postgresql-ha:
       enabled: false
