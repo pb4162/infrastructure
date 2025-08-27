@@ -46,4 +46,4 @@ spec:
     postgresql-ha:
       enabled: false
     postgresql:
-      enabled: true
+      enabled: false
