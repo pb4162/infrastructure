@@ -23,6 +23,10 @@ spec:
     version:
       postgresql: "17"
     cluster:
+      initdb:
+        database: gitea
+        owner: gitea
+        secret: cnpg-gitea-password
       storage:
         size: 10Gi
       walStorage:
