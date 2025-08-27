@@ -15,33 +15,20 @@ spec:
       interval: 5m
   releaseName: cnpg-linkwarden
   valuesFrom:
+    - kind: ConfigMap
+      name: cnpg-default-values
     - kind: Secret
       name: cnpg-backup-values
   values:
     version:
       postgresql: "16"
     cluster:
-      instances: 1
       storage:
         size: 8Gi
       walStorage:
         enabled: true
         size: 1Gi
-      monitoring:
-        enabled: true
-        prometheusRule:
-          enabled: true
-      additionalLabels:
-        release: kube-prometheus-stack
-      superuserSecret: cnpg-superuser-secret
     backups:
-      enabled: true
-      s3:
-        bucket: cnpg
-      wal:
-        encryption: ""
-      dats:
-        encryption: ""
       scheduledBackups:
         - name: daily-backup
           schedule: "0 0 0 * * *"

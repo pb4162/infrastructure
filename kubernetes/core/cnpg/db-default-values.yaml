@@ -3,6 +3,10 @@ kind: ConfigMap
 metadata:
   name: cnpg-default-values
   namespace: cnpg-system
+  annotations:
+    reflector.v1.k8s.emberstack.com/reflection-allowed: "true"
+    reflector.v1.k8s.emberstack.com/reflection-allowed-namespaces: linkwarden
+    reflector.v1.k8s.emberstack.com/reflection-auto-enabled: "true"
 data:
   values.yaml: |
     cluster:
