@@ -28,6 +28,12 @@ spec:
           paths:
             - path: /
     gitea:
+      config:
+        database:
+          DB_TYPE: postgres
+          HOST: cnpg-gitea-cluster-rw.gitea.svc.cluster.local:5432
+          NAME: gitea
+          USER: gitea
       additionalConfigSources:
         - configMap:
             name: gitea-app-ini
