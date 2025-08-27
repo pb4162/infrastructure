@@ -7,7 +7,7 @@ spec:
   chart:
     spec:
       chart: gitea
-      version: 11.0.1
+      version: 12.2.0
       sourceRef:
         kind: HelmRepository
         name: gitea-charts
@@ -24,11 +24,9 @@ spec:
         - host: gitea.${ROOT_DOMAIN}
           paths:
             - path: /
-              pathType: Prefix
         - host: gitea.${LOCAL_ROOT_DOMAIN}
           paths:
             - path: /
-              pathType: Prefix
     gitea:
       additionalConfigSources:
         - configMap:
