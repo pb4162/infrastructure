@@ -85,8 +85,14 @@ spec:
     externalDatabase:
       enabled: true
       type: postgresql
+      host: cnpg-nextcloud-cluster-rw.nextcloud.svc.cluster.local:5432
+      existingSecret:
+        enabled: true
+        secretName: cnpg-nextcloud-password
+        usernameKey: username
+        passwordKey: password
     postgresql:
-      enabled: true
+      enabled: false
       primary:
         resources:
           limits:
