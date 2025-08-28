@@ -17,6 +17,9 @@ spec:
     - kind: Secret
       name: authentik-values
   values:
+    authentik:
+      postgresql:
+        host: cnpg-authentik-cluster-rw.authentik.svc.cluster.local
     server:
       ingress:
         ingressClassName: traefik
@@ -43,6 +46,6 @@ spec:
         labels:
           release: kube-prometheus-stack
     postgresql:
-      enabled: true
+      enabled: false
     redis:
       enabled: true
