@@ -22,7 +22,7 @@ spec:
           main:
             image:
               repository: ghcr.io/linkwarden/linkwarden
-              tag: v2.12.1
+              tag: v2.12.2
             env:
               DATABASE_URL:
                 valueFrom:
