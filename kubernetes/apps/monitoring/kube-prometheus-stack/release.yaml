@@ -76,7 +76,7 @@ spec:
           - prometheus.${ROOT_DOMAIN}
       prometheusSpec:
         maximumStartupDurationSeconds: 600
-        retentionSize: 62GB
+        retentionSize: 108GB
         resources:
           limits:
             memory: 4Gi
@@ -88,4 +88,4 @@ spec:
              accessModes: ["ReadWriteOnce"]
              resources:
                requests:
-                 storage: 64Gi
+                 storage: 110Gi
