@@ -32,7 +32,7 @@ spec:
         size: 8Gi
       walStorage:
         enabled: true
-        size: 1Gi
+        size: 2Gi
     backups:
       scheduledBackups:
         - name: daily-backup
