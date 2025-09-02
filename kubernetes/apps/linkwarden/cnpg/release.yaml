@@ -28,6 +28,9 @@ spec:
       walStorage:
         enabled: true
         size: 2Gi
+      postgresql:
+        parameters:
+          max_slot_wal_keep_size: "1.8GB"
     backups:
       scheduledBackups:
         - name: daily-backup
