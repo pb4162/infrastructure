@@ -35,7 +35,7 @@ spec:
         size: 2Gi
       postgresql:
         parameters:
-          max_slot_wal_keep_size: "1.8GB"
+          max_slot_wal_keep_size: "1.5GB"
     backups:
       scheduledBackups:
         - name: daily-backup
