@@ -76,12 +76,12 @@ spec:
       envFrom:
         - secretRef:
             name: crowdsec-secret
-      dashboard:
-        enabled: true
-        ingress:
-          enabled: true
-          ingressClassName: traefik
-          host: crowdsec.${LOCAL_ROOT_DOMAIN}
+      # dashboard:
+      #   enabled: true
+      #   ingress:
+      #     enabled: true
+      #     ingressClassName: traefik
+      #     host: crowdsec.${LOCAL_ROOT_DOMAIN}
     agent:
       metrics:
         enabled: true
