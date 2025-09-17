@@ -17,4 +17,4 @@ spec:
     enabled: true
     existingSecret: gitea-actions-secret
     existingSecretKey: REGISTRATION_TOKEN
-    giteaRootURL: gitea.${ROOT_DOMAIN}
+    giteaRootURL: https://gitea.${ROOT_DOMAIN}
