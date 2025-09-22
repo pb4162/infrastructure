@@ -8,3 +8,5 @@ data:
     DISABLE_REGISTRATION=true
   repository: |
     ENABLE_PUSH_CREATE_USER=true
+  actions: |
+    ENABLED=true
