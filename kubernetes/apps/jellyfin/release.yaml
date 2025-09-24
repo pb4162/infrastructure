@@ -16,7 +16,7 @@ spec:
   values:
     image:
       repository: pbcr.local/pb/jellyfin
-      tag: 10.10.6
+      tag: 10.10.7
     resources:
       limits:
         memory: 4Gi
