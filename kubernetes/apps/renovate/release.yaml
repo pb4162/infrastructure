@@ -14,7 +14,7 @@ spec:
       interval: 5m
   releaseName: renovate
   valuesFrom:
-    - kind: Secret
+    - kind: ConfigMap
       name: renovate-base-values
     - kind: Secret
       name: renovate-values
