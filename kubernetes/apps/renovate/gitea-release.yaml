@@ -12,7 +12,7 @@ spec:
         kind: HelmRepository
         name: renovate
       interval: 5m
-  releaseName: renovate
+  releaseName: renovate-gitea
   valuesFrom:
     - kind: ConfigMap
       name: renovate-base-values
