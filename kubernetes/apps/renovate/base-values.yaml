@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: renovate-base-values
+  namespace: renovate
+data:
+  values.yaml: |
+    renovate:
+      configIsSecret: true
+      persistence:
+        cache:
+          enabled: true
+    env:
+      RENOVATE_X_SQLITE_PACKAGE_CACHE: true
