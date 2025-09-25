@@ -19,7 +19,7 @@ spec:
   values:
     renovate:
       configIsSecret: true
-    redis:
-      enabled: true
+    env:
+      RENOVATE_X_SQLITE_PACKAGE_CACHE: true
     # env:
     #   LOG_LEVEL: debug
