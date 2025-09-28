@@ -1,0 +1,71 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+resources:
+  - ./git-repos/
+  - ./shared-helm-repos/
+  - ./ks/
+  - ./cluster-settings.yaml
+patches:
+  - patch: |
+      apiVersion: kustomize.toolkit.fluxcd.io/v1
+      kind: Kustomization
+      metadata:
+        name: unused
+        namespace: flux-system
+      spec:
+        postBuild:
+          substituteFrom:
+            - kind: ConfigMap
+              name: cluster-settings
+            - kind: Secret
+              name: cluster-secrets
+        patches:
+          - patch: |
+              apiVersion: helm.toolkit.fluxcd.io/v2
+              kind: HelmRelease
+              metadata:
+                name: all
+              spec:
+                interval: 10m
+                timeout: 5m
+                driftDetection:
+                  mode: enabled
+                  ignore:
+                  - paths: ["/spec/replicas"]
+                    target:
+                      kind: Deployment
+            target:
+              kind: HelmRelease
+          - patch: |
+              apiVersion: helm.toolkit.fluxcd.io/v2
+              kind: HelmRepository
+              metadata:
+                name: all
+              spec:
+                interval: 5m
+            target:
+              kind: HelmRepository
+          - patch: |
+              - op: add
+                path: /metadata/labels
+                value:
+                  goldilocks.fairwinds.com/enabled: "true"
+            target:
+              kind: Namespace
+    target:
+      kind: kustomizations.kustomize.toolkit.fluxcd.io
+      name: (core|apps)
+  - patch: |
+      apiVersion: kustomize.toolkit.fluxcd.io/v1
+      kind: Kustomization
+      metadata:
+        name: unused
+        namespace: flux-system
+      spec:
+        decryption:
+          provider: sops
+          secretRef:
+            name: sops-age
+    target:
+      kind: kustomizations.kustomize.toolkit.fluxcd.io
+      name: .+-secrets
