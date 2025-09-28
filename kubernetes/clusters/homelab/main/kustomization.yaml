@@ -52,6 +52,13 @@ patches:
                   goldilocks.fairwinds.com/enabled: "true"
             target:
               kind: Namespace
+          - patch: |
+              - op: add
+                path: /metadata/annotations
+                value:
+                  kustomize.toolkit.fluxcd.io/prune: disabled
+            target:
+              kind: Namespace
     target:
       kind: kustomizations.kustomize.toolkit.fluxcd.io
       name: (core|apps)
