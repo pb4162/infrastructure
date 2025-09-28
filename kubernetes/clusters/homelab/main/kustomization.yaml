@@ -60,7 +60,7 @@ patches:
             target:
               kind: Namespace
     target:
-      kind: kustomizations.kustomize.toolkit.fluxcd.io
+      kind: Kustomization
       name: (core|apps)
   - patch: |
       apiVersion: kustomize.toolkit.fluxcd.io/v1
@@ -74,5 +74,5 @@ patches:
           secretRef:
             name: sops-age
     target:
-      kind: kustomizations.kustomize.toolkit.fluxcd.io
+      kind: Kustomization
       name: .+-secrets
