@@ -4,5 +4,8 @@
   },
   "helm-values": {
     "managerFilePatterns": ["/kubernetes/.+\\.yaml$/"]
+  },
+  "kubernetes": {
+    "managerFilePatterns": ["/kubernetes/.+\\.yaml$/"]
   }
 }
