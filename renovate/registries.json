@@ -1,0 +1,5 @@
+{
+  "registryAliases": {
+    "pbcr.local": "{{ secrets.PBCR_LOCAL_URL }}"
+  }
+}

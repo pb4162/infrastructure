@@ -1,15 +1,8 @@
 {
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
   "extends": [
-    ":dependencyDashboard"
-  ],
-  "registryAliases": {
-    "pbcr.local": "{{ secrets.PBCR_LOCAL_URL }}"
-  },
-  "flux": {
-    "managerFilePatterns": ["/kubernetes/.+\\.yaml$/"]
-  },
-  "helm-values": {
-    "managerFilePatterns": ["/kubernetes/.+\\.yaml$/"]
-  }
+    ":dependencyDashboard",
+    "github>pb4162/infrastructure//renovate/registries.json",
+    "github>pb4162/infrastructure//renovate/kubernetes.json"
+  ]
 }
