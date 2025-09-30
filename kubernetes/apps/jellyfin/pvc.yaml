@@ -9,5 +9,5 @@ spec:
   volumeMode: Filesystem
   resources:
     requests:
-      storage: 1024Gi
+      storage: ${JELLYFIN_MEDIA_VOLUME_SIZE}
   storageClassName: truenas-smb
