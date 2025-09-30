@@ -72,6 +72,46 @@ patches:
                       name: cluster-settings
                     - kind: Secret
                       name: cluster-secrets
+                patches:
+                  - patch: |
+                      apiVersion: helm.toolkit.fluxcd.io/v2
+                      kind: HelmRelease
+                      metadata:
+                        name: all
+                      spec:
+                        interval: 10m
+                        timeout: 5m
+                        driftDetection:
+                          mode: enabled
+                          ignore:
+                          - paths: ["/spec/replicas"]
+                            target:
+                              kind: Deployment
+                    target:
+                      kind: HelmRelease
+                  - patch: |
+                      apiVersion: helm.toolkit.fluxcd.io/v2
+                      kind: HelmRepository
+                      metadata:
+                        name: all
+                      spec:
+                        interval: 5m
+                    target:
+                      kind: HelmRepository
+                  - patch: |
+                      - op: add
+                        path: /metadata/labels
+                        value:
+                          goldilocks.fairwinds.com/enabled: "true"
+                    target:
+                      kind: Namespace
+                  - patch: |
+                      - op: add
+                        path: /metadata/annotations
+                        value:
+                          kustomize.toolkit.fluxcd.io/prune: disabled
+                    target:
+                      kind: Namespace
             target:
               kind: Kustomization
     target:
