@@ -24,7 +24,7 @@ spec:
       additionalContainers:
       - name: ts-sidecar
         imagePullPolicy: Always
-        image: "ghcr.io/tailscale/tailscale:latest"
+        image: "ghcr.io/tailscale/tailscale:v1.88.2"
         env:
         - name: TS_HOSTNAME
           value: ts-sidecar
