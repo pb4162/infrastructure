@@ -4,7 +4,7 @@
     ":dependencyDashboard",
     "github>pb4162/infrastructure//renovate/registries.json",
     "github>pb4162/infrastructure//renovate/kubernetes.json"
-  ]
+  ],
   "ignorePaths": [
     "**/gotk-components.yaml"
   ]
