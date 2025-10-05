@@ -59,64 +59,8 @@ patches:
                   kustomize.toolkit.fluxcd.io/prune: disabled
             target:
               kind: Namespace
-          - patch: |
-              apiVersion: kustomize.toolkit.fluxcd.io/v1
-              kind: Kustomization
-              metadata:
-                name: unused
-                namespace: flux-system
-              spec:
-                postBuild:
-                  substituteFrom:
-                    - kind: ConfigMap
-                      name: cluster-settings
-                    - kind: Secret
-                      name: cluster-secrets
-                patches:
-                  - patch: |
-                      apiVersion: helm.toolkit.fluxcd.io/v2
-                      kind: HelmRelease
-                      metadata:
-                        name: all
-                      spec:
-                        interval: 10m
-                        timeout: 5m
-                        driftDetection:
-                          mode: enabled
-                          ignore:
-                          - paths: ["/spec/replicas"]
-                            target:
-                              kind: Deployment
-                    target:
-                      kind: HelmRelease
-                  - patch: |
-                      apiVersion: helm.toolkit.fluxcd.io/v2
-                      kind: HelmRepository
-                      metadata:
-                        name: all
-                      spec:
-                        interval: 5m
-                    target:
-                      kind: HelmRepository
-                  - patch: |
-                      - op: add
-                        path: /metadata/labels
-                        value:
-                          goldilocks.fairwinds.com/enabled: "true"
-                    target:
-                      kind: Namespace
-                  - patch: |
-                      - op: add
-                        path: /metadata/annotations
-                        value:
-                          kustomize.toolkit.fluxcd.io/prune: disabled
-                    target:
-                      kind: Namespace
-            target:
-              kind: Kustomization
     target:
       kind: Kustomization
-      name: (core|apps|private)
   - patch: |
       apiVersion: kustomize.toolkit.fluxcd.io/v1
       kind: Kustomization
