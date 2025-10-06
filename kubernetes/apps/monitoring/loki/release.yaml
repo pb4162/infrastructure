@@ -7,7 +7,7 @@ spec:
   chart:
     spec:
       chart: loki
-      version: 6.41.1
+      version: 6.42.0
       sourceRef:
         kind: HelmRepository
         name: grafana
@@ -34,6 +34,9 @@ spec:
       extraEnv:
         - name: GOMEMLIMIT
           value: 1GiB
+      persistence:
+        whenScaled: Retain
+        whenDeleted: Retain
     loki:
       limits_config:
         retention_period: 90d
