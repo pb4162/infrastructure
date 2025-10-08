@@ -12,6 +12,8 @@ spec:
         kind: HelmRepository
         name: intel
       interval: 5m
+  install:
+    crds: CreateReplace
   upgrade:
     crds: CreateReplace
   releaseName: device-plugin-operator

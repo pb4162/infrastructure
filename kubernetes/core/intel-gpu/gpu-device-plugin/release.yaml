@@ -13,6 +13,8 @@ spec:
         name: intel
       interval: 5m
   releaseName: gpu-device-plugin
+  install:
+    crds: CreateReplace
   upgrade:
     crds: CreateReplace
   dependsOn:

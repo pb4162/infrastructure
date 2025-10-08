@@ -13,6 +13,8 @@ spec:
         name: prometheus-community
       interval: 5m
   releaseName: kube-prometheus-stack
+  install:
+    crds: CreateReplace
   upgrade:
     crds: CreateReplace
   valuesFrom:
