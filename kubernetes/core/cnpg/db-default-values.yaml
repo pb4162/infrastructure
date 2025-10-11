@@ -13,6 +13,8 @@ data:
       instances: 1
       monitoring:
         enabled: true
+        podMonitor:
+          enabled: true
         prometheusRule:
           enabled: true
       additionalLabels:
