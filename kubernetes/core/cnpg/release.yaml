@@ -24,3 +24,5 @@ spec:
     monitoring:
       grafanaDashboard:
         create: true
+      podMonitorAdditionalLabels:
+        release: kube-prometheus-stack
