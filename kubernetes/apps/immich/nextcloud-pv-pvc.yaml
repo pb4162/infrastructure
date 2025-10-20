@@ -1,0 +1,39 @@
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  annotations:
+    pv.kubernetes.io/provisioned-by: smb.csi.k8s.io
+  name: nextcloud-immich-smb
+spec:
+  capacity:
+    storage: 512Gi
+  accessModes:
+    - ReadWriteMany
+  persistentVolumeReclaimPolicy: Retain
+  storageClassName: smb
+  mountOptions:
+    - dir_mode=0770
+    - file_mode=0770
+  csi:
+    driver: smb.csi.k8s.io
+    volumeHandle: "//${TRUENAS_URL}/nextcloud##"
+    volumeAttributes:
+      source: "//${TRUENAS_URL}/nextcloud"
+    nodeStageSecretRef:
+      name: smbcreds
+      namespace: kube-system
+---
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: nextcloud
+  namespace: immich
+spec:
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 512Gi
+  volumeName: nextcloud-immich-smb
+  storageClassName: smb
