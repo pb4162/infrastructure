@@ -49,11 +49,11 @@ spec:
     ingress:
       enabled: true
       hosts:
-        - host: headlamp.cluster.local
+        - host: headlamp.${LOCAL_ROOT_DOMAIN}
           paths:
             - path: /
               type: Prefix
-        - host: headlamp.pb4162.dev
+        - host: headlamp.${ROOT_DOMAIN}
           paths:
             - path: /
               type: Prefix
