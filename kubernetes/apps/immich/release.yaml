@@ -30,8 +30,6 @@ spec:
         # TODO: remove? since using external libraries anyway
         library:
           existingClaim: immich-library
-        nextcloud:
-          existingClaim: nextcloud
     valkey:
       enabled: true
       persistence:
@@ -42,6 +40,9 @@ spec:
           storageClass: longhorn
     server:
       enabled: true
+      persistence:
+        nextcloud:
+          existingClaim: nextcloud
       ingress:
         main:
           enabled: true
