@@ -7,7 +7,7 @@ metadata:
   name: nextcloud-immich-smb
 spec:
   capacity:
-    storage: 512Gi
+    storage: ${NEXTCLOUD_STORAGE_VOLUME_SIZE}
   accessModes:
     - ReadWriteMany
   persistentVolumeReclaimPolicy: Retain
@@ -34,6 +34,6 @@ spec:
     - ReadWriteMany
   resources:
     requests:
-      storage: 512Gi
+      storage: ${NEXTCLOUD_STORAGE_VOLUME_SIZE}
   volumeName: nextcloud-immich-smb
   storageClassName: smb

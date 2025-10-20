@@ -9,5 +9,5 @@ spec:
   volumeMode: Filesystem
   resources:
     requests:
-      storage: 512Gi
+      storage: ${NEXTCLOUD_STORAGE_VOLUME_SIZE}
   storageClassName: truenas-smb-nextcloud
