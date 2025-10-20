@@ -25,6 +25,11 @@ spec:
               DB_HOSTNAME: cnpg-immich-cluster-rw.immich.svc.cluster.local:5432
               DB_USERNAME: immich
               DB_DATABASE_NAME: immich
+    immich:
+      persistence:
+        # TODO: remove? since using external libraries anyway
+        library:
+          existingClaim: immich-library
     valkey:
       enabled: true
       persistence:
