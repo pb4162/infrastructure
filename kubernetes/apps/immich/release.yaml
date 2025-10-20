@@ -43,6 +43,7 @@ spec:
       persistence:
         nextcloud:
           existingClaim: nextcloud
+          readOnly: true
       ingress:
         main:
           enabled: true
