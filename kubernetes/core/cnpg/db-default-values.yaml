@@ -26,5 +26,5 @@ data:
         bucket: cnpg
       wal:
         encryption: ""
-      dats:
+      data:
         encryption: ""
