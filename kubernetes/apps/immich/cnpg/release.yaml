@@ -38,7 +38,7 @@ spec:
         size: 5Gi
       walStorage:
         enabled: true
-        size: 20Gi
+        size: 25Gi
       postgresql:
         shared_preload_libraries:
           - "vchord.so"
