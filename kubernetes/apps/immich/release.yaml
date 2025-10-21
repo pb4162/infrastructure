@@ -25,6 +25,7 @@ spec:
               DB_HOSTNAME: cnpg-immich-cluster-rw.immich.svc.cluster.local:5432
               DB_USERNAME: immich
               DB_DATABASE_NAME: immich
+              VIPS_NOVECTOR: 1
             resources:
               limits:
                 gpu.intel.com/i915: 1
