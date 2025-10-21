@@ -32,15 +32,15 @@ spec:
                 gpu.intel.com/i915: 1
             probes:
               liveness:
-                enabled: false
+                enabled: true
                 spec:
                   failureThreshold: 30
               readiness:
-                enabled: false
+                enabled: true
                 spec:
                   failureThreshold: 30
               startup:
-                enabled: false
+                enabled: true
                 spec:
                   failureThreshold: 30
     immich:
