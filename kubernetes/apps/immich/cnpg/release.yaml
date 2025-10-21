@@ -21,7 +21,7 @@ spec:
       name: cnpg-backup-values
   values:
     version:
-      postgresql: "17"
+      postgresql: "16"
     cluster:
       # TODO: renovate
       imageName: ghcr.io/tensorchord/cloudnative-vectorchord:16.9-0.4.3
