@@ -43,7 +43,7 @@ spec:
         shared_preload_libraries:
           - "vchord.so"
         parameters:
-          max_slot_wal_keep_size: "1.5GB"
+          max_wal_size: "15GB"
     backups:
       scheduledBackups:
         - name: daily-backup
