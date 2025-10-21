@@ -30,6 +30,19 @@ spec:
             resources:
               limits:
                 gpu.intel.com/i915: 1
+            probes:
+              liveness:
+                enabled: true
+                spec:
+                  failureThreshold: 30
+              readiness:
+                enabled: true
+                spec:
+                  failureThreshold: 30
+              startup:
+                enabled: true
+                spec:
+                  failureThreshold: 30
     immich:
       configuration:
         machineLearning:
