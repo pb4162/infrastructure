@@ -34,15 +34,15 @@ spec:
               liveness:
                 enabled: true
                 spec:
-                  failureThreshold: 30
+                  failureThreshold: 120
               readiness:
                 enabled: true
                 spec:
-                  failureThreshold: 30
+                  failureThreshold: 120
               startup:
                 enabled: true
                 spec:
-                  failureThreshold: 30
+                  failureThreshold: 120
     immich:
       configuration:
         machineLearning:
