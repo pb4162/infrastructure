@@ -52,7 +52,7 @@ spec:
       persistence:
         # TODO: remove? since using external libraries anyway
         library:
-          existingClaim: immich-library
+          existingClaim: immich
     valkey:
       enabled: true
       persistence:
