@@ -44,11 +44,6 @@ spec:
                 spec:
                   failureThreshold: 120
     immich:
-      configuration:
-        machineLearning:
-          enabled: true
-          urls:
-            - "http://immich-machine-learning.immich.svc.cluster.local:3003"
       persistence:
         # TODO: remove? since using external libraries anyway
         library:
