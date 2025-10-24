@@ -21,6 +21,9 @@ spec:
         replicas: 2
         serviceAccount:
           name: homepage
+        annotations:
+         reloader.stakater.com/auto: "true"
+         reloader.stakater.com/rollout-strategy: "restart"
         containers:
           main:
             image:
