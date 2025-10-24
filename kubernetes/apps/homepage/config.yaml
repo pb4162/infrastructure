@@ -227,3 +227,13 @@ data:
             type: gitea
             url: http://gitea-http.gitea.svc.cluster.local:3000
             key: "{{HOMEPAGE_VAR_GITEA_API_KEY}}"
+      - Immich:
+          href: https://immich.cluster.local
+          siteMonitor: http://immich-server.immich.svc.cluster.local:2283
+          icon: immich.svg
+          description: Photos and videos
+          widget:
+            type: immich
+            url: http://immich-server.immich.svc.cluster.local:2283
+            key: "{{HOMEPAGE_VAR_IMMICH_API_KEY}}"
+            version: 2
