@@ -67,7 +67,7 @@ spec:
         instance_id:
         httpConnection:
           protocol: https
-          port: 443
+          port: 8443
           allowInsecure: true
         zfs:
           datasetParentName: tank/data/smb/volumes
