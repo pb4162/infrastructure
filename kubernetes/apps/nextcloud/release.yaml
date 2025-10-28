@@ -19,7 +19,7 @@ spec:
   values:
     resources:
       limits:
-        memory: 4Gi
+        memory: 6Gi
     ingress:
       enabled: true
     nextcloud:
