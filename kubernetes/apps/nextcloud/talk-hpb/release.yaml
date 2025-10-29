@@ -65,6 +65,9 @@ spec:
         enabled: true
         tls:
           - secretName: nextcloud-pb4162-dev-tls
+            hosts:
+              - talk-hpb.nextcloud.${ROOT_DOMAIN}
+              - talk-hpb.nextcloud.${LOCAL_ROOT_DOMAIN}
         hosts:
           - host: talk-hpb.nextcloud.${ROOT_DOMAIN}
             paths:
