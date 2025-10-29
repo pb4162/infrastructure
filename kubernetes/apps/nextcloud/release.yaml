@@ -17,6 +17,8 @@ spec:
     - name: nextcloud-values
       kind: Secret
   values:
+    image:
+      repository: pbcr.local/pb/nextcloud
     resources:
       limits:
         memory: 6Gi
