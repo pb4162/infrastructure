@@ -63,6 +63,8 @@ spec:
     ingress:
       main:
         enabled: true
+        annotations:
+          traefik.ingress.kubernetes.io/router.middlewares: nextcloud-nextcloud-talk-hpb@kubernetescrd
         tls:
           - secretName: nextcloud-pb4162-dev-tls
             hosts:
