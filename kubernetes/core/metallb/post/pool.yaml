@@ -7,3 +7,4 @@ spec:
   addresses:
     - ${TRAEFIK_IP}/32
     - ${PIHOLE_IP}/32
+    - ${NEXTCLOUD_TALK_HPB_IP}/32
