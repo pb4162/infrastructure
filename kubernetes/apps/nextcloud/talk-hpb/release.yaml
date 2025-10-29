@@ -1,0 +1,82 @@
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: nextcloud-talk-hpb
+  namespace: nextcloud
+spec:
+  chart:
+    spec:
+      chart: app-template
+      version: 4.4.0
+      sourceRef:
+        kind: HelmRepository
+        name: bjw-s
+        namespace: flux-system
+      interval: 5m
+  releaseName: nextcloud-talk-hpb
+  values:
+    controllers:
+      main:
+        enabled: true
+        containers:
+          main:
+            image:
+              repository: ghcr.io/nextcloud-releases/aio-talk
+              tag: "20251015_082711"
+            env:
+              NC_DOMAIN: nextcloud.${ROOT_DOMAIN}
+              TALK_PORT: 3478
+              TALK_HOST: talk-hpb.nextcloud.${ROOT_DOMAIN}
+              TURN_SECRET:
+                valueFrom:
+                  secretKeyRef:
+                    name: nextcloud-talk-hpb-secret
+                    key: TURN_SECRET
+              SIGNALING_SECRET:
+                valueFrom:
+                  secretKeyRef:
+                    name: nextcloud-talk-hpb-secret
+                    key: SIGNALING_SECRET
+              INTERNAL_SECRET:
+                valueFrom:
+                  secretKeyRef:
+                    name: nextcloud-talk-hpb-secret
+                    key: INTERNAL_SECRET
+    service:
+      main:
+        enabled: true
+        controller: main
+        type: LoadBalancer
+        loadBalancerIP: ${NEXTCLOUD_TALK_HPB_IP}
+        ports:
+          http:
+            enabled: true
+            port: 8081
+          turn-tcp:
+            enabled: true
+            port: 3478
+            protocol: TCP
+          turn-udp:
+            enabled: true
+            port: 3478
+            protocol: UDP
+    ingress:
+      main:
+        enabled: true
+        tls:
+          - secretName: nextcloud-pb4162-dev-tls
+        hosts:
+          - host: talk-hpb.nextcloud.${ROOT_DOMAIN}
+            paths:
+              - path: /
+                pathType: Prefix
+                service:
+                  name: nextcloud-talk-hpb
+                  port: 8081
+          - host: talk-hpb.nextcloud.${LOCAL_ROOT_DOMAIN}
+            paths:
+              - path: /
+                pathType: Prefix
+                service:
+                  name: nextcloud-talk-hpb
+                  port: 8081
