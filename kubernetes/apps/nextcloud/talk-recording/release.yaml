@@ -17,8 +17,9 @@ spec:
   values:
     defaultPodOptions:
       securityContext:
-        runAsUser: 122
-        runAsGroup: 122
+        runAsUser: 0
+        runAsGroup: 0
+        runAsNonRoot: false
     controllers:
       main:
         enabled: true
