@@ -71,6 +71,11 @@ spec:
     persistence:
       data:
         enabled: true
-        size: 100Gi
-        type: persistentVolumeClaim
         storageClass: truenas-smb
+        type: persistentVolumeClaim
+        accessMode: ReadWriteOnce
+        size: 100Gi
+        retain: true
+        globalMounts:
+          - path: /tmp
+            readOnly: false
