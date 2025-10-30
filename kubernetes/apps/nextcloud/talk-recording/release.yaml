@@ -18,6 +18,8 @@ spec:
     defaultPodOptions:
       securityContext:
         runAsUser: 122
+        runAsGroup: 122
+        fsGroup: 122
     controllers:
       main:
         enabled: true
