@@ -82,3 +82,10 @@ spec:
         globalMounts:
           - path: /tmp
             readOnly: false
+      dshm:
+        type: emptyDir
+        medium: Memory
+        sizeLimit: 2Gi
+        globalMounts:
+          - path: /dev/shm
+            readOnly: false
