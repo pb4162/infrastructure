@@ -27,6 +27,8 @@ spec:
               NC_DOMAIN: nextcloud.${ROOT_DOMAIN}
               TALK_PORT: 3478
               TALK_HOST: talk-hpb.nextcloud.${ROOT_DOMAIN}
+              TALK_MAX_STREAM_BITRATE: 20971520
+              TALK_MAX_SCREEN_BITRATE: 20971520
               TURN_SECRET:
                 valueFrom:
                   secretKeyRef:
