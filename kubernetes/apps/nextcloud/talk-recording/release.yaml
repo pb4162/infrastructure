@@ -15,11 +15,6 @@ spec:
       interval: 5m
   releaseName: nextcloud-talk-recording
   values:
-    defaultPodOptions:
-      securityContext:
-        runAsUser: 0
-        runAsGroup: 0
-        runAsNonRoot: false
     controllers:
       main:
         enabled: true
