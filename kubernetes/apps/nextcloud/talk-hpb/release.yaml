@@ -50,6 +50,7 @@ spec:
         controller: main
         type: LoadBalancer
         loadBalancerIP: ${NEXTCLOUD_TALK_HPB_IP}
+        externalTrafficPolicy: Local
         ports:
           http:
             enabled: true
