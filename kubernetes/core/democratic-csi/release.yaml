@@ -60,6 +60,12 @@ spec:
         parameters:
         secrets:
           snapshotter-secret:
+      - name: "truenas-smb-nextcloud-talk-recording"
+        labels:
+          velero.io/csi-volumesnapshot-class: "true"
+        parameters:
+        secrets:
+          snapshotter-secret:
 
     driver:
       config:
