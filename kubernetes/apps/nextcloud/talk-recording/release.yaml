@@ -71,7 +71,7 @@ spec:
     persistence:
       data:
         enabled: true
-        storageClass: truenas-smb-nextcloud-talk-recording
+        storageClass: longhorn
         type: persistentVolumeClaim
         accessMode: ReadWriteOnce
         size: 100Gi
