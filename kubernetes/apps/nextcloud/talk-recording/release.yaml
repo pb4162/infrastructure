@@ -20,6 +20,7 @@ spec:
         runAsUser: 122
         runAsGroup: 122
         fsGroup: 122
+        fsGroupChangePolicy: Always
     controllers:
       main:
         enabled: true
