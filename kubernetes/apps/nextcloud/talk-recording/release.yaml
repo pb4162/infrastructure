@@ -1,0 +1,76 @@
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: nextcloud-talk-recording
+  namespace: nextcloud
+spec:
+  chart:
+    spec:
+      chart: app-template
+      version: 4.4.0
+      sourceRef:
+        kind: HelmRepository
+        name: bjw-s
+        namespace: flux-system
+      interval: 5m
+  releaseName: nextcloud-talk-recording
+  values:
+    controllers:
+      main:
+        enabled: true
+        containers:
+          main:
+            image:
+              repository: ghcr.io/nextcloud-releases/aio-talk-recording
+              tag: "20251015_082711"
+            env:
+              NC_DOMAIN: nextcloud.${ROOT_DOMAIN}
+              RECORDING_SECRET:
+                valueFrom:
+                  secretKeyRef:
+                    name: nextcloud-talk-recording-secret
+                    key: RECORDING_SECRET
+              INTERNAL_SECRET:
+                valueFrom:
+                  secretKeyRef:
+                    name: nextcloud-talk-hpb-secret
+                    key: INTERNAL_SECRET
+    service:
+      main:
+        enabled: true
+        controller: main
+        ports:
+          http:
+            enabled: true
+            port: 1234
+    ingress:
+      main:
+        enabled: true
+        annotations:
+          traefik.ingress.kubernetes.io/router.middlewares: nextcloud-nextcloud-talk-hpb@kubernetescrd
+        tls:
+          - secretName: nextcloud-pb4162-dev-tls
+            hosts:
+              - talk-recording.nextcloud.${ROOT_DOMAIN}
+              - talk-recording.nextcloud.${LOCAL_ROOT_DOMAIN}
+        hosts:
+          - host: talk-recording.nextcloud.${ROOT_DOMAIN}
+            paths:
+              - path: /
+                pathType: Prefix
+                service:
+                  name: nextcloud-talk-recording
+                  port: 1234
+          - host: talk-recording.nextcloud.${LOCAL_ROOT_DOMAIN}
+            paths:
+              - path: /
+                pathType: Prefix
+                service:
+                  name: nextcloud-talk-recording
+                  port: 1234
+    persistence:
+      data:
+        enabled: true
+        size: 100Gi
+        type: persistentVolumeClaim
+        storageClass: truenas-smb
