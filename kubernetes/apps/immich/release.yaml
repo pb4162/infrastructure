@@ -58,6 +58,13 @@ spec:
           storageClass: longhorn
     server:
       enabled: true
+      controllers:
+        main:
+          containers:
+            main:
+              image:
+                repository: ghcr.io/immich-app/immich-server
+                tag: v2.0.0
       persistence:
         nextcloud:
           existingClaim: nextcloud
@@ -78,6 +85,13 @@ spec:
                     identifier: main
     machine-learning:
       enabled: true
+      controllers:
+        main:
+          containers:
+            main:
+              image:
+                repository: ghcr.io/immich-app/immich-machine-learning
+                tag: v2.0.0
       persistence:
         cache:
           enabled: true
