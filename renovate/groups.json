@@ -1,0 +1,9 @@
+{
+  "packageRules": [
+    {
+      "matchPackageNames": ["/immich-server/", "/immich-machine-learning/"],
+      "groupName": "immich"
+    }
+  ]
+}
+
