@@ -139,10 +139,11 @@ spec:
           release: kube-prometheus-stack
     collabora:
       enabled: true
-      aliasgroups:
-        - host: "https://nextcloud.${ROOT_DOMAIN}:443"
-        - host: "https://nextcloud.${LOCAL_ROOT_DOMAIN}:443"
-      server_name: "collabora.nextcloud.${ROOT_DOMAIN}"
+      collabora:
+        aliasgroups:
+          - host: "https://nextcloud.${ROOT_DOMAIN}:443"
+          - host: "https://nextcloud.${LOCAL_ROOT_DOMAIN}:443"
+        server_name: "collabora.nextcloud.${ROOT_DOMAIN}"
       ingress:
         enabled: true
         className: traefik
