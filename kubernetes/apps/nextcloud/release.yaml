@@ -137,3 +137,26 @@ spec:
         namespace: monitoring
         labels:
           release: kube-prometheus-stack
+    collabora:
+      enabled: true
+      aliasgroups:
+        - host: "https://nextcloud.${ROOT_DOMAIN}:443"
+        - host: "https://nextcloud.${LOCAL_ROOT_DOMAIN}:443"
+      server_name: "collabora.nextcloud.${ROOT_DOMAIN}"
+      ingress:
+        enabled: true
+        className: traefik
+        hosts:
+          - host: collabora.nextcloud.${ROOT_DOMAIN}
+            paths:
+              - path: /
+                pathType: ImplementationSpecific
+          - host: collabora.nextcloud.${LOCAL_ROOT_DOMAIN}
+            paths:
+              - path: /
+                pathType: ImplementationSpecific
+        tls:
+          - secretName: nextcloud-pb4162-dev-tls
+            hosts:
+              - collabora.nextcloud.${ROOT_DOMAIN}
+              - collabora.nextcloud.${LOCAL_ROOT_DOMAIN}
