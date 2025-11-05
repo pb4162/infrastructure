@@ -37,6 +37,7 @@ spec:
       persistence:
         whenScaled: Retain
         whenDeleted: Retain
+        enableStatefulSetRecreationForSizeChange: true
     loki:
       limits_config:
         retention_period: 90d
