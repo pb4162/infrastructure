@@ -1,0 +1,23 @@
+- name: "sysctl: Set networking related parameters to increase performance over high latencies"
+  ansible.posix.sysctl:
+    name: "{{ item.name }}"
+    value: "{{ item.value }}"
+    sysctl_set: true
+    state: present
+    reload: true
+  loop:
+    # google's better algorithm
+    - { name: "net.core.default_qdisc", value: "cake" }
+    - { name: "net.ipv4.tcp_congestion_control", value: "bbr" }
+    # arch wiki's recommended settings except for the *rem_max which I calculated manually
+    # https://paulgrevink.wordpress.com/2017/09/08/about-long-fat-networks-and-tcp-tuning/
+    # TODO: move this out of role?
+    - { name: "net.core.rmem_default", value: "1048576" }
+    - { name: "net.core.rmem_max", value: "31457280" }
+    - { name: "net.core.wmem_default", value: "1048576" }
+    - { name: "net.core.wmem_max", value: "31457280" }
+    - { name: "net.core.optmem_max", value: "65536" }
+    - { name: "net.ipv4.udp_rmem_min", value: "8192" }
+    - { name: "net.ipv4.udp_wmem_min", value: "8192" }
+    - { name: "net.ipv4.tcp_rmem", value: "4096 1048576 31457280" }
+    - { name: "net.ipv4.tcp_wmem", value: "4096 1048576 31457280" }

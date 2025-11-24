@@ -1,0 +1,4 @@
+- name: "Install tailscale"
+  community.general.opkg:
+    state: present
+    name: tailscale

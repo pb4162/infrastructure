@@ -1,0 +1,6 @@
+- name: "Append 'cgroup_memory=1 cgroup_enable=memory' to /boot/firmware/cmdline.txt"
+  ansible.builtin.replace:
+    dest: /boot/firmware/cmdline.txt
+    regexp: '^([\w](?!.*\bcgroup_memory=1 cgroup_enable=memory\b).*)$'
+    replace: '\1 cgroup_memory=1 cgroup_enable=memory'
+  notify: Reboot

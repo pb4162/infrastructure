@@ -1,0 +1,29 @@
+- name: "Install config file"
+  ansible.builtin.template:
+    src: k3s-config.yaml.j2
+    dest: /etc/rancher/k3s/config.yaml
+    mode: 0640
+  notify: Restart k3s
+
+- name: "Install registry config file"
+  ansible.builtin.template:
+    src: k3s-registry-config.yaml.j2
+    dest: /etc/rancher/k3s/registries.yaml
+    mode: 0640
+  notify: Restart k3s
+
+- name: "Create /root/.kube directory"
+  ansible.builtin.file:
+    path: "/root/.kube"
+    state: directory
+    mode: 644
+
+- name: "Copy kubeconfig file to /root/.kube/config"
+  ansible.builtin.copy:
+    backup: true
+    src: /etc/rancher/k3s/k3s.yaml
+    dest: /root/.kube/config
+    owner: root
+    group: root
+    mode: 644
+    remote_src: true

@@ -1,0 +1,10 @@
+argument_specs:
+  main:
+    options:
+      tailscale_auth_key:
+        type: "str"
+        required: true
+      tailscale_flags:
+        type: "str"
+        required: true
+

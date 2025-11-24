@@ -1,0 +1,15 @@
+- name: "Download install script"
+  ansible.builtin.get_url:
+    url: https://fluxcd.io/install.sh
+    dest: "~/install_fluxcd.sh"
+    mode: a+x
+    force: "{{ flux_update }}"
+
+# - ansible.builtin.import_tasks: version_check.yml
+
+- name: "Run install script"
+  # trim off "v" in flux version because install_fluxcd.sh adds it for you
+  ansible.builtin.shell: FLUX_VERSION={{ flux_version[1:] }} ~/install_fluxcd.sh >> ~/fluxcd_install_log.txt
+  args:
+    chdir: "~"
+  when: (current_flux_ver is undefined) or flux_update

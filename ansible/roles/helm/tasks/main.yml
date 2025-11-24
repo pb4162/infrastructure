@@ -1,0 +1,35 @@
+- name: "apt: Install ansible dependencies"
+  ansible.builtin.apt:
+    state: present
+    name:
+      - python3-yaml
+      - python3-openshift
+
+- name: "Add apt repository key"
+  ansible.builtin.get_url:
+    url: https://packages.buildkite.com/helm-linux/helm-debian/gpgkey
+    dest: /etc/apt/trusted.gpg.d/helm.asc
+    mode: 0644
+
+- name: "apt: Install apt-transport-https"
+  ansible.builtin.apt:
+    name: apt-transport-https
+    state: present
+
+- name: "apt: Add helm apt repository"
+  ansible.builtin.apt_repository:
+    repo: "deb https://packages.buildkite.com/helm-linux/helm-debian/any/ any main"
+    state: present
+    filename: helm
+
+- name: "apt: Install helm"
+  ansible.builtin.apt:
+    update_cache: true
+    state: present
+    name: helm
+
+- name: "helm: Install helm-diff plugin"
+  kubernetes.core.helm_plugin:
+    plugin_path: https://github.com/databus23/helm-diff
+    state: present
+

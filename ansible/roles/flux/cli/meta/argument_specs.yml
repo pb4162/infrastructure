@@ -1,0 +1,11 @@
+argument_specs:
+  main:
+    options:
+      flux_version:
+        type: "str"
+        required: true
+      flux_update:
+        type: "bool"
+        required: false
+        default: false
+

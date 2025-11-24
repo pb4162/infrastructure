@@ -1,0 +1,26 @@
+argument_specs:
+  main:
+    options:
+      k3s_version:
+        type: "str"
+        required: true
+      k3s_config:
+        type: "dict"
+        required: false
+        default: {}
+      k3s_config_private:
+        type: "dict"
+        required: false
+        default: {}
+      k3s_registry_config:
+        type: "dict"
+        required: false
+        default: {}
+      k3s_registry_config_private:
+        type: "dict"
+        required: false
+        default: {}
+      k3s_update:
+        type: "bool"
+        required: false
+        default: false

@@ -1,0 +1,13 @@
+- name: "Download install script"
+  ansible.builtin.get_url:
+    url: https://tailscale.com/install.sh
+    dest: "~/install_tailscale.sh"
+    mode: a+x
+
+- name: "Run install script"
+  ansible.builtin.shell: ~/install_tailscale.sh >> ~/tailscale_install_log.txt
+  args:
+    chdir: "~"
+    creates: /usr/bin/tailscale
+
+  # TODO: ensure systemd unit is enabled and running

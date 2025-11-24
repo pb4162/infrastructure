@@ -1,0 +1,5 @@
+{% if 'control_node' in group_names %}
+cluster-init: true
+{% endif %}
+
+{{ k3s_config | combine(k3s_config_private, recursive=true) | to_yaml }}

@@ -1,0 +1,6 @@
+argument_specs:
+  main:
+    options:
+      swap_path:
+        type: "str"
+        required: false

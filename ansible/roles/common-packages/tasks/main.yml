@@ -1,0 +1,32 @@
+- name: Install common packages for Debian
+  ansible.builtin.apt:
+    state: present
+    name:
+      - neovim
+      - htop
+      - btop
+      - iperf3
+      - curl
+  when: ansible_distribution | lower == "debian"
+
+- name: Install common packages for OpenBSD
+  ansible.builtin.openbsd_pkg:
+    state: present
+    name:
+      - neovim
+      - htop
+      - btop
+      - iperf3
+      - curl
+  when: ansible_distribution | lower == 'openbsd'
+
+- name: Install common packages for OpenWRT
+  community.general.opkg:
+    state: present
+    name:
+      - vim
+      - htop
+      - btop
+      - iperf3
+      - curl
+  when: ansible_distribution | lower == 'openwrt'

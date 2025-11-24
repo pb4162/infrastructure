@@ -1,0 +1,15 @@
+- name: "sysctl: Raise fs.inotify.max_user_instances to 1024"
+  ansible.posix.sysctl:
+    name: fs.inotify.max_user_instances
+    value: "1024"
+    sysctl_set: true
+    state: present
+    reload: true
+
+- name: "sysctl: Raise fs.inotify.max_user_watches to 1048576"
+  ansible.posix.sysctl:
+    name: fs.inotify.max_user_watches
+    value: "1048576"
+    sysctl_set: true
+    state: present
+    reload: true

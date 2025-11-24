@@ -1,0 +1,38 @@
+- name: "Gathering facts (in case of tag usage)"
+  ansible.builtin.setup:
+
+- name: "Install dependencies"
+  ansible.builtin.apt:
+    state: present
+    name:
+      - iptables
+
+- name: "Download install script"
+  ansible.builtin.get_url:
+    url: https://get.k3s.io
+    dest: "~/install_k3s.sh"
+    mode: a+x
+    force: "{{ k3s_update }}"
+
+# TODO: review and remove
+# - ansible.builtin.import_tasks: version_check.yml
+
+- name: "Get k3s version info"
+  ansible.builtin.command: kubectl version -o json
+  register: k3s_version_info
+  changed_when: false
+  failed_when: false
+
+- name: "Set current_k3s_ver"
+  ansible.builtin.set_fact:
+    current_k3s_ver: "{{ (k3s_version_info.stdout | from_json).clientVersion.gitVersion }}"
+  when: k3s_version_info.stdout != ""
+
+- ansible.builtin.import_tasks: control_node.yml
+  when: ("k8s_control_node" in group_names)
+
+- ansible.builtin.import_tasks: regular_node.yml
+  when: ("k8s_nodes" in group_names)
+
+- ansible.builtin.import_tasks: config.yml
+

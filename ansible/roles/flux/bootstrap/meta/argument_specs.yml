@@ -1,0 +1,30 @@
+argument_specs:
+  main:
+    options:
+      flux_age_private_key:
+        type: "str"
+        required: false
+      flux_repo_provider:
+        type: "str"
+        required: false
+        default: "github"
+      flux_token:
+        type: "str"
+        required: true
+      flux_repo_username:
+        type: "str"
+        required: true
+      flux_repo_name:
+        type: "str"
+        required: true
+      flux_repo_branch:
+        type: "str"
+        required: false
+        default: "main"
+      flux_repo_path:
+        type: "str"
+        required: true
+      flux_repo_hostname:
+        type: "str"
+        required: false
+        default: "github.com"

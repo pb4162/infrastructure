@@ -1,0 +1,60 @@
+# TODO: structure tailscale state better as opposed to the raw cli flags
+
+- block:
+  - name: "Enable ipv4 forwarding for subnet routers/exit nodes"
+    ansible.posix.sysctl:
+      name: net.ipv4.ip_forward
+      value: "1"
+      sysctl_set: true
+      state: present
+      reload: true
+
+  - name: "Enable ipv6 forwarding for subnet routers/exit nodes"
+    ansible.posix.sysctl:
+      name: net.ipv6.conf.all.forwarding
+      value: "1"
+      sysctl_set: true
+      state: present
+      reload: true
+  when: tailscale_flags is search("--advertise-exit-node|--advertise-routes")
+
+- ansible.builtin.import_tasks: openwrt.yml
+  when: ansible_distribution | lower == "openwrt"
+
+- ansible.builtin.import_tasks: debian.yml
+  when: ansible_distribution | lower == "debian"
+
+- name: "Set tailscale_up_command"
+  ansible.builtin.set_fact:
+    tailscale_up_command: "tailscale up --reset {{ tailscale_flags }} --auth-key {{ tailscale_auth_key }}"
+
+- name: "Get state file content"
+  ansible.builtin.command: >-
+    cat ~/tailscale_up_command.txt
+  register: tailscale_state
+  changed_when: false
+  failed_when: false
+
+- name: "Set tailscale_up_command_pre if state file exists"
+  ansible.builtin.set_fact:
+    tailscale_up_command_pre: "{{ tailscale_state.stdout }}"
+  when: tailscale_state.rc == 0
+
+- name: "Get connection status"
+  ansible.builtin.command: tailscale status --json
+  register: tailscale_status_info
+  changed_when: false
+
+- name: "Set tailscale_do_up"
+  ansible.builtin.set_fact:
+    tailscale_do_up: "{{ (tailscale_up_command_pre | default('')) != tailscale_up_command or not (tailscale_status_info.stdout | from_json).Self.Online }}"
+
+- name: "Connect to tailnet"
+  ansible.builtin.command: "{{ tailscale_up_command }}"
+  when: tailscale_do_up
+
+- name: "Store tailscale_up_command in state file"
+  ansible.builtin.copy:
+    content: "{{ tailscale_up_command }}"
+    dest: "~/tailscale_up_command.txt"
+

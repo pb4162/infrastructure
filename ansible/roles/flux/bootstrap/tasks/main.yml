@@ -1,0 +1,38 @@
+- name: "Run flux pre-checks"
+  ansible.builtin.shell: >-
+    KUBECONFIG=.kube/config flux check --pre
+  changed_when: false
+
+- name: "Create sops-age secret"
+  kubernetes.core.k8s:
+    state: present
+    definition:
+      apiVersion: v1
+      kind: Secret
+      metadata:
+        name: sops-age
+        namespace: flux-system
+      stringData:
+        age.agekey: "{{ flux_age_private_key }}"
+  when: (flux_age_private_key is defined)
+
+- name: "Check if flux has already been installed to cluster"
+  ansible.builtin.shell: >-
+    KUBECONFIG=.kube/config flux check
+  register: flux_check
+  changed_when: false
+
+- name: "Install flux to cluster"
+  ansible.builtin.shell: >-
+    KUBECONFIG=.kube/config \
+    {{ flux_repo_provider | upper }}_TOKEN={{ flux_token }} \
+    flux bootstrap {{ flux_repo_provider }} \
+      --token-auth \
+      --owner={{ flux_repo_username }} \
+      --repository={{ flux_repo_name }} \
+      --branch={{ flux_repo_branch }} \
+      --path={{ flux_repo_path }} \
+      --personal \
+      --hostname={{ flux_repo_hostname }}
+  when: (("check failed" in flux_check.stdout) or flux_update)
+

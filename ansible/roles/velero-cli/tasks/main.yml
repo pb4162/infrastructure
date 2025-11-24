@@ -1,0 +1,35 @@
+- name: "Define paths for tarball and untar directory"
+  ansible.builtin.set_fact:
+    velero_tarball: "velero-{{ velero_version }}-linux-arm64.tar.gz"
+    velero_untar_dest: "velero-{{ velero_version }}-linux-arm64"
+
+- name: "Download release tarball"
+  ansible.builtin.get_url:
+    url: "https://github.com/vmware-tanzu/velero/releases/download/{{ velero_version }}/{{ velero_tarball }}"
+    dest: "~"
+    force: true
+
+- name: "Untar release tarball"
+  ansible.builtin.unarchive:
+    src: "~/{{ velero_tarball }}"
+    dest: "~"
+    remote_src: yes
+
+- name: "Copy velero binary to /usr/local/bin"
+  ansible.builtin.copy:
+    src: "~/velero-{{ velero_version }}-linux-arm64/velero"
+    dest: /usr/local/bin
+    mode: a+x
+    remote_src: yes
+
+- block:
+  - name: "Cleanup extracted release tarball"
+    ansible.builtin.file:
+      path: "~/{{ velero_untar_dest }}"
+      state: absent
+
+  - name: "Cleanup release tarball"
+    ansible.builtin.file:
+      path: "~/{{ velero_tarball }}"
+      state: absent
+  when: velero_cleanup

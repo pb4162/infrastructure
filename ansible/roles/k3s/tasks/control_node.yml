@@ -1,0 +1,16 @@
+- name: "Run install script (control node)"
+  ansible.builtin.shell: >-
+    INSTALL_K3S_VERSION={{k3s_version}} ~/install_k3s.sh >> ~/k3s_install_log.txt
+  args:
+    chdir: "~"
+  when: (current_k3s_ver is undefined) or k3s_update
+
+- name: "Get node token"
+  ansible.builtin.command: cat /var/lib/rancher/k3s/server/node-token
+  register: node_token_output
+  changed_when: false
+
+- name: "Set node_token fact"
+  ansible.builtin.set_fact:
+    node_token: "{{ node_token_output.stdout_lines[0] }}"
+
