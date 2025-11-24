@@ -1,7 +1,6 @@
 - name: "Install common packages, longhorn dependencies, disable swap and tune networking on all nodes"
   hosts: k8s_cluster
   become: true
-  tags: [dummy]  # this stops fact gathering from occurring unless a tag is explicitly used from this play
 
   roles:
     - role: common-packages
@@ -16,7 +15,6 @@
 - name: "Configure mini pcs"
   hosts: mini_pcs
   become: true
-  tags: [dummy]
 
   roles:
    - role: mini-pc/inotify
@@ -25,7 +23,6 @@
 - name: "Configure pis"
   hosts: pis
   become: true
-  tags: [dummy]
 
   roles:
     - role: pi/kernel8
@@ -39,7 +36,6 @@
 - name: "Install k3s, helm, velero and flux on control node"
   hosts: k8s_control_node
   become: true
-  tags: [dummy, k3s, flux]
 
   roles:
     - role: k3s
@@ -56,7 +52,6 @@
 - name: "Install k3s on rest of nodes"
   hosts: k8s_nodes
   become: true
-  tags: [dummy, k3s]
   gather_facts: true
 
   roles:
@@ -67,7 +62,6 @@
 - name: "Setup tailscale on all nodes"
   hosts: k8s_cluster
   become: true
-  tags: [dummy]
 
   roles:
     - role: tailscale
@@ -76,7 +70,6 @@
 - name: "Bootstrap flux"
   hosts: k8s_control_node
   become: true
-  tags: [dummy, flux]
   environment:
     KUBECONFIG: /etc/rancher/k3s/k3s.yaml
 
