@@ -197,7 +197,7 @@ data:
           description: Cloud storage
           widget:
             type: nextcloud
-            url: https://nextcloud.pb4162.dev
+            url: https://nextcloud.${ROOT_DOMAIN}
             key: "{{HOMEPAGE_VAR_NEXTCLOUD_API_KEY}}"
       - Home Assistant:
           href: https://home-assistant.cluster.local

@@ -40,7 +40,7 @@ spec:
             mountPath: /run/nextcloud/data
       host: nextcloud.${LOCAL_ROOT_DOMAIN}
       trustedDomains:
-        - nextcloud.pb4162.dev
+        - nextcloud.${ROOT_DOMAIN}
       mail:
         enabled: true
         smtp:

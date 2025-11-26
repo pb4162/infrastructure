@@ -38,7 +38,7 @@ spec:
                   secretKeyRef:
                     name: karakeep-secret
                     key: MEILI_MASTER_KEY
-              NEXTAUTH_URL: http://karakeep.pb4162.dev
+              NEXTAUTH_URL: http://karakeep.${ROOT_DOMAIN}
               # added after creating an account
               DISABLE_SIGNUPS: true
     service:

@@ -30,7 +30,7 @@ spec:
     gitea:
       config:
         server:
-          ROOT_URL: "https://gitea.pb4162.dev"
+          ROOT_URL: "https://gitea.${ROOT_DOMAIN}"
         database:
           DB_TYPE: postgres
           HOST: cnpg-gitea-cluster-rw.gitea.svc.cluster.local:5432
