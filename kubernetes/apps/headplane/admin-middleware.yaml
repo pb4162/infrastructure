@@ -1,0 +1,11 @@
+apiVersion: traefik.io/v1alpha1
+kind: Middleware
+metadata:
+  name: headplane-admin-redirect
+  namespace: headplane
+  annotations:
+    kustomize.toolkit.fluxcd.io/substitute: disabled
+spec:
+  redirectRegex:
+    regex: ^https:\/\/([^\/]+)\/?$
+    replacement: https://${1}/admin/
