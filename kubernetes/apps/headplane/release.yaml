@@ -62,7 +62,7 @@ spec:
             readOnly: false
       config:
         enabled: true
-        type: configMap
+        type: secret
         name: headplane-config
         globalMounts:
           - subPath: config.yaml
