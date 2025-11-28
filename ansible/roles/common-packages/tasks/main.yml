@@ -18,6 +18,7 @@
       - btop
       - iperf3
       - curl
+      - ssh-copy-id  # included in default debian install
   when: ansible_distribution | lower == 'openbsd'
 
 - name: Install common packages for OpenWRT
