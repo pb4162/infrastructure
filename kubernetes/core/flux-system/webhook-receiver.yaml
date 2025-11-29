@@ -13,3 +13,7 @@ spec:
   resources:
     - kind: GitRepository
       name: flux-system
+    - kind: GitRepository
+      name: secrets
+    - kind: GitRepository
+      name: private
