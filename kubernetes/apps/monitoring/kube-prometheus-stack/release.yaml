@@ -78,7 +78,7 @@ spec:
           - prometheus.${ROOT_DOMAIN}
       prometheusSpec:
         scrapeInterval: "60s"
-        maximumStartupDurationSeconds: 600
+        maximumStartupDurationSeconds: 1200
         retentionSize: 108GB
         resources:
           limits:
