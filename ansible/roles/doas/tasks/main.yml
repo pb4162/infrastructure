@@ -1,0 +1,17 @@
+- name: Install opendoas (FreeBSD)
+  community.general.pkgng:
+    name: opendoas
+    state: present
+  when: ansible_distribution | lower == "freebsd"
+
+- name: Set doas_conf_path
+  ansible.builtin.set_fact:
+    doas_conf_path: "{{ doas_conf_path_map[ansible_distribution | lower] }}"
+
+- name: "Configure doas with doas.conf"
+  ansible.builtin.template:
+    backup: true
+    dest: "{{ doas_conf_path }}"
+    src: doas.conf.j2
+    validate: doas -C %s
+    mode: 0640
