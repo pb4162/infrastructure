@@ -7,6 +7,17 @@
 
 # - ansible.builtin.import_tasks: version_check.yml
 
+- name: "Get flux version info"
+  ansible.builtin.command: flux version -o json
+  register: flux_version_info
+  changed_when: false
+  failed_when: false
+
+- name: "Set current_flux_ver"
+  ansible.builtin.set_fact:
+    current_flux_ver: "{{ (flux_version_info.stdout | from_json).flux }}"
+  when: flux_version_info.stdout != ""
+
 - name: "Run install script"
   # trim off "v" in flux version because install_fluxcd.sh adds it for you
   ansible.builtin.shell: FLUX_VERSION={{ flux_version[1:] }} ~/install_fluxcd.sh >> ~/fluxcd_install_log.txt
