@@ -1,0 +1,58 @@
+- name: "Install acme.sh on OpenBSD"
+  community.general.openbsd_pkg:
+    state: present
+    name: acme.sh
+  when: ansible_distribution | lower == "openbsd"
+
+# TODO
+- name: "Install acme.sh on Debian"
+  ansible.builtin.apt:
+    state: present
+    name: acme.sh
+  when: ansible_distribution | lower == "debian"
+
+- name: "Create {{ acme_home }} home directory"
+  ansible.builtin.file:
+    path: "{{ acme_home }}"
+    state: directory
+    owner: "{{ acme_home_user }}"
+    group: "{{ acme_home_group }}"
+    mode: 0770
+
+- name: "Issue first certificate(s)"
+  ansible.builtin.shell: >-
+    {% for k, v in acme_env_vars.items() %}
+    {{ k }}={{ v | quote }}
+    {% endfor %}
+    acme.sh --issue
+    -d {{ item.name | quote }}
+    {% for alias in item.alt_names %}
+    -d {{ alias | quote }}
+    {% endfor %}
+    --dns {{ item.dns | quote }}
+    --reloadcmd {{ item.reload_cmd | quote }}
+    --server {{ item.server | quote }}
+    --home {{ acme_home | quote }}
+    {% if item.force is defined and item.force %}
+    --force
+    {% endif %}
+    {% if item.renew_hook is defined %}
+    --renew-hook {{ item.renew_hook | quote }}
+    {% endif %}
+  register: acme_issue
+  # https://github.com/acmesh-official/acme.sh/wiki/Exit-Codes
+  changed_when: acme_issue.rc != 2
+  failed_when: (acme_issue.rc < 0 or acme_issue.rc > 0) and acme_issue.rc != 2
+  loop: "{{ acme_certificates }}"
+  loop_control:
+    label: "{{ item.name }}"
+
+- name: "Create cronjob"
+  ansible.builtin.cron:
+    name: acme
+    minute: "0"
+    hour: "0"
+    user: "{{ acme_cron_user }}"
+    job: >-
+      acme.sh --cron
+      --home {{ acme_home | quote }}

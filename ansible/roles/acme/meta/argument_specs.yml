@@ -1,0 +1,26 @@
+argument_specs:
+  main:
+    options:
+      acme_home_user:
+        type: str
+        required: false
+        default: root
+      acme_home_group:
+        type: str
+        required: false
+        default: wheel
+      acme_home:
+        type: str
+        required: false
+        default: /etc/acme.sh
+      acme_cron_user:
+        type: str
+        required: false
+        default: root
+      acme_env_vars:
+        type: dict
+        required: true
+      acme_certificates:
+        type: list
+        elements: dict
+        required: true

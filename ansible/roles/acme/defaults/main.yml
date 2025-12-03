@@ -1,0 +1,4 @@
+acme_home_user: root
+acme_home_group: wheel
+acme_home: /etc/acme.sh
+acme_cron_user: root
