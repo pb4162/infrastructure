@@ -28,11 +28,26 @@
     current_k3s_ver: "{{ (k3s_version_info.stdout | from_json).clientVersion.gitVersion }}"
   when: k3s_version_info.stdout != ""
 
+- ansible.builtin.import_tasks: config.yml
+
 - ansible.builtin.import_tasks: control_node.yml
   when: ("k8s_control_node" in group_names)
 
 - ansible.builtin.import_tasks: regular_node.yml
   when: ("k8s_nodes" in group_names)
 
-- ansible.builtin.import_tasks: config.yml
+- name: "Create /root/.kube directory"
+  ansible.builtin.file:
+    path: "/root/.kube"
+    state: directory
+    mode: 644
 
+- name: "Copy kubeconfig file to /root/.kube/config"
+  ansible.builtin.copy:
+    backup: true
+    src: /etc/rancher/k3s/k3s.yaml
+    dest: /root/.kube/config
+    owner: root
+    group: root
+    mode: 644
+    remote_src: true
