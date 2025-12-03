@@ -1,0 +1,34 @@
+- name: "Bootstrap new user and admin permissions on openbsd VPS"
+  hosts: openbsd_vps
+  become: true
+  # become_method: su
+  become_flags: "-"
+  tags: [bootstrap, never]
+
+  # TODO: hacky workaround for become_method not taking precedence over
+  # ansible_become_method specified in inventory
+  vars:
+    ansible_become_method: su
+
+  roles:
+    - role: user
+      tags: [user]
+    - role: doas
+      tags: [doas]
+
+
+- name: Configure
+  hosts: openbsd_vps
+  become: true
+
+  roles:
+    - role: common-packages
+      tags: [common, packages]
+    - role: borg-backup
+      tags: [borg-backup, borg, backup]
+    - role: headscale
+      tags: headscale
+    - role: acme
+      tags: acme
+    - role: nginx
+      tags: nginx
