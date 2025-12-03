@@ -1,0 +1,7 @@
+- name: Configure user account
+  ansible.builtin.user:
+    name: "{{ user_name }}"
+    create_home: true
+    groups: "{{ user_groups }}"
+    append: true
+    state: present

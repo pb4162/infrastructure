@@ -1,0 +1,13 @@
+argument_specs:
+  main:
+    options:
+      user_name:
+        type: str
+        required: false
+        default: "pb"
+      user_groups:
+        type: list
+        required: false
+        elements: str
+        default:
+          - wheel
