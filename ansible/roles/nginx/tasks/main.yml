@@ -1,0 +1,60 @@
+- name: "Install nginx on OpenBSD"
+  community.general.openbsd_pkg:
+    state: present
+    name: nginx
+  when: (ansible_distribution | lower) == "openbsd"
+
+- name: "Install nginx on Debian"
+  ansible.builtin.apt:
+    state: present
+    name: nginx
+  when: (ansible_distribution | lower) == "debian"
+
+- name: "Install additional nginx modules when on Debian"
+  ansible.builtin.apt:
+    state: present
+    name: "libnginx-mod-{{ item }}"
+  loop: "{{ nginx_additional_modules }}"
+  when: (ansible_distribution | lower) == "debian"
+
+- name: "Enable and start nginx service on OpenBSD"
+  ansible.builtin.service:
+    name: nginx
+    enabled: true
+    state: started
+  when: (ansible_distribution | lower) == "openbsd"
+
+- name: "Enable and start nginx service on Debian"
+  ansible.builtin.systemd_service:
+    name: nginx.service
+    enabled: true
+    state: started
+  when: (ansible_distribution | lower) == "debian"
+
+- name: "Install nginx config file"
+  ansible.builtin.template:
+    backup: true
+    dest: /etc/nginx/nginx.conf
+    src: "nginx_{{ ansible_distribution | lower }}.conf.j2"
+    validate: nginx -t -c %s
+  notify: "Restart nginx ({{ ansible_distribution | lower }})"
+
+- name: "Remove /etc/nginx/sites-available/default if present"
+  ansible.builtin.file:
+    path: /etc/nginx/sites-available/default
+    state: absent
+
+- name: "Create /etc/nginx/conf.d directory"
+  ansible.builtin.file:
+    path: /etc/nginx/conf.d
+    state: directory
+
+- name: "Install conf.d files"
+  ansible.builtin.copy:
+    backup: true
+    content: "{{ item.value }}"
+    dest: "/etc/nginx/conf.d/{{ item.key }}.conf"
+  loop: "{{ nginx_http_configs | dict2items }}"
+  loop_control:
+    label: "{{ item.key }}"
+  notify: "Restart nginx ({{ ansible_distribution | lower }})"

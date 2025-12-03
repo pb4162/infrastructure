@@ -1,0 +1,11 @@
+argument_specs:
+  main:
+    options:
+      nginx_additional_modules:
+        type: list
+        elements: str
+        required: false
+        default: []
+      nginx_http_configs:
+        type: dict
+        required: true

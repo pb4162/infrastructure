@@ -1,0 +1,9 @@
+- name: "Restart nginx (debian)"
+  ansible.builtin.systemd_service:
+    name: nginx.service
+    state: restarted
+
+- name: "Restart nginx (openbsd)"
+  ansible.builtin.service:
+    name: nginx
+    state: restarted
