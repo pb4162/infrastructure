@@ -1,0 +1,31 @@
+# - name: "Set net.ipv4.tcp_retries2 (workaround to https://github.com/juanfont/headscale/issues/2129)"
+#   ansible.posix.sysctl:
+#     name: net.ipv4.tcp_retries2
+#     value: "3"
+#     sysctl_set: true
+#     state: present
+#     reload: true
+
+- name: "Install headscale"
+  community.general.openbsd_pkg:
+    state: present
+    name: headscale
+
+- name: "Enable headscale service"
+  ansible.builtin.service:
+    name: headscale
+    enabled: true
+
+- name: "Install config file"
+  ansible.builtin.template:
+    backup: true
+    dest: /etc/headscale/config.yaml
+    mode: 0660
+    owner: _headscale
+    group: _headscale
+    src: config.yaml.j2
+    validate: headscale configtest -c %s
+  notify: Restart headscale
+
+- ansible.builtin.import_tasks: ui.yml
+  tags: headscale-ui

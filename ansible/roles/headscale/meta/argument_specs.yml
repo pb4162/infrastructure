@@ -1,0 +1,17 @@
+argument_specs:
+  main:
+    options:
+      headscale_config:
+        type: "dict"
+        required: true
+      headscale_config_private:
+        type: "dict"
+        required: false
+        default: {}
+      headscale_ui_version:
+        type: "str"
+        required: true
+      headscale_ui_cleanup:
+        type: "bool"
+        required: false
+        default: true

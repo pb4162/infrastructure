@@ -1,0 +1,42 @@
+- name: "Install unzip"
+  community.general.openbsd_pkg:
+    state: present
+    name: unzip--
+
+- name: "Create release directory"
+  ansible.builtin.file:
+    path: "/root/headscale-ui/{{ headscale_ui_version }}"
+    state: directory
+
+- name: "Download GoodiesHQ/headscale-admin github release"
+  ansible.builtin.get_url:
+    url: "https://github.com/GoodiesHQ/headscale-admin/releases/download/{{ headscale_ui_version }}/admin.zip"
+    dest: "/root/headscale-ui/{{ headscale_ui_version }}"
+
+- name: "Create unzip directory"
+  ansible.builtin.file:
+    path: "/root/headscale-ui/{{ headscale_ui_version }}/extracted"
+    state: directory
+
+- name: "Unzip release"
+  ansible.builtin.unarchive:
+    src: "/root/headscale-ui/{{ headscale_ui_version }}/admin.zip"
+    dest: "/root/headscale-ui/{{ headscale_ui_version }}/extracted"
+    remote_src: yes
+
+- name: "Create web root directory"
+  ansible.builtin.file:
+    path: "/var/www/html/headscale-admin"
+    state: directory
+
+- name: "Copy unzipped contents into web root"
+  ansible.builtin.copy:
+    remote_src: true
+    src: "/root/headscale-ui/{{ headscale_ui_version }}/extracted/"
+    dest: "/var/www/html/headscale-admin"
+
+- name: "Cleanup release directory"
+  ansible.builtin.file:
+    path: "/root/headscale-ui/{{ headscale_ui_version }}"
+    state: absent
+  when: headscale_ui_cleanup
