@@ -2,7 +2,7 @@
   ansible.builtin.shell: >-
     INSTALL_K3S_VERSION={{k3s_version}}
     K3S_URL="https://{{ hostvars[groups["k8s_control_node"][0]]['ansible_default_ipv4']['address'] }}:6443"
-    K3S_TOKEN="{{ hostvars[groups['control_node'][0]]['node_token'] }}"
+    K3S_TOKEN="{{ hostvars[groups['k8s_control_node'][0]]['node_token'] }}"
     INSTALL_K3S_EXEC="server"
     ~/install_k3s.sh >> ~/k3s_install_log.txt
   args:
