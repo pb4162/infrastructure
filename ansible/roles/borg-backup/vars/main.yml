@@ -1,0 +1,14 @@
+borgmatic_config_base:
+  retries: 3
+  retry_wait: 10
+  source_directories_must_exist: true
+  checks:
+    - name: repository
+      frequency: "1 month"
+    - name: data
+      frequency: "1 month"
+    - name: extract
+      frequency: "2 weeks"
+  bootstrap:
+    store_config_files: true
+

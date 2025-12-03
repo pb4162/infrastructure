@@ -1,0 +1,39 @@
+- name: "Install borg and borgmatic for OpenBSD"
+  community.general.openbsd_pkg:
+    name:
+      - borgbackup
+      - borgmatic
+    state: present
+  when: ansible_distribution | lower == "openbsd"
+
+- name: "Install borg and borgmatic for Debian"
+  ansible.builtin.apt:
+    name:
+      - borgbackup
+      - borgmatic
+    state: present
+  when: ansible_distribution | lower == "debian"
+
+- name: "Merge borgmatic_(config,config_base,config_private) into final config"
+  ansible.builtin.set_fact:
+    borgmatic_config_final: "{{ borgmatic_config_base | combine(borgmatic_config, borgmatic_config_private, recursive=true, list_merge='append') }}"
+
+- name: "Copy final config to /etc/borgmatic/config.yaml"
+  ansible.builtin.copy:
+    backup: true
+    content: "{{ borgmatic_config_final | to_yaml }}"
+    dest: /etc/borgmatic/config.yaml
+    mode: 0660
+    validate: borgmatic --config %s config validate
+
+- name: "Add cronjob for borgmatic"
+  ansible.builtin.cron:
+    minute: "0"
+    hour: "0"
+    name: borgmatic
+    user: root
+    job: >-
+      PATH=$PATH:/usr/bin:/usr/local/bin
+      borgmatic
+      --verbosity -1
+      --syslog-verbosity 1
