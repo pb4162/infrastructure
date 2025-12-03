@@ -1,0 +1,14 @@
+- name: "Install sudo"
+  ansible.builtin.apt:
+    name: sudo
+    state: present
+
+- name: "Configure sudo so that no password is needed for users in the sudo group"
+  ansible.builtin.template:
+    backup: true
+    dest: /etc/sudoers.d/10_sudo_nopasswd
+    mode: 0660
+    owner: root
+    group: root
+    src: 10_sudo_nopasswd.j2
+    validate: visudo -scf %s
