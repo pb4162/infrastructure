@@ -1,3 +1,22 @@
+- name: "Bootstrap new user and admin permissions on mini pcs"
+  hosts: mini_pcs
+  become: true
+  # become_method: su
+  become_flags: "-"
+  tags: [bootstrap, never]
+
+  # TODO: hacky workaround for become_method not taking precedence over
+  # ansible_become_method specified in inventory
+  vars:
+    ansible_become_method: su
+
+  roles:
+    - role: user
+      tags: [user]
+    - role: sudo
+      tags: [sudo]
+
+
 - name: "Install common packages, longhorn dependencies, disable swap and tune networking on all nodes"
   hosts: k8s_cluster
   become: true
