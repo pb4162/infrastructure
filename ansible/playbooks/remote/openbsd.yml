@@ -26,6 +26,8 @@
       tags: [common, packages]
     - role: borg-backup
       tags: [borg-backup, borg, backup]
+    - role: crowdsec
+      tags: [crowdsec]
     - role: headscale
       tags: headscale
     - role: acme
