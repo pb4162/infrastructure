@@ -1,0 +1,77 @@
+- name: "Install crowdsec and crowdsec-firewall-bouncer"
+  community.general.openbsd_pkg:
+    name:
+      - crowdsec
+      - crowdsec-firewall-bouncer
+    state: present
+
+- name: "Enable and start crowdsec service"
+  ansible.builtin.service:
+    name: crowdsec
+    enabled: true
+    state: started
+
+- name: "Enable and start crowdsec-firewall-bouncer service"
+  ansible.builtin.service:
+    name: crowdsec_firewall_bouncer
+    enabled: true
+    state: started
+
+- name: "Pull updates from crowdsec hub"
+  ansible.builtin.shell: cscli hub update
+  register: hub_update_info
+  changed_when: ("Nothing to do" not in hub_update_info.stdout)
+  notify: Restart crowdsec
+
+- name: "Enroll in crowdsec console under name: {{ crowdsec_console_name }}"
+  ansible.builtin.shell: >-
+    cscli console enroll
+    {{ crowdsec_console_key | quote }}
+    --name {{ crowdsec_console_name | quote }}
+    {% if crowdsec_enrollment_overwrite %}
+    --overwrite
+    {% endif %}
+  register: console_enroll_info
+  changed_when: ("Instance already enrolled" not in console_enroll_info.stderr)
+  notify: Restart crowdsec
+
+- block:
+  - name: "Create firewall bouncer with cscli"
+    ansible.builtin.shell: >-
+      cscli bouncers add {{ crowdsec_firewall_bouncer_name | quote }} -o json
+    register: crowdsec_firewall_bouncer_add_info
+    changed_when: ("already exists" not in crowdsec_firewall_bouncer_add_info.stderr)
+    failed_when: crowdsec_firewall_bouncer_add_info.rc not in [0, 1]
+
+  - name: "Get firewall bouncer API key"
+    ansible.builtin.set_fact:
+      crowdsec_firewall_bouncer_api_key: "{{ crowdsec_firewall_bouncer_add_info.stdout | from_json }}"
+  when: (crowdsec_firewall_bouncer_api_key is undefined)
+
+- name: "Replace ${API_KEY} in firewall bouncer config with API key"
+  ansible.builtin.replace:
+    backup: true
+    path: /etc/crowdsec-firewall-bouncer/crowdsec-firewall-bouncer.yaml
+    regexp: "\\${API_KEY}"
+    replace: "{{ crowdsec_firewall_bouncer_api_key }}"
+  notify:
+    - Restart crowdsec-firewall-bouncer
+    - Restart crowdsec
+
+- name: "Install collections, parsers, etc. from crowdsec hub"
+  ansible.builtin.shell: |
+    cscli {{ item.type }}s install {{ item.name | quote }}
+  register: crowdsec_hub_install_info
+  changed_when: ("Nothing to do" not in crowdsec_hub_install_info.stdout)
+  loop: "{{ crowdsec_hub_items }}"
+  notify: Restart crowdsec
+
+- name: "Install acquisitions"
+  ansible.builtin.copy:
+    backup: true
+    content: "{{ item.value | to_nice_yaml }}"
+    dest: "/etc/crowdsec/acquis.d/{{ item.key }}.yaml"
+  loop: "{{ crowdsec_acquisitions | dict2items }}"
+  loop_control:
+    label: "{{ item.key }}"
+  notify: "Restart crowdsec"

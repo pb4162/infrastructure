@@ -1,0 +1,29 @@
+argument_specs:
+  main:
+    options:
+      crowdsec_console_key:
+        type: str
+        required: true
+      crowdsec_console_name:
+        type: str
+        required: true
+      crowdsec_enrollment_overwrite:
+        type: bool
+        required: false
+        default: false
+      crowdsec_firewall_bouncer_name:
+        type: str
+        required: false
+        default: crowdsec-firewall-bouncer
+      crowdsec_firewall_bouncer_api_key:
+        type: str
+        required: false
+      crowdsec_hub_items:
+        type: list
+        elements: dict
+        required: false
+        default: []
+      crowdsec_acquisitions:
+        type: dict
+        required: false
+        default: {}
