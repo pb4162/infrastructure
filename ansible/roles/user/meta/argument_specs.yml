@@ -9,5 +9,3 @@ argument_specs:
         type: list
         required: false
         elements: str
-        default:
-          - wheel

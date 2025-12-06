@@ -1,3 +1,7 @@
+- name: Set user_groups depending on the OS being run
+  ansible.builtin.set_fact:
+    user_groups: "{{ [(ansible_distribution | lower == 'debian') | ternary('sudo', 'wheel')] }}"
+
 - name: Configure user account
   ansible.builtin.user:
     name: "{{ user_name }}"
