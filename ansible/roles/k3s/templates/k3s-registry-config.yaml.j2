@@ -1,1 +1,1 @@
-{{ k3s_registry_config | combine(k3s_registry_config_private, recursive=true) | to_yaml }}
+{{ k3s_registry_config | combine(k3s_registry_config_private, recursive=true) | to_nice_yaml }}

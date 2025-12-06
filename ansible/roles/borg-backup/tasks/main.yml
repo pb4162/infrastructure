@@ -21,7 +21,7 @@
 - name: "Copy final config to /etc/borgmatic/config.yaml"
   ansible.builtin.copy:
     backup: true
-    content: "{{ borgmatic_config_final | to_yaml }}"
+    content: "{{ borgmatic_config_final | to_nice_yaml }}"
     dest: /etc/borgmatic/config.yaml
     mode: 0660
     validate: borgmatic --config %s config validate
