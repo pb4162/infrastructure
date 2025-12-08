@@ -31,6 +31,15 @@
     mode: 0660
     validate: borgmatic --config %s config validate
 
+- name: "Create borg repo"
+  ansible.builtin.shell: >-
+    BORG_PASSPHRASE={{ borgmatic_config_final.encryption_passphrase | quote }}
+    borgmatic -v 1 repo-create --encryption repokey
+  register: create_repo_info
+  changed_when: ("Repository already exists" not in create_repo_info.stdout)
+
+# TODO: export repo key
+
 - name: "Add cronjob for borgmatic on OpenBSD"
   ansible.builtin.cron:
     minute: "0"
