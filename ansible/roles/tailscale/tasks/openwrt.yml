@@ -2,3 +2,9 @@
   community.general.opkg:
     state: present
     name: tailscale
+
+- name: "Enable and start tailscale"
+  community.general.openwrt_init:
+    name: tailscale
+    enabled: true
+    state: started

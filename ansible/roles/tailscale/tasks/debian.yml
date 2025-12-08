@@ -10,4 +10,8 @@
     chdir: "~"
     creates: /usr/bin/tailscale
 
-  # TODO: ensure systemd unit is enabled and running
+- name: "Enable and start tailscaled"
+  ansible.builtin.systemd_service:
+    name: tailscaled.service
+    state: started
+    enabled: true
