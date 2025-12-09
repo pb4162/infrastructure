@@ -17,7 +17,7 @@
       tags: [sudo]
 
 
-- name: "Install common packages, longhorn dependencies, disable swap and tune networking on all nodes"
+- name: "Apply common configurations across all nodes"
   hosts: k8s_cluster
   become: true
 
