@@ -22,6 +22,8 @@ data:
       superuserSecret: cnpg-superuser-secret
     backups:
       enabled: true
+      wal:
+        maxParallel: 8
       s3:
         bucket: cnpg
       wal:

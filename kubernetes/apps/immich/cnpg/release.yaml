@@ -45,8 +45,6 @@ spec:
         parameters:
           max_wal_size: "20GB"
     backups:
-      wal:
-        maxParallel: 8
       scheduledBackups:
         - name: daily-backup
           schedule: "0 0 0 * * *"
