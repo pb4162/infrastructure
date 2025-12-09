@@ -24,6 +24,8 @@
   roles:
     - role: common-packages
       tags: [common, packages]
+    - role: sshd
+      tags: [ssh, sshd]
     - role: disable-swap
       tags: [disable-swap, swap]
     - role: longhorn-packages
