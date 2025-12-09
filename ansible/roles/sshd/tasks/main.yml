@@ -1,0 +1,16 @@
+- name: "Set sshd_config_file_path"
+  ansible.builtin.set_fact:
+    sshd_config_file_path: >-
+      {{
+        ( ansible_distribution | lower == 'debian' )
+        | ternary('/etc/ssh/sshd_config.d/ansible-managed.conf', '/etc/ssh/sshd_config')
+      }}
+
+- name: "Configure sshd"
+  ansible.builtin.template:
+    backup: true
+    dest: "{{ sshd_config_file_path }}"
+    src: "sshd_config_{{ ansible_distribution | lower }}.j2"
+    validate: sshd -t -f %s
+    mode: 0644
+  notify: "Restart sshd ({{ ansible_distribution | lower }})"
