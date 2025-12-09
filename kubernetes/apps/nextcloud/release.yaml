@@ -18,7 +18,8 @@ spec:
       kind: Secret
   values:
     image:
-      repository: pbcr.local/pb/nextcloud
+      registry: pbcr.local
+      repository: pb/nextcloud
     resources:
       limits:
         memory: 6Gi
