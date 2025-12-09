@@ -22,6 +22,8 @@
   become: true
 
   roles:
+    - role: sshd
+      tags: [ssh, sshd]
     - role: common-packages
       tags: [common, packages]
     - role: borg-backup
