@@ -26,8 +26,8 @@ spec:
     ingress:
       enabled: true
     nextcloud:
-      securityContext:
-        fsGroupChangePolicy: OnRootMismatch
+      # securityContext:
+      #   fsGroupChangePolicy: OnRootMismatch
       extraEnv:
         - name: APACHE_BODY_LIMIT
           value: "0"
