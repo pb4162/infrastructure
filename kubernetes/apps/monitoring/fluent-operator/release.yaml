@@ -22,7 +22,7 @@ spec:
     operator:
       resources:
         limits:
-          memory: 128Mi
+          memory: 256Mi
     fluentbit:
       output:
         loki:
