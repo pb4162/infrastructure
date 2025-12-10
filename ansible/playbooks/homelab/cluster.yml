@@ -26,6 +26,8 @@
       tags: [common, packages]
     - role: sshd
       tags: [ssh, sshd]
+    - role: timezone
+      tags: [timezone, tz]
     - role: disable-swap
       tags: [disable-swap, swap]
     - role: longhorn-packages
