@@ -19,6 +19,10 @@ spec:
     crds: CreateReplace
   values:
     containerRuntime: containerd
+    operator:
+      resources:
+        limits:
+          memory: 128Mi
     fluentbit:
       output:
         loki:
