@@ -1,0 +1,27 @@
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: fluent-operator
+  namespace: monitoring
+spec:
+  chart:
+    spec:
+      chart: fluent-operator
+      version: 3.5.0
+      sourceRef:
+        kind: HelmRepository
+        name: fluent
+      interval: 5m
+  releaseName: fluent-operator
+  install:
+    crds: CreateReplace
+  upgrade:
+    crds: CreateReplace
+  values:
+    containerRuntime: containerd
+    fluentbit:
+      output:
+        loki:
+          enable: true
+          host: loki.monitoring.svc.cluster.local
+
