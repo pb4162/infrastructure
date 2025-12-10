@@ -28,5 +28,5 @@ spec:
         loki:
           enable: true
           host: loki.monitoring.svc.cluster.local
-          autoKubernetesLabels: true
+          autoKubernetesLabels: on
 
