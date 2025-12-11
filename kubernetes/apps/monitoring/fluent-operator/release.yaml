@@ -29,4 +29,8 @@ spec:
           enable: true
           host: loki.monitoring.svc.cluster.local
           autoKubernetesLabels: on
-
+          # needed for dashboards to work
+          labels:
+            - "container=$kubernetes['container_name']"
+            - "namespace=$kubernetes['namespace_name']"
+            - "pod=$kubernetes['pod_name']"
