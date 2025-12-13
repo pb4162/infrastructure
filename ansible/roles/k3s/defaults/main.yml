@@ -1,1 +1,7 @@
 k3s_update: false
+k3s_base_config: {}
+k3s_base_config_private: {}
+k3s_master_config: {}
+k3s_master_config_private: {}
+k3s_registry_config: {}
+k3s_registry_config_private: {}

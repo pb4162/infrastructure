@@ -1,5 +1,9 @@
-{% if 'k8s_control_node' in group_names %}
+{% if 'k8s_first_master_node' in group_names %}
 cluster-init: true
 {% endif %}
 
-{{ k3s_config | combine(k3s_config_private, recursive=true) | to_nice_yaml }}
+{% if k3s_node_type == "master" %}
+{{ k3s_base_config | combine(k3s_base_config_private, k3s_master_config, k3s_master_config_private, recursive=true) | to_nice_yaml }}
+{% elif k3s_node_type == "worker" %}
+{{ k3s_base_config | combine(k3s_base_config_private, recursive=true) | to_nice_yaml }}
+{% endif %}

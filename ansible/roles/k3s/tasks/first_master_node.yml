@@ -1,4 +1,4 @@
-- name: "Run install script (control node)"
+- name: "Run install script (first master node)"
   ansible.builtin.shell: >-
     INSTALL_K3S_VERSION={{k3s_version}} ~/install_k3s.sh >> ~/k3s_install_log.txt
   args:

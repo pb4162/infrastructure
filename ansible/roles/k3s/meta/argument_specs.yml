@@ -4,11 +4,19 @@ argument_specs:
       k3s_version:
         type: "str"
         required: true
-      k3s_config:
+      k3s_base_config:
         type: "dict"
         required: false
         default: {}
-      k3s_config_private:
+      k3s_base_config_private:
+        type: "dict"
+        required: false
+        default: {}
+      k3s_master_config:
+        type: "dict"
+        required: false
+        default: {}
+      k3s_master_config_private:
         type: "dict"
         required: false
         default: {}

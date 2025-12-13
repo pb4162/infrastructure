@@ -28,26 +28,36 @@
     current_k3s_ver: "{{ (k3s_version_info.stdout | from_json).clientVersion.gitVersion }}"
   when: k3s_version_info.stdout != ""
 
+- name: "Set k3s_node_type"
+  ansible.builtin.set_fact:
+    k3s_node_type: >-
+      {{
+        'master' if 'k8s_first_master_node' in group_names or 'k8s_master_nodes' in group_names
+        else 'worker' if 'k8s_worker_nodes' in group_names
+      }}
+
 - ansible.builtin.import_tasks: config.yml
 
-- ansible.builtin.import_tasks: control_node.yml
-  when: ("k8s_control_node" in group_names)
+- ansible.builtin.import_tasks: first_master_node.yml
+  when: ("k8s_first_master_node" in group_names)
 
-- ansible.builtin.import_tasks: regular_node.yml
-  when: ("k8s_nodes" in group_names)
+- ansible.builtin.import_tasks: node.yml
+  when: ("k8s_first_master_node" not in group_names)
 
-- name: "Create /root/.kube directory"
-  ansible.builtin.file:
-    path: "/root/.kube"
-    state: directory
-    mode: 644
+- when: ("k8s_worker_nodes" not in group_names)
+  block:
+  - name: "Create /root/.kube directory"
+    ansible.builtin.file:
+      path: "/root/.kube"
+      state: directory
+      mode: 644
 
-- name: "Copy kubeconfig file to /root/.kube/config"
-  ansible.builtin.copy:
-    backup: true
-    src: /etc/rancher/k3s/k3s.yaml
-    dest: /root/.kube/config
-    owner: root
-    group: root
-    mode: 644
-    remote_src: true
+  - name: "Copy kubeconfig file to /root/.kube/config"
+    ansible.builtin.copy:
+      backup: true
+      src: /etc/rancher/k3s/k3s.yaml
+      dest: /root/.kube/config
+      owner: root
+      group: root
+      mode: 644
+      remote_src: true

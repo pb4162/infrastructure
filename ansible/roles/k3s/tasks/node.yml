@@ -1,0 +1,16 @@
+- name: "Set k3s_exec"
+  ansible.builtin.set_fact:
+    k3s_exec: >-
+      {{ (k3s_node_type == "master") | ternary("server", "agent") }}
+
+- name: "Run install script ({{ k3s_node_type }} node)"
+  ansible.builtin.shell: >-
+    INSTALL_K3S_VERSION={{k3s_version}}
+    K3S_URL="https://{{ hostvars[groups["k8s_first_master_node"][0]]['ansible_default_ipv4']['address'] }}:6443"
+    K3S_TOKEN="{{ hostvars[groups['k8s_first_master_node'][0]]['node_token'] }}"
+    INSTALL_K3S_EXEC="{{ k3s_exec }}"
+    ~/install_k3s.sh >> ~/k3s_install_log.txt
+  args:
+    chdir: "~"
+  when: (current_k3s_ver is undefined) or k3s_update
+
