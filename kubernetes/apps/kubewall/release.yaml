@@ -19,8 +19,6 @@ spec:
       main:
         enabled: true
         pod:
-          nodeSelector:
-            kubernetes.io/arch: arm64
         containers:
           main:
             image:
