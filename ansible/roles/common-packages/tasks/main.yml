@@ -7,6 +7,7 @@
       - btop
       - iperf3
       - curl
+      - git
   when: ansible_distribution | lower == "debian"
 
 - name: Install common packages for OpenBSD
@@ -19,6 +20,7 @@
       - iperf3
       - curl
       - ssh-copy-id  # included in default debian install
+      - git
   when: ansible_distribution | lower == 'openbsd'
 
 - name: Install common packages for OpenWRT
@@ -30,4 +32,5 @@
       - btop
       - iperf3
       - curl
+      - git
   when: ansible_distribution | lower == 'openwrt'
