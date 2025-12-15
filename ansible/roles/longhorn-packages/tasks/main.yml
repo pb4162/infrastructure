@@ -6,3 +6,9 @@
       - nfs-common
       - cryptsetup
       - dmsetup
+
+- name: "Load dm_crypt kernel module"
+  community.general.modprobe:
+    name: dm_crypt
+    persistent: present
+    state: present
