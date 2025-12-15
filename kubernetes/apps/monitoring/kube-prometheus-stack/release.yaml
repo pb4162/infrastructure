@@ -112,7 +112,7 @@ spec:
               - source_labels: [__param_target]
                 target_label: instance
               - source_labels: [__address__]
-                regex: https?\:\/\/.+\.cluster\.local
+                regex: https?\:\/\/.+\.cluster\.local\/?
                 action: drop
           - job_name: 'blackbox_exporter'
             static_configs:
