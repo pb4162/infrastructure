@@ -98,6 +98,9 @@ spec:
             params:
               module: [http_2xx]
             relabel_configs:
+              - source_labels: __address__
+                regex: .+\.cluster\.local
+                action: drop
               - source_labels:
                   [
                     __meta_kubernetes_ingress_scheme,
