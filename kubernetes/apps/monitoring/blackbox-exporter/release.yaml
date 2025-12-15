@@ -32,3 +32,5 @@ spec:
           interval: 10s
           scrapeTimeout: 10s
           module: http_2xx
+    configReloader:
+      enabled: true
