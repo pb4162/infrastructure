@@ -111,7 +111,7 @@ spec:
                 replacement: prometheus-blackbox-exporter.monitoring.svc.cluster.local:9115
               - source_labels: [__param_target]
                 target_label: instance
-              - source_labels: [instance]
+              - source_labels: [__address__]
                 regex: https?\:\/\/.+\.cluster\.local
                 action: drop
           - job_name: 'blackbox_exporter'
