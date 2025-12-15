@@ -92,8 +92,8 @@ spec:
             scrape_interval: 30s
             kubernetes_sd_configs:
               - role: ingress
-                attach_metadata:
-                  namespace: true
+                # attach_metadata:
+                #   namespace: true
             metrics_path: /probe
             params:
               module: [http_2xx]
