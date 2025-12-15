@@ -87,6 +87,34 @@ spec:
           limits:
             memory: 4Gi
             cpu: 400m
+        additionalScrapeConfigs:
+          scrape_configs:
+            - job_name: 'blackbox'
+              scrape_interval: 30s
+              kubernetes_sd_configs:
+                - role: ingress
+                  attach_metadata:
+                    namespace: true
+              metrics_path: /probe
+              params:
+                module: [http_2xx]
+              relabel_configs:
+                - source_labels:
+                    [
+                      __meta_kubernetes_ingress_scheme,
+                      __address__,
+                      __meta_kubernetes_ingress_path,
+                    ]
+                  regex: (.+);(.+);(.+)
+                  replacement: $${1}://$${2}$${3}
+                  target_label: __param_target
+                - source_labels: [__param_target]
+                  target_label: instance
+                - target_label: __address__
+                  replacement: prometheus-blackbox-exporter.monitoring.svc.cluster.local:9115
+            - job_name: 'blackbox_exporter'
+              static_configs:
+                - targets: ['prometheus-blackbox-exporter.monitoring.svc.cluster.local:9115']
         storageSpec: 
          volumeClaimTemplate:
            spec:
