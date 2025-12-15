@@ -17,6 +17,12 @@ spec:
     resources:
       limits:
         memory: 128Mi
+    config:
+      modules:
+        http_2xx:
+          http:
+            tls_config:
+              insecure_skip_verify: true
     serviceMonitor:
       selfMonitor:
         enabled: true
