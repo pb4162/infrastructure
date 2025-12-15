@@ -14,6 +14,10 @@ spec:
       interval: 5m
   releaseName: prometheus-smartctl-exporter
   values:
+    serviceMonitor:
+      enabled: true
+      extraLabels:
+        release: kube-prometheus-stack
     prometheusRules:
       enabled: true
       extraLabels:
