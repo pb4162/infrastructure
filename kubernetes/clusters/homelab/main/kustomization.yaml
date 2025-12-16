@@ -34,6 +34,9 @@ patches:
                   - paths: ["/spec/replicas"]
                     target:
                       kind: Deployment
+                  - paths: ["/spec/replicas"]
+                    target:
+                      kind: StatefulSet
             target:
               kind: HelmRelease
           - patch: |
@@ -87,6 +90,9 @@ patches:
                           - paths: ["/spec/replicas"]
                             target:
                               kind: Deployment
+                          - paths: ["/spec/replicas"]
+                            target:
+                              kind: StatefulSet
                     target:
                       kind: HelmRelease
                   - patch: |
