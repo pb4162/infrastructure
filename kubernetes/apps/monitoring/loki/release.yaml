@@ -64,6 +64,7 @@ spec:
         s3:
           endpoint: "http://garage.garage.svc.cluster.local:3900"
           s3ForcePathStyle: true
+          region: garage
           accessKeyId: GK759a5cbb96f1b86245c1f656
           insecure: true
       ingester:
