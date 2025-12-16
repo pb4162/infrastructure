@@ -1,0 +1,146 @@
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: garage
+  namespace: garage
+spec:
+  chart:
+    spec:
+      chart: app-template
+      version: 4.4.0
+      sourceRef:
+        kind: HelmRepository
+        name: bjw-s
+        namespace: flux-system
+      interval: 5m
+  releaseName: garage
+  values:
+    controllers:
+      main:
+        enabled: true
+        annotations:
+        containers:
+          garage:
+            image:
+              repository: dxflrs/garage
+              tag: v2.1.0
+            env:
+              GARAGE_RPC_SECRET:
+                valueFrom:
+                  secretKeyRef:
+                    name: garage-env
+                    key: GARAGE_RPC_SECRET
+              GARAGE_ADMIN_TOKEN:
+                valueFrom:
+                  secretKeyRef:
+                    name: garage-env
+                    key: GARAGE_ADMIN_TOKEN
+              GARAGE_METRICS_TOKEN:
+                valueFrom:
+                  secretKeyRef:
+                    name: garage-env
+                    key: GARAGE_METRICS_TOKEN
+
+          webui:
+            image:
+              repository: khairul169/garage-webui
+              tag: 1.1.0
+            env:
+              API_BASE_URL: "http://garage.garage.svc.cluster.local:3903"
+              S3_ENDPOINT_URL: "http://garage.garage.svc.cluster.local:3900"
+              API_ADMIN_KEY:
+                valueFrom:
+                  secretKeyRef:
+                    name: garage-env
+                    key: GARAGE_ADMIN_TOKEN
+              AUTH_USER_PASS:
+                valueFrom:
+                  secretKeyRef:
+                    name: garage-env
+                    key: WEBUI_AUTH_USER_PASS
+    configMaps:
+      config:
+        enabled: true
+        data:
+          garage.toml: |
+            metadata_dir = "/var/lib/garage/meta"
+            data_dir = "/var/lib/garage/data"
+            metadata_snapshots_dir = "/var/lib/garage/data/snapshots"
+            metadata_auto_snapshot_interval = "6h"
+            db_engine = "sqlite"
+            use_local_tz = true
+            replication_factor = 1
+            consistency_mode = "consistent"
+            block_size = "10MiB"
+
+            rpc_bind_addr = "[::]:3901"
+
+            [s3_api]
+            s3_region = "garage"
+            api_bind_addr = "[::]:3900"
+
+            [admin]
+            api_bind_addr = "[::]:3903"
+    service:
+      main:
+        enabled: true
+        controller: main
+        ports:
+          s3:
+            enabled: true
+            port: 3900
+          rpc:
+            enabled: true
+            port: 3901
+          admin-api:
+            enabled: true
+            port: 3903
+          webui:
+            enabled: true
+            port: 3909
+    ingress:
+      main:
+        enabled: true
+        hosts:
+          - host: garage.${LOCAL_ROOT_DOMAIN}
+            paths:
+              - path: /
+                pathType: Prefix
+                service:
+                  name: garage
+                  port: 3909
+          - host: garage.${ROOT_DOMAIN}
+            paths:
+              - path: /
+                pathType: Prefix
+                service:
+                  name: garage
+                  port: 3909
+    persistence:
+      config:
+        enabled: true
+        type: configMap
+        name: garage
+        globalMounts:
+          - path: /etc/garage.toml
+            subPath: garage.toml
+      metadata:
+        enabled: true
+        type: persistentVolumeClaim
+        accessMode: ReadWriteOnce
+        size: 10Gi
+        advancedMounts:
+          main:
+            garage:
+              - path: /var/lib/garage/meta
+                readOnly: false
+      data:
+        enabled: true
+        type: persistentVolumeClaim
+        accessMode: ReadWriteOnce
+        size: 100Gi
+        advancedMounts:
+          main:
+            garage:
+              - path: /var/lib/garage/data
+                readOnly: false
