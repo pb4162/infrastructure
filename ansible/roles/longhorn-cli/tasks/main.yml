@@ -1,0 +1,26 @@
+- name: Create downloads directory
+  ansible.builtin.file:
+    path: "~/longhorn-cli"
+    state: directory
+
+- name: Set longhorn_cli_arch
+  ansible.builtin.set_fact:
+    longhorn_cli_arch: >-
+      {{
+        "amd64" if ansible_architecture == "x86_64"
+        else "arm64" if ansible_architecture == "aarch64"
+      }}
+
+- name: Download longhornctl binary
+  ansible.builtin.get_url:
+    dest: "~/longhorn-cli/longhornctl-{{ longhorn_cli_version }}"
+    url: "https://github.com/longhorn/cli/releases/download/{{ longhorn_cli_version }}/longhornctl-linux-{{ longhorn_cli_arch }}"
+    checksum: "sha256:https://github.com/longhorn/cli/releases/download/{{ longhorn_cli_version }}/longhornctl-linux-{{ longhorn_cli_arch }}.sha256"
+    force: true
+
+- name: Copy longhornctl binary to /usr/local/bin
+  ansible.builtin.copy:
+    src: "~/longhorn-cli/longhornctl-{{ longhorn_cli_version }}"
+    dest: /usr/local/bin/longhornctl
+    mode: a+x
+    remote_src: yes

@@ -1,0 +1,6 @@
+argument_specs:
+  main:
+    options:
+      longhorn_cli_version:
+        type: "str"
+        required: true
