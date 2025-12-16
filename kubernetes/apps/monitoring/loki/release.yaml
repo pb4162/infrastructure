@@ -62,10 +62,9 @@ spec:
           ruler: loki
           admin: loki
         s3:
-          s3: "http://minio:loki@minio.minio.svc.cluster.local:9000"
-          endpoint: "http://minio.minio.svc.cluster.local:9000"
+          endpoint: "http://garage.garage.svc.cluster.local:3900"
           s3ForcePathStyle: true
-          accessKeyId: loki
+          accessKeyId: GK759a5cbb96f1b86245c1f656
           insecure: true
       ingester:
         chunk_encoding: snappy
