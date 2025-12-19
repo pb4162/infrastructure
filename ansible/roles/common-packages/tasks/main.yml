@@ -8,6 +8,7 @@
       - iperf3
       - curl
       - git
+      - smartmontools
   when: ansible_distribution | lower == "debian"
 
 - name: Install common packages for OpenBSD
