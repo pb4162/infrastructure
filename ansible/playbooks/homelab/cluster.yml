@@ -56,8 +56,8 @@
       tags: cgroup
 
 
-- name: "Install k3s, helm, velero and flux on control node"
-  hosts: k8s_control_node
+- name: "Install k3s, helm, velero, longhornctl and flux on first master node"
+  hosts: k8s_first_master_node
   become: true
 
   roles:
@@ -67,13 +67,15 @@
       tags: helm
     - role: velero-cli
       tags: velero-cli
+    - role: longhorn-cli
+      tags: longhorn-cli
     - role: flux/cli
       tags:
         - flux
         - flux-cli
 
-- name: "Install k3s on rest of nodes"
-  hosts: k8s_nodes
+- name: "Install k3s on rest of masters and worker nodes"
+  hosts: k8s_master_nodes,k8s_worker_nodes
   become: true
   gather_facts: true
 
@@ -91,7 +93,7 @@
       tags: tailscale
 
 - name: "Bootstrap flux"
-  hosts: k8s_control_node
+  hosts: k8s_first_master_node
   become: true
   environment:
     KUBECONFIG: /etc/rancher/k3s/k3s.yaml
