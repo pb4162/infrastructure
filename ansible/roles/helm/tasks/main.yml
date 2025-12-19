@@ -33,3 +33,7 @@
     plugin_path: https://github.com/databus23/helm-diff
     state: present
 
+- name: "apt: Install python3-yaml"
+  ansible.builtin.apt:
+    state: present
+    name: python3-yaml
