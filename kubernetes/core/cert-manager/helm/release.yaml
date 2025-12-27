@@ -24,7 +24,7 @@ spec:
     cainjector:
       resources:
         limits:
-          memory: 64Mi
+          memory: 128Mi
     startupapicheck:
       resources:
         limits:
