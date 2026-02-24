@@ -8,3 +8,4 @@ spec:
     - ${TRAEFIK_IP}/32
     - ${PIHOLE_IP}/32
     - ${NEXTCLOUD_TALK_HPB_IP}/32
+    - ${TRAEFIK_TAILSCALE_PROXY_IP}/32
