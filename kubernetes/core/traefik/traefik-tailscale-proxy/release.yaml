@@ -115,11 +115,7 @@ spec:
                 service: tailscale-proxy-service-https
     service:
       ipFamilyPolicy: "PreferDualStack"
-      type: LoadBalancer
-      spec:
-        loadBalancerIP: "${TRAEFIK_TAILSCALE_PROXY_IP}"
-        externalTrafficPolicy: Local
-        internalTrafficPolicy: Local
+      type: ClusterIP
     # TODO: figure out how to get ts-sidecar to run with stricter permissions
     podSecurityContext:
       runAsNonRoot: false
