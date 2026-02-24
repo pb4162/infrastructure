@@ -18,6 +18,8 @@ spec:
       namespace: cert-manager
   values:
     priorityClassName: "system-cluster-critical"  # inherited from k3s HelmChart
+    deployment:
+      replicas: 2
     metrics:
       addInternals: true
       prometheus:
