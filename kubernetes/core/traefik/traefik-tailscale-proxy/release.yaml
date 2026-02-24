@@ -113,6 +113,7 @@ spec:
       spec:
         loadBalancerIP: "${TRAEFIK_TAILSCALE_PROXY_IP}"
         externalTrafficPolicy: Local
+        internalTrafficPolicy: Local
     # TODO: figure out how to get ts-sidecar to run with stricter permissions
     podSecurityContext:
       runAsNonRoot: false
