@@ -90,7 +90,6 @@ spec:
                   servers:
                     - address: traefik.traefik.svc.cluster.local:80
                       tls: true
-            services:
               tailscale-proxy-service-https:
                 loadBalancer:
                   servers:
