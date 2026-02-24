@@ -89,18 +89,16 @@ spec:
                 loadBalancer:
                   servers:
                     - address: traefik.traefik.svc.cluster.local:80
-                      tls: false
               tailscale-proxy-service-https:
                 loadBalancer:
                   servers:
                     - address: traefik.traefik.svc.cluster.local:443
-                      tls: true
             routers:
               tailscale-proxy-router-http:
                 entryPoints:
                   - web
                 rule: "HostSNI(`*`)"
-                tls: {}
+                tls: false
                 service: tailscale-proxy-service-http
               tailscale-proxy-router-https:
                 entryPoints:
