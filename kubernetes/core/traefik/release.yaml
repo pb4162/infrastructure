@@ -16,40 +16,8 @@ spec:
   dependsOn:
     - name: cert-manager
       namespace: cert-manager
-    - name: longhorn  # TODO: stateful reverse proxy?! might not be ideal
-      namespace: longhorn-system
   values:
     priorityClassName: "system-cluster-critical"  # inherited from k3s HelmChart
-    deployment:
-      additionalContainers:
-      - name: ts-sidecar
-        imagePullPolicy: Always
-        image: "ghcr.io/tailscale/tailscale:v1.92.5"
-        env:
-        - name: TS_HOSTNAME
-          value: ts-sidecar
-        - name: TS_KUBE_SECRET
-          value: ""
-        - name: TS_AUTH_ONCE
-          value: "true"
-        - name: TS_USERSPACE
-          value: "false"
-        - name: TS_DEBUG_FIREWALL_MODE
-          value: auto
-        - name: TS_STATE_DIR
-          value: /tailscale
-        envFrom:
-          - secretRef:
-              name: traefik-ts-sidecar-secret
-        securityContext:
-          privileged: true
-        volumeMounts:
-          - name: ts-sidecar-data
-            mountPath: /tailscale
-      additionalVolumes:
-        - name: ts-sidecar-data
-          persistentVolumeClaim:
-            claimName: ts-sidecar-data
     metrics:
       addInternals: true
       prometheus:
@@ -84,11 +52,6 @@ spec:
       spec:
         loadBalancerIP: "${TRAEFIK_IP}"
         externalTrafficPolicy: Local
-    # TODO: figure out how to get ts-sidecar to run with stricter permissions
-    podSecurityContext:
-      runAsNonRoot: false
-      runAsGroup: 0
-      runAsUser: 0
     ports:
       web:
         port: 80

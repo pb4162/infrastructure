@@ -1,0 +1,136 @@
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: traefik-tailscale-proxy
+  namespace: traefik
+spec:
+  chart:
+    spec:
+      chart: traefik
+      version: 37.4.0
+      sourceRef:
+        kind: HelmRepository
+        name: traefik
+      interval: 5m
+  releaseName: traefik-tailscale-proxy
+  dependsOn:
+    - name: longhorn
+      namespace: longhorn-system
+  values:
+    priorityClassName: "system-cluster-critical"  # inherited from k3s HelmChart
+    deployment:
+      additionalContainers:
+      - name: ts-sidecar
+        imagePullPolicy: Always
+        image: "ghcr.io/tailscale/tailscale:v1.92.5"
+        env:
+        - name: TS_HOSTNAME
+          value: traefik-tailscale-proxy
+        - name: TS_KUBE_SECRET
+          value: ""
+        - name: TS_AUTH_ONCE
+          value: "true"
+        - name: TS_USERSPACE
+          value: "false"
+        - name: TS_DEBUG_FIREWALL_MODE
+          value: auto
+        - name: TS_STATE_DIR
+          value: /tailscale
+        envFrom:
+          - secretRef:
+              name: traefik-tailscale-proxy-secret
+        securityContext:
+          privileged: true
+        volumeMounts:
+          - name: tailscale-data
+            mountPath: /tailscale
+      additionalVolumes:
+        - name: tailscale-data
+          persistentVolumeClaim:
+            claimName: traefik-tailscale-proxy-data
+    ingressClass:
+      enabled: false
+    gatewayClass:
+      enabled: false
+    api:
+      dashboard: false
+    metrics:
+      addInternals: true
+      prometheus:
+        serviceMonitor:
+          enabled: true
+          additionalLabels:
+            release: kube-prometheus-stack
+        prometheusRule:
+          enabled: true
+          rules:
+            - alert: TraefikDown
+              expr: up{job="traefik"} == 0
+              for: 5m
+              labels:
+                context: traefik
+                severity: warning
+              annotations:
+                summary: "Traefik Down"
+                description: "{{ $labels.pod }} on {{ $labels.nodename }} is down"
+          additionalLabels:
+            release: kube-prometheus-stack
+    providers:
+      kubernetesCRD:
+        enabled: false
+      kubernetesIngress:
+        enabled: false
+    file:
+      enabled: true
+      content: |
+        tcp:
+          services:
+            tailscale-proxy-service-http:
+              loadBalancer:
+                servers:
+                  - address: traefik.traefik.svc.cluster.local:80
+                    tls: true
+          services:
+            tailscale-proxy-service-https:
+              loadBalancer:
+                servers:
+                  - address: traefik.traefik.svc.cluster.local:443
+                    tls: true
+          routers:
+            tailscale-proxy-router-http:
+              entryPoints:
+                - web
+              rule: "HostSNI(`*`)"
+              tls: {}
+              service: tailscale-proxy-service-http
+            tailscale-proxy-router-https:
+              entryPoints:
+                - websecure
+              rule: "HostSNI(`*`)"
+              tls:
+                passthrough: true
+              service: tailscale-proxy-service-https
+    service:
+      ipFamilyPolicy: "PreferDualStack"
+      type: ClusterIP
+      spec:
+        externalTrafficPolicy: Local
+    # TODO: figure out how to get ts-sidecar to run with stricter permissions
+    podSecurityContext:
+      runAsNonRoot: false
+      runAsGroup: 0
+      runAsUser: 0
+    ports:
+      web:
+        port: 80
+      websecure:
+        port: 443
+    global:
+      sendAnonymousUsage: false
+    logs:
+      access:
+        enabled: true
+        format: common
+        fields:
+          headers:
+            defaultmode: keep
