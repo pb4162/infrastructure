@@ -113,8 +113,6 @@ spec:
     service:
       ipFamilyPolicy: "PreferDualStack"
       type: ClusterIP
-      spec:
-        externalTrafficPolicy: Local
     # TODO: figure out how to get ts-sidecar to run with stricter permissions
     podSecurityContext:
       runAsNonRoot: false
