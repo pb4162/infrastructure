@@ -80,36 +80,36 @@ spec:
         enabled: false
       kubernetesIngress:
         enabled: false
-    file:
-      enabled: true
-      content: |
-        tcp:
-          services:
-            tailscale-proxy-service-http:
-              loadBalancer:
-                servers:
-                  - address: traefik.traefik.svc.cluster.local:80
-                    tls: true
-          services:
-            tailscale-proxy-service-https:
-              loadBalancer:
-                servers:
-                  - address: traefik.traefik.svc.cluster.local:443
-                    tls: true
-          routers:
-            tailscale-proxy-router-http:
-              entryPoints:
-                - web
-              rule: "HostSNI(`*`)"
-              tls: {}
-              service: tailscale-proxy-service-http
-            tailscale-proxy-router-https:
-              entryPoints:
-                - websecure
-              rule: "HostSNI(`*`)"
-              tls:
-                passthrough: true
-              service: tailscale-proxy-service-https
+      file:
+        enabled: true
+        content: |
+          tcp:
+            services:
+              tailscale-proxy-service-http:
+                loadBalancer:
+                  servers:
+                    - address: traefik.traefik.svc.cluster.local:80
+                      tls: true
+            services:
+              tailscale-proxy-service-https:
+                loadBalancer:
+                  servers:
+                    - address: traefik.traefik.svc.cluster.local:443
+                      tls: true
+            routers:
+              tailscale-proxy-router-http:
+                entryPoints:
+                  - web
+                rule: "HostSNI(`*`)"
+                tls: {}
+                service: tailscale-proxy-service-http
+              tailscale-proxy-router-https:
+                entryPoints:
+                  - websecure
+                rule: "HostSNI(`*`)"
+                tls:
+                  passthrough: true
+                service: tailscale-proxy-service-https
     service:
       ipFamilyPolicy: "PreferDualStack"
       type: ClusterIP
