@@ -84,15 +84,21 @@ spec:
         enabled: true
         content: |
           tcp:
+            serversTransports:
+              proxy-protocol-transport:
+                proxyProtocol:
+                  version: 2
             services:
               tailscale-proxy-service-http:
                 loadBalancer:
                   servers:
                     - address: traefik.traefik.svc.cluster.local:80
+                  serversTransport: proxy-protocol-transport@file
               tailscale-proxy-service-https:
                 loadBalancer:
                   servers:
                     - address: traefik.traefik.svc.cluster.local:443
+                  serversTransport: proxy-protocol-transport@file
             routers:
               tailscale-proxy-router-http:
                 entryPoints:

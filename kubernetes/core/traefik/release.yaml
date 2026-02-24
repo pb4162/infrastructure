@@ -60,6 +60,10 @@ spec:
             to: websecure
             scheme: https
             permanent: true
+        proxyProtocol:
+          trustedIPs:
+            - 10.42.0.0/16
+            - 10.43.0.0/16
       websecure:
         port: 443
         forwardedHeaders:
@@ -68,6 +72,10 @@ spec:
             - "${PROXY_VPS_IP}"
         middlewares:
           - crowdsec-bouncer@kubernetescrd
+        proxyProtocol:
+          trustedIPs:
+            - 10.42.0.0/16
+            - 10.43.0.0/16
     tlsStore:
       default:
         defaultCertificate:
