@@ -39,6 +39,24 @@ spec:
                   memory: 20
                 targetThresholds:
                   memory: 70
+            - name: PodLifeTime
+              args:
+                maxPodLifeTimeSeconds: 86400
+                states:
+                  - "Pending"
+                  - "Unknown"
+                  - "NodeLost"
+                  - "UnexpectedAdmissionError"
+                  - "PodInitializing"
+                  - "ContainerCreating"
+                  - "ImagePullBackOff"
+                  - "CrashLoopBackOff"
+                  - "CreateContainerConfigError"
+                  - "ErrImagePull"
+                  - "ImagePullBackOff"
+                  - "CreateContainerError"
+                  - "InvalidImageName"
+                includingInitContainers: true
           plugins:
             balance:
               enabled:
@@ -49,3 +67,4 @@ spec:
                 - RemovePodsViolatingInterPodAntiAffinity
                 - RemovePodsViolatingNodeAffinity
                 - RemovePodsHavingTooManyRestarts
+                - PodLifeTime
