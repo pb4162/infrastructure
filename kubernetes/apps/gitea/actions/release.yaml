@@ -7,7 +7,7 @@ spec:
   chart:
     spec:
       chart: actions
-      version: 0.0.2
+      version: 0.0.3
       sourceRef:
         kind: HelmRepository
         name: gitea-charts
