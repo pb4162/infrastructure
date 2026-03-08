@@ -22,7 +22,7 @@ spec:
           main:
             image:
               repository: ghcr.io/tale/headplane
-              tag: 0.6.1
+              tag: 0.6.2
     service:
       main:
         enabled: true
