@@ -57,11 +57,12 @@ spec:
     ports:
       web:
         port: 80
-        redirections:
-          entryPoint:
-            to: websecure
-            scheme: https
-            permanent: true
+        http:
+          redirections:
+            entryPoint:
+              to: websecure
+              scheme: https
+              permanent: true
         proxyProtocol:
           trustedIPs:
             - 10.42.0.0/16
@@ -72,8 +73,9 @@ spec:
           trustedIPs:
             - "${PROXY_VPS_TAILSCALE_IP}"
             - "${PROXY_VPS_IP}"
-        middlewares:
-          - crowdsec-bouncer@kubernetescrd
+        http:
+          middlewares:
+            - crowdsec-bouncer@kubernetescrd
         proxyProtocol:
           trustedIPs:
             - 10.42.0.0/16
