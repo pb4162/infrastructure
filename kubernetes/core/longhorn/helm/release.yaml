@@ -45,6 +45,8 @@ spec:
     ingress:
       enabled: true
       host: longhorn.${LOCAL_ROOT_DOMAIN}
+      extraHosts:
+        - longhorn.${ROOT_DOMAIN}
       annotations:
         traefik.ingress.kubernetes.io/router.middlewares: authentik-authentik@kubernetescrd
     metrics:
