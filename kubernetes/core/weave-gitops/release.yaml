@@ -17,6 +17,9 @@ spec:
     - kind: Secret
       name: ww-gitops-values
   values:
+    image:
+      repository: ghcr.io/weaveworks/wego-app
+      tag: "v0.39.1-rc.1"
     adminUser:
       create: true
       username: admin
