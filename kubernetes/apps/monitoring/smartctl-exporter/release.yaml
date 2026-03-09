@@ -18,6 +18,13 @@ spec:
       enabled: true
       extraLabels:
         release: kube-prometheus-stack
+      attachMetadata:
+        node: true
+        relabelings:
+          - action: replace
+            sourceLabels:
+              - __meta_kubernetes_node_name
+            targetLabel: instance
     prometheusRules:
       enabled: true
       extraLabels:
