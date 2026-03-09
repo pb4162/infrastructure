@@ -126,3 +126,8 @@ spec:
              resources:
                requests:
                  storage: 110Gi
+    prometheus-node-exporter:
+      prometheus:
+        monitor:
+          attachMetadata:
+            node: true
