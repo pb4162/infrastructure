@@ -7,7 +7,7 @@ spec:
   chart:
     spec:
       chart: longhorn
-      version: 1.10.1
+      version: 1.11.0
       sourceRef:
         kind: HelmRepository
         name: longhorn
@@ -34,6 +34,7 @@ spec:
       autoCleanupRecurringJobBackupSnapshot: true
       autoCleanupSnapshotWhenDeleteBackup: true
       autoCleanupSnapshotAfterOnDemandBackupCompleted: true
+      snapshotHeavyTaskConcurrentLimit: 2
     persistence:
       defaultClassReplicaCount: 2
       reclaimPolicy: Retain
@@ -44,6 +45,8 @@ spec:
     ingress:
       enabled: true
       host: longhorn.${LOCAL_ROOT_DOMAIN}
+      extraHosts:
+        - longhorn.${ROOT_DOMAIN}
       annotations:
         traefik.ingress.kubernetes.io/router.middlewares: authentik-authentik@kubernetescrd
     metrics:
