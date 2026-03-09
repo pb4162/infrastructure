@@ -17,6 +17,9 @@ data:
           enabled: true
         prometheusRule:
           enabled: true
+          excludeRules:
+            - CNPGClusterHACritical
+            - CNPGClusterHAWarning
       additionalLabels:
         release: kube-prometheus-stack
       superuserSecret: cnpg-superuser-secret
