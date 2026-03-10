@@ -24,7 +24,7 @@ spec:
               repository: vaultwarden/server
               tag: 1.35.4
             env:
-              DOMAIN: vaultwarden.${ROOT_DOMAIN}
+              DOMAIN: https://vaultwarden.${ROOT_DOMAIN}
               SIGNUPS_ALLOWED: false
               SIGNUPS_VERIFY: true
               PUSH_ENABLED: true
