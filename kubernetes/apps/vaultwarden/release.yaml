@@ -39,6 +39,9 @@ spec:
             env:
               BACKUP_KEEP_DAYS: 30
               CRON: "0 0 * * *"
+            envFrom:
+              - secretRef:
+                  name: vaultwarden-backup-secret
     service:
       main:
         enabled: true
