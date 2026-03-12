@@ -54,5 +54,6 @@
     hour: "0"
     user: "{{ acme_cron_user }}"
     job: >-
+      PATH=$PATH:/usr/bin:/usr/local/bin
       acme.sh --cron
       --home {{ acme_home | quote }}
