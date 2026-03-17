@@ -1,0 +1,4 @@
+- name: "Add ssh key"
+  ansible.posix.authorized_key:
+    key: "{{ ssh_key }}"
+    user: "{{ ansible_user }}"
