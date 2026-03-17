@@ -1,27 +1,16 @@
-- name: "Install crowdsec and crowdsec-firewall-bouncer"
-  community.general.openbsd_pkg:
-    name:
-      - crowdsec
-      - crowdsec-firewall-bouncer
-    state: present
+- name: Do Debian-specific install tasks
+  ansible.builtin.import_tasks: install_debian.yml
+  when: ansible_distribution | lower == "debian"
 
-- name: "Enable and start crowdsec service"
-  ansible.builtin.service:
-    name: crowdsec
-    enabled: true
-    state: started
-
-- name: "Enable and start crowdsec-firewall-bouncer service"
-  ansible.builtin.service:
-    name: crowdsec_firewall_bouncer
-    enabled: true
-    state: started
+- name: Do OpenBSD-specific install tasks
+  ansible.builtin.import_tasks: install_debian.yml
+  when: ansible_distribution | lower == "openbsd"
 
 - name: "Pull updates from crowdsec hub"
   ansible.builtin.shell: cscli hub update
   register: hub_update_info
   changed_when: ("Nothing to do" not in hub_update_info.stdout)
-  notify: Restart crowdsec
+  notify: "Restart crowdsec ({{ ansible_distribution | lower }})"
 
 - name: "Enroll in crowdsec console under name: {{ crowdsec_console_name }}"
   ansible.builtin.shell: >-
@@ -33,9 +22,11 @@
     {% endif %}
   register: console_enroll_info
   changed_when: ("Instance already enrolled" not in console_enroll_info.stderr)
-  notify: Restart crowdsec
+  notify: "Restart crowdsec ({{ ansible_distribution | lower }})"
 
-- block:
+- name: "Register new firewall bouncer on OpenBSD only"
+  when: (ansible_distribution | lower == "openbsd")
+  block:
   - name: "Create firewall bouncer with cscli"
     ansible.builtin.shell: >-
       cscli bouncers add {{ crowdsec_firewall_bouncer_name | quote }} -o json
@@ -46,25 +37,41 @@
   - name: "Get firewall bouncer API key"
     ansible.builtin.set_fact:
       crowdsec_firewall_bouncer_api_key: "{{ crowdsec_firewall_bouncer_add_info.stdout | from_json }}"
-  when: (crowdsec_firewall_bouncer_api_key is undefined)
+    when: |
+      ("already exists" not in crowdsec_firewall_bouncer_add_info.stderr
+      and crowdsec_firewall_bouncer_api_key is undefined)
 
-- name: "Replace ${API_KEY} in firewall bouncer config with API key"
-  ansible.builtin.replace:
-    backup: true
-    path: /etc/crowdsec-firewall-bouncer/crowdsec-firewall-bouncer.yaml
-    regexp: "\\${API_KEY}"
-    replace: "{{ crowdsec_firewall_bouncer_api_key }}"
-  notify:
-    - Restart crowdsec-firewall-bouncer
-    - Restart crowdsec
+  - name: "Set crowdsec_firewall_bouncer_config_path"
+    ansible.builtin.set_fact:
+      crowdsec_firewall_bouncer_config_path: >-
+        {{
+          "/etc/crowdsec-firewall-bouncer/crowdsec-firewall-bouncer.yaml" if ansible_distribution | lower == "openbsd"
+          else "/etc/crowdsec/bouncers/crowdsec-firewall-bouncer.yaml" if ansible_distribution | lower == "debian"
+        }}
+
+  - name: "Replace ${API_KEY} in firewall bouncer config with API key"
+    ansible.builtin.replace:
+      backup: true
+      path: "{{ crowdsec_firewall_bouncer_config_path }}"
+      regexp: "\\${API_KEY}"
+      replace: "{{ crowdsec_firewall_bouncer_api_key }}"
+    notify:
+      - "Restart crowdsec-firewall-bouncer ({{ ansible_distribution | lower }})"
+      - "Restart crowdsec ({{ ansible_distribution | lower }})"
+    when: (crowdsec_firewall_bouncer_api_key is defined)
 
 - name: "Install collections, parsers, etc. from crowdsec hub"
   ansible.builtin.shell: |
     cscli {{ item.type }}s install {{ item.name | quote }}
   register: crowdsec_hub_install_info
-  changed_when: ("Nothing to do" not in crowdsec_hub_install_info.stdout)
+  changed_when: >-
+    (
+      (ansible_distribution | lower == "openbsd" and "Nothing to do" not in crowdsec_hub_install_info.stdout)
+      or
+      (ansible_distribution | lower == "debian" and "Nothing to install" not in crowdsec_hub_install_info.stdout)
+    )
   loop: "{{ crowdsec_hub_items }}"
-  notify: Restart crowdsec
+  notify: "Restart crowdsec ({{ ansible_distribution | lower }})"
 
 - name: "Install acquisitions"
   ansible.builtin.copy:
@@ -74,4 +81,4 @@
   loop: "{{ crowdsec_acquisitions | dict2items }}"
   loop_control:
     label: "{{ item.key }}"
-  notify: "Restart crowdsec"
+  notify: "Restart crowdsec ({{ ansible_distribution | lower }})"

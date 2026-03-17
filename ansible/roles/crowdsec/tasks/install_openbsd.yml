@@ -1,0 +1,18 @@
+- name: "Install crowdsec and crowdsec-firewall-bouncer"
+  community.general.openbsd_pkg:
+    name:
+      - crowdsec
+      - crowdsec-firewall-bouncer
+    state: present
+
+- name: "Enable and start crowdsec service"
+  ansible.builtin.service:
+    name: crowdsec
+    enabled: true
+    state: started
+
+- name: "Enable and start crowdsec_firewall_bouncer service"
+  ansible.builtin.service:
+    name: crowdsec_firewall_bouncer
+    enabled: true
+    state: started

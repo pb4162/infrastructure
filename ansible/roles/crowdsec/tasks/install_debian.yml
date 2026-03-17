@@ -1,0 +1,51 @@
+- name: "Install debian-archive-keyring, gnupg and apt-transport-https"
+  ansible.builtin.apt:
+    state: present
+    name:
+      - debian-archive-keyring
+      - gnupg
+      - apt-transport-https
+
+- name: "Create /etc/apt/keyrings"
+  ansible.builtin.file:
+    path: /etc/apt/keyrings
+    state: directory
+
+- name: "Add apt repository key"
+  ansible.builtin.get_url:
+    url: https://packagecloud.io/crowdsec/crowdsec/gpgkey
+    dest: /etc/apt/keyrings/crowdsec_crowdsec-archive-keyring.gpg
+    mode: 0644
+
+- name: "Add crowdsec apt repository"
+  ansible.builtin.apt_repository:
+    repo: |
+      deb [signed-by=/etc/apt/keyrings/crowdsec_crowdsec-archive-keyring.gpg] https://packagecloud.io/crowdsec/crowdsec/any any main
+      deb-src [signed-by=/etc/apt/keyrings/crowdsec_crowdsec-archive-keyring.gpg] https://packagecloud.io/crowdsec/crowdsec/any any main
+    state: present
+    filename: crowdsec_crowdsec
+  register: crowdsec_apt_repo_info
+
+- name: "apt: Update"
+  ansible.builtin.apt:
+    update_cache: yes
+  when: crowdsec_apt_repo_info.changed is true
+
+- name: "Install crowdsec and crowdsec-firewall-bouncer"
+  ansible.builtin.apt:
+    name:
+      - crowdsec
+      - crowdsec-firewall-bouncer
+    state: present
+
+- name: "Enable and start crowdsec service"
+  ansible.builtin.systemd_service:
+    name: crowdsec
+    enabled: true
+    state: started
+
+- name: "Enable and start crowdsec-firewall-bouncer service"
+  ansible.builtin.systemd_service:
+    name: crowdsec-firewall-bouncer
+    enabled: true
+    state: started

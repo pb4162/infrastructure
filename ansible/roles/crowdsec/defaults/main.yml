@@ -1,3 +1,4 @@
 crowdsec_enrollment_overwrite: false
 crowdsec_firewall_bouncer_name: crowdsec-firewall-bouncer
 crowdsec_hub_items: []
+crowdsec_acquisitions: {}
