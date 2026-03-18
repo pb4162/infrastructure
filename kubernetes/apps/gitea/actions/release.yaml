@@ -21,7 +21,6 @@ spec:
           container:
             valid_volumes:
             - /var/run/docker.sock
-            options: -v /var/run/docker.sock:/var/run/docker.sock
     existingSecret: gitea-actions-secret
     existingSecretKey: REGISTRATION_TOKEN
     giteaRootURL: https://gitea.${ROOT_DOMAIN}
