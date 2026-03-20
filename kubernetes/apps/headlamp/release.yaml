@@ -50,6 +50,9 @@ spec:
       - name: plugins-dir
         persistentVolumeClaim:
           claimName: headlamp
+    securityContext:
+      fsGroup: 101
+      fsGroupChangePolicy: "OnRootMismatch"
     ingress:
       enabled: true
       hosts:
