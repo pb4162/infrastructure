@@ -1,6 +1,6 @@
 - name: "Run flux pre-checks"
   ansible.builtin.shell: >-
-    KUBECONFIG=.kube/config flux check --pre
+    KUBECONFIG=/root/.kube/config flux check --pre
   changed_when: false
 
 - name: "Create sops-age secret"
@@ -18,13 +18,13 @@
 
 - name: "Check if flux has already been installed to cluster"
   ansible.builtin.shell: >-
-    KUBECONFIG=.kube/config flux check
+    KUBECONFIG=/root/.kube/config flux check
   register: flux_check
   changed_when: false
 
 - name: "Install flux to cluster"
   ansible.builtin.shell: >-
-    KUBECONFIG=.kube/config \
+    KUBECONFIG=/root/.kube/config \
     {{ flux_repo_provider | upper }}_TOKEN={{ flux_token }} \
     flux bootstrap {{ flux_repo_provider }} \
       --token-auth \
