@@ -50,7 +50,7 @@ spec:
       - name: plugins-dir
         persistentVolumeClaim:
           claimName: headlamp
-    securityContext:
+    podSecurityContext:
       fsGroup: 101
       fsGroupChangePolicy: "OnRootMismatch"
     ingress:
