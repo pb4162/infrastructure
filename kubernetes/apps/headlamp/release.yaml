@@ -51,8 +51,6 @@ spec:
         persistentVolumeClaim:
           claimName: headlamp
     securityContext:
-      runAsUser: 101
-      runAsGroup: 101
       fsGroup: 101
       fsGroupChangePolicy: "OnRootMismatch"
     ingress:
