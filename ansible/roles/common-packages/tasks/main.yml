@@ -9,6 +9,7 @@
       - curl
       - git
       - smartmontools
+      - sysstat
   when: ansible_distribution | lower == "debian"
 
 - name: Install common packages for OpenBSD
