@@ -89,10 +89,10 @@ data:
           siteMonitor: http://portainer.portainer.svc.cluster.local:9000
           icon: portainer.svg
           description: Container management
-      - Minio:
-          href: https://minio.${LOCAL_ROOT_DOMAIN}
-          siteMonitor: http://minio.minio.svc.cluster.local:9000
-          icon: minio.svg
+      - Garage:
+          href: https://garage.${LOCAL_ROOT_DOMAIN}
+          siteMonitor: http://garage.garage.svc.cluster.local:3909
+          icon: garage.svg
           description: Object storage
       - Crowdsec:
           href: https://crowdsec.${LOCAL_ROOT_DOMAIN}
