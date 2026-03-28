@@ -109,6 +109,7 @@ spec:
           http:
             tls_config:
               insecure_skip_verify: true
+              server_name: ${ROOT_DOMAIN}
     serviceMonitor:
       selfMonitor:
         enabled: true
