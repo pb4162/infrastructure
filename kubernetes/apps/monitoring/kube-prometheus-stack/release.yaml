@@ -98,6 +98,10 @@ spec:
             params:
               module: [http_2xx]
             relabel_configs:
+              # TODO: healthcheck for fluxcd webhook?
+              - source_labels: [__address__]
+                regex: flux-webhook.${ROOT_DOMAIN}
+                action: drop
               - source_labels: [__meta_kubernetes_ingress_path]
                 target_label: __tmp_path
               - source_labels: [
