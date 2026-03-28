@@ -101,7 +101,7 @@ spec:
               - source_labels: [__meta_kubernetes_ingress_path]
                 target_label: __tmp_path
               - source_labels: [
-                  __meta_kubernetes_ingress_annotation_blackbox-exporter_pb4162_dev_path
+                  __meta_kubernetes_ingress_annotation_blackbox_exporter_pb4162_dev_path
                   ]
                 regex: (.+)
                 target_label: __tmp_path
