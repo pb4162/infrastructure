@@ -118,11 +118,11 @@ spec:
       defaults:
         labels:
           release: kube-prometheus-stack
-      targets:
-        - name: pb4162-dev
-          url: https://pb4162.dev
-          interval: 10s
-          scrapeTimeout: 10s
-          module: http_2xx
+      # targets:
+      #   - name: pb4162-dev
+      #     url: https://pb4162.dev
+      #     interval: 10s
+      #     scrapeTimeout: 10s
+      #     module: http_2xx
     configReloader:
       enabled: true
