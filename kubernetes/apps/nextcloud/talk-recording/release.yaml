@@ -54,6 +54,7 @@ spec:
         enabled: true
         annotations:
           traefik.ingress.kubernetes.io/router.middlewares: nextcloud-nextcloud-talk-hpb@kubernetescrd
+          blackbox-exporter.pb4162.dev/path: /api/v1/welcome
         tls:
           - secretName: nextcloud-pb4162-dev-tls
             hosts:
