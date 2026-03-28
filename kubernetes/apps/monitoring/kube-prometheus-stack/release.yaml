@@ -98,7 +98,11 @@ spec:
             params:
               module: [http_2xx]
             relabel_configs:
-
+              - source_labels: [
+                  __meta_kubernetes_ingress_annotation_blackbox-exporter_pb4162_dev_path
+                  ]
+                regex: (.+)
+                target_label: __meta_kubernetes_ingress_path
               - source_labels:
                   [
                     __meta_kubernetes_ingress_scheme,
