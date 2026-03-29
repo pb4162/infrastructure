@@ -1,0 +1,34 @@
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: pve-exporter
+  namespace: monitoring
+spec:
+  chart:
+    spec:
+      chart: app-template
+      version: 4.6.2
+      sourceRef:
+        kind: HelmRepository
+        name: bjw-s
+        namespace: flux-system
+      interval: 5m
+  releaseName: pve-exporter
+  values:
+    controllers:
+      main:
+        type: statefulset
+        containers:
+          main:
+            image:
+              repository: prometheus-pve/prometheus-pve-exporter
+              tag: 3.8.2
+    service:
+      main:
+        controller: main
+        labels:
+          app: pve-exporter
+        ports:
+          metrics:
+            port: 9221
+            protocol: TCP
