@@ -157,6 +157,17 @@ data:
             enableBlocks: true
             enableUser: true
             showEpisodeNumber: true
+      - Navidrome:
+          href: https://navidrome.${LOCAL_ROOT_DOMAIN}
+          siteMonitor: http://navidrome.navidrome.svc.cluster.local:4533
+          icon: navidrome.svg
+          description: Music library
+          widget:
+            type: navidrome
+            url: http://navidrome.navidrome.svc.cluster.local:4533
+            user: "{{HOMEPAGE_VAR_NAVIDROME_USER}}"
+            token: "{{HOMEPAGE_VAR_NAVIDROME_TOKEN}}"
+            salt: "{{HOMEPAGE_VAR_NAVIDROME_SALT}}"
       - AudioBookShelf:
           href: https://audiobookshelf.${LOCAL_ROOT_DOMAIN}
           siteMonitor: http://audiobookshelf.audiobookshelf.svc.cluster.local:13378
