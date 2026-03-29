@@ -79,7 +79,7 @@ spec:
       prometheusSpec:
         scrapeInterval: "60s"
         maximumStartupDurationSeconds: 1200
-        retentionSize: 108GB
+        retentionSize: 250GB
         persistentVolumeClaimRetentionPolicy:
           whenDeleted: Retain
           whenScaled: Retain
@@ -132,7 +132,7 @@ spec:
              accessModes: ["ReadWriteOnce"]
              resources:
                requests:
-                 storage: 110Gi
+                 storage: 256Gi
     prometheus-node-exporter:
       prometheus:
         monitor:
