@@ -21,7 +21,7 @@ spec:
         containers:
           main:
             image:
-              repository: prometheus-pve/prometheus-pve-exporter
+              repository: ghcr.io/prometheus-pve/prometheus-pve-exporter
               tag: 3.8.2
     service:
       main:
