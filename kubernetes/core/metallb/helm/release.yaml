@@ -37,3 +37,7 @@ spec:
         enabled: true
         additionalLabels:
           release: kube-prometheus-stack
+        addressPoolExhausted:
+          enabled: false
+        addressPoolUsage:
+          enabled: false
