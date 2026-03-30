@@ -32,3 +32,11 @@ spec:
           metrics:
             port: 9221
             protocol: TCP
+    persistence:
+      config:
+        enabled: true
+        type: secret
+        name: pve-exporter-secret
+        globalMounts:
+          - subPath: pve.yml
+            path: /etc/prometheus/pve.yml
