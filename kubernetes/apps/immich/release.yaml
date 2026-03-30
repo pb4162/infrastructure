@@ -64,7 +64,7 @@ spec:
             main:
               image:
                 repository: ghcr.io/immich-app/immich-server
-                tag: v2.6.2
+                tag: v2.6.3
       persistence:
         nextcloud:
           existingClaim: nextcloud
@@ -91,7 +91,7 @@ spec:
             main:
               image:
                 repository: ghcr.io/immich-app/immich-machine-learning
-                tag: v2.6.2-openvino
+                tag: v2.6.3-openvino
       persistence:
         cache:
           enabled: true
