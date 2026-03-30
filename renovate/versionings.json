@@ -1,0 +1,8 @@
+{
+  "packageRules": [
+    {
+      "matchPackageNames": ["/aio-talk/", "/aio-talk-recording/"],
+      "versioning": "regex:^\\d{8}_\\d{6}$"
+    }
+  ]
+}
