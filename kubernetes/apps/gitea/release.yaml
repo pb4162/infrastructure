@@ -17,6 +17,8 @@ spec:
     - kind: Secret
       name: gitea-values
   values:
+    strategy:
+      type: Recreate
     ingress:
       enabled: true
       hosts:
