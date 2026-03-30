@@ -18,6 +18,8 @@ spec:
       namespace: longhorn-system
   values:
     priorityClassName: "system-cluster-critical"  # inherited from k3s HelmChart
+    updateStrategy:
+      type: Recreate
     deployment:
       additionalContainers:
       - name: ts-sidecar
