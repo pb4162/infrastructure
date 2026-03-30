@@ -23,3 +23,6 @@ spec:
         - "1"
       node:
         - "1"
+    relabelings:
+      - sourceLabels: [__param_target]
+        targetLabel: instance
