@@ -16,7 +16,7 @@ spec:
   values:
     resources:
       limits:
-        memory: 750Mi
+        memory: 1200Mi
     hostNetwork: true
     ingress:
       enabled: true
