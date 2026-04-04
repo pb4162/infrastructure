@@ -26,7 +26,7 @@ spec:
     fluentbit:
       resources:
         limits:
-          memory: 400Mi
+          memory: 600Mi
       output:
         loki:
           enable: true
