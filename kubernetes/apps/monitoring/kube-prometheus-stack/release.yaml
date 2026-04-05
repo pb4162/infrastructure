@@ -75,6 +75,7 @@ spec:
         enabled: true
         annotations:
           traefik.ingress.kubernetes.io/router.middlewares: monitoring-prometheus-basic-auth@kubernetescrd
+          blackbox-exporter.pb4162.dev/auth: true
         hosts:
           - prometheus.${LOCAL_ROOT_DOMAIN}
           - prometheus.${ROOT_DOMAIN}
@@ -105,6 +106,10 @@ spec:
               - source_labels: [__address__]
                 regex: flux-webhook.${ROOT_DOMAIN}
                 action: drop
+              - source_labels: [__meta_kubernetes_ingress_annotation_blackbox_exporter_pb4162_dev_auth]
+                regex: "true"
+                target_label: __param_module
+                replacement: http_2xx_auth
               - source_labels: [__meta_kubernetes_ingress_path]
                 target_label: __tmp_path
               - source_labels: [
