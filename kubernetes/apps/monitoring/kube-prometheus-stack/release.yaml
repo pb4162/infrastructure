@@ -82,6 +82,7 @@ spec:
         scrapeInterval: "60s"
         maximumStartupDurationSeconds: 1200
         retentionSize: 250GB
+        retention: 60d
         persistentVolumeClaimRetentionPolicy:
           whenDeleted: Retain
           whenScaled: Retain
