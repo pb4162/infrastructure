@@ -13,6 +13,9 @@ spec:
         name: prometheus-community
       interval: 5m
   releaseName: prometheus-blackbox-exporter
+  valuesFrom:
+    - kind: Secret
+      name: blackbox-exporter-values
   values:
     prometheusRule:
       enabled: true
@@ -106,6 +109,10 @@ spec:
     config:
       modules:
         http_2xx:
+          http:
+            tls_config:
+              insecure_skip_verify: true
+        http_2xx_auth:
           http:
             tls_config:
               insecure_skip_verify: true
