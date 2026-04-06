@@ -27,6 +27,9 @@ spec:
       resources:
         limits:
           memory: 600Mi
+      input:
+        tail:
+          multilineParser: "docker, cri"
       output:
         loki:
           enable: true
