@@ -30,6 +30,10 @@ spec:
       input:
         tail:
           multilineParser: "docker, cri"
+        fluentBitMetrics:
+          scrapeInterval: "2"
+          scrapeOnStart: true
+          tag: "fb.metrics"
       output:
         loki:
           enable: true
@@ -40,3 +44,10 @@ spec:
             - "container=$kubernetes['container_name']"
             - "namespace=$kubernetes['namespace_name']"
             - "pod=$kubernetes['pod_name']"
+        prometheusMetricsExporter:
+          match: "fb.metrics"
+          metricsExporter:
+            host: "0.0.0.0"
+            port: 2020
+            addLabels:
+              app: "fluentbit"
