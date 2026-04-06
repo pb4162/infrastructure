@@ -113,7 +113,9 @@ spec:
             tls_config:
               insecure_skip_verify: true
         http_2xx_auth:
+          prober: http
           http:
+            follow_redirects: true
             tls_config:
               insecure_skip_verify: true
     serviceMonitor:
