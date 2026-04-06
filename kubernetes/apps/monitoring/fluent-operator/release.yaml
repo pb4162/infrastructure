@@ -54,3 +54,5 @@ spec:
       filter:
         multiline:
           enable: true
+        containerd:
+          enable: false
