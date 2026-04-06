@@ -51,3 +51,6 @@ spec:
             port: 2020
             addLabels:
               app: "fluentbit"
+      filter:
+        multiline:
+          enable: true
