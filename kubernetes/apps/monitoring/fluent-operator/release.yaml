@@ -56,3 +56,5 @@ spec:
           enable: true
         containerd:
           enable: false
+        systemd:
+          enable: false
