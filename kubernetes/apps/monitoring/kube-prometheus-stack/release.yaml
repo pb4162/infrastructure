@@ -114,6 +114,10 @@ spec:
                 regex: "true"
                 target_label: __param_module
                 replacement: http_2xx_auth
+              - source_labels: [__address__]
+                regex: https?://.+
+                replacement: $${1}
+                target_label: __param_target
               - source_labels: [__meta_kubernetes_ingress_path]
                 target_label: __tmp_path
               - source_labels: [
