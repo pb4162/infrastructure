@@ -101,9 +101,7 @@ spec:
             static_configs:
               - targets:
                   # external
-                  - https://status.${ROOT_DOMAIN}
-                labels:
-                  __metrics_path__: /
+                  - https://status.${ROOT_DOMAIN}/
             metrics_path: /probe
             params:
               module: [http_2xx]
