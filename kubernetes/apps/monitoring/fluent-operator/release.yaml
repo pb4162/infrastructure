@@ -58,3 +58,6 @@ spec:
           enable: false
         systemd:
           enable: false
+        kubernetes:
+          mergeLog: true
+          mergeLogKey: log
