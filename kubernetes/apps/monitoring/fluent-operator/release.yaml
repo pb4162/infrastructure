@@ -29,7 +29,7 @@ spec:
           memory: 600Mi
       input:
         tail:
-          multilineParser: "docker, cri"
+          multilineParser: "cri"
         fluentBitMetrics:
           scrapeInterval: "2"
           scrapeOnStart: true
