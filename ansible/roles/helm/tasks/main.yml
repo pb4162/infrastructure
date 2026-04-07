@@ -17,10 +17,16 @@
     state: present
 
 - name: "apt: Add helm apt repository"
-  ansible.builtin.apt_repository:
-    repo: "deb https://packages.buildkite.com/helm-linux/helm-debian/any/ any main"
+  ansible.builtin.deb822_repository:
     state: present
-    filename: helm
+    enabled: true
+    name: helm
+    trusted: true
+    uris: https://packages.buildkite.com/helm-linux/helm-debian/any/
+    signed_by: /etc/apt/trusted.gpg.d/helm.asc
+    suites: any
+    components:
+      - main
 
 - name: "apt: Install helm"
   ansible.builtin.apt:
