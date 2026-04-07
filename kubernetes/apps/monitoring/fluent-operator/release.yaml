@@ -52,12 +52,6 @@ spec:
             addLabels:
               app: "fluentbit"
       filter:
-        multiline:
-          enable: true
-        containerd:
-          enable: false
-        systemd:
-          enable: false
         kubernetes:
           mergeLog: true
           mergeLogKey: log
