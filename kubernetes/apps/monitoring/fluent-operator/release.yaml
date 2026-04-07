@@ -30,6 +30,7 @@ spec:
       input:
         tail:
           multilineParser: "cri"
+          parser: cri
         fluentBitMetrics:
           scrapeInterval: "2"
           scrapeOnStart: true
