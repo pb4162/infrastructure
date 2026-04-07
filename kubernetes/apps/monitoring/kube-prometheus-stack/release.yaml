@@ -115,7 +115,7 @@ spec:
                 target_label: __param_module
                 replacement: http_2xx_auth
               - source_labels: [__address__]
-                regex: https?://.+
+                regex: (https?://.+)
                 replacement: $${1}
                 target_label: __param_target
               - source_labels: [__meta_kubernetes_ingress_path]
