@@ -52,9 +52,3 @@ spec:
             port: 2020
             addLabels:
               app: "fluentbit"
-      filter:
-        kubernetes:
-          mergeLog: true
-          mergeLogKey: log
-          keepLog: false
-          mergeParser: cri
