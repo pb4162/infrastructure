@@ -2,7 +2,8 @@
   "packageRules": [
     {
       "matchPackageNames": ["/aio-talk/", "/aio-talk-recording/"],
-      "versioning": "regex:^(?<major>\\d{8})_(?<minor>\\d{6})$"
+      "versioning": "regex:^(?<major>\\d{8})_(?<minor>\\d{6})$",
+      "maxMajorIncrement": 0
     }
   ]
 }
