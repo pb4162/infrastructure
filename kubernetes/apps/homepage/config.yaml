@@ -258,3 +258,8 @@ data:
             url: http://freshrss.freshrss.svc.cluster.local:80
             username: "{{HOMEPAGE_VAR_FRESHRSS_USERNAME}}"
             password: "{{HOMEPAGE_VAR_FRESHRSS_PASSWORD}}"
+      - IT-Tools:
+          href: https://it-tools.${LOCAL_ROOT_DOMAIN}
+          siteMonitor: http://it-tools.it-tools.svc.cluster.local:80
+          icon: it-tools.svg
+          description: Miscellaneous assortment of tools
