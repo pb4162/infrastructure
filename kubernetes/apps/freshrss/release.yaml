@@ -1,0 +1,73 @@
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: freshrss
+  namespace: freshrss
+spec:
+  chart:
+    spec:
+      chart: app-template
+      version: 4.6.2
+      sourceRef:
+        kind: HelmRepository
+        name: bjw-s
+        namespace: flux-system
+      interval: 5m
+  releaseName: freshrss
+  values:
+    controllers:
+      main:
+        enabled: true
+        containers:
+          main:
+            image:
+              repository: freshrss/freshrss
+              tag: 1.28.1
+            env:
+              # TODO: can't use cluster-secrets as it's in another namespace
+              TZ: ${TIMEZONE}
+              CRON_MIN: "1,31"
+    service:
+      main:
+        enabled: true
+        controller: main
+        ports:
+          http:
+            enabled: true
+            port: 80
+            targetPort: 80
+    ingress:
+      main:
+        enabled: true
+        hosts:
+          - host: freshrss.${LOCAL_ROOT_DOMAIN}
+            paths:
+              - path: /
+                pathType: Prefix
+                service:
+                  name: freshrss
+                  port: 80
+          - host: freshrss.${ROOT_DOMAIN}
+            paths:
+              - path: /
+                pathType: Prefix
+                service:
+                  name: freshrss
+                  port: 80
+    persistence:
+      data:
+        enabled: true
+        type: persistentVolumeClaim
+        accessMode: ReadWriteOnce
+        size: 15Gi
+        globalMounts:
+          - path: /var/www/FreshRSS/data
+            readOnly: false
+      extensions:
+        enabled: true
+        type: persistentVolumeClaim
+        accessMode: ReadWriteOnce
+        size: 5Gi
+        globalMounts:
+          - path: /var/www/FreshRSS/extensions
+            readOnly: false
