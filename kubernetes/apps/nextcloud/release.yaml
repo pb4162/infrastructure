@@ -53,10 +53,10 @@ spec:
           group = www-data
           listen = 127.0.0.1:9000
           pm = static
-          pm.max_children = 108
-          pm.start_servers = 27
-          pm.min_spare_servers = 27
-          pm.max_spare_servers = 81
+          pm.max_children = 24
+          pm.start_servers = 6
+          pm.min_spare_servers = 6
+          pm.max_spare_servers = 18
         zz-memory_limit.ini: |-
           memory_limit=1G
         zz-opcache.ini: |-
