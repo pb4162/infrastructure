@@ -59,6 +59,8 @@ spec:
           pm.max_spare_servers = 18
         zz-memory_limit.ini: |-
           memory_limit=1G
+        zz-apc.ini: |-
+          apc.shm_size=128M
         zz-opcache.ini: |-
           opcache.jit_buffer_size = 128M
           opcache.interned_strings_buffer = 64
