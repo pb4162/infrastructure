@@ -62,6 +62,20 @@ http {
 }
 
 
+stream {
+  log_format stream_basic '$remote_addr [$time_local] '
+           '$protocol $status '
+           '$bytes_sent $bytes_received '
+           '$session_time '
+           '"$upstream_addr"';
+
+  access_log /var/log/nginx/stream_access.log stream_basic;
+  error_log  /var/log/nginx/stream_error.log error;
+
+  include /etc/nginx/stream.conf.d/*.conf;
+}
+
+
 #mail {
 #	# See sample authentication script at:
 #	# http://wiki.nginx.org/ImapAuthenticateWithApachePhpScript

@@ -39,7 +39,19 @@
     validate: nginx -t -c %s
   notify: "Restart nginx ({{ ansible_distribution | lower }})"
 
+- name: "Install proxy_params config file"
+  ansible.builtin.copy:
+    backup: true
+    content: "{{ nginx_proxy_params_config }}"
+    dest: "/etc/nginx/proxy_params"
+  notify: "Restart nginx ({{ ansible_distribution | lower }})"
+
 - name: "Remove /etc/nginx/sites-available/default if present"
+  ansible.builtin.file:
+    path: /etc/nginx/sites-available/default
+    state: absent
+
+- name: "Remove /etc/nginx/sites-enabled/default if present"
   ansible.builtin.file:
     path: /etc/nginx/sites-available/default
     state: absent
@@ -47,6 +59,11 @@
 - name: "Create /etc/nginx/conf.d directory"
   ansible.builtin.file:
     path: /etc/nginx/conf.d
+    state: directory
+
+- name: "Create /etc/nginx/stream.conf.d directory"
+  ansible.builtin.file:
+    path: /etc/nginx/stream.conf.d
     state: directory
 
 - name: "Install conf.d files"
@@ -58,3 +75,14 @@
   loop_control:
     label: "{{ item.key }}"
   notify: "Restart nginx ({{ ansible_distribution | lower }})"
+
+- name: "Install stream.conf.d files"
+  ansible.builtin.copy:
+    backup: true
+    content: "{{ item.value }}"
+    dest: "/etc/nginx/stream.conf.d/{{ item.key }}.conf"
+  loop: "{{ nginx_stream_configs | dict2items }}"
+  loop_control:
+    label: "{{ item.key }}"
+  notify: "Restart nginx ({{ ansible_distribution | lower }})"
+
