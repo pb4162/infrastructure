@@ -6,7 +6,7 @@ metadata:
   namespace: flux-system
 spec:
   interval: 5m0s
-  url: https://github.com/pb4162/k8s-private
+  url: https://github.com/pb4162/infrastructure-private
   ref:
     branch: main
   secretRef:
