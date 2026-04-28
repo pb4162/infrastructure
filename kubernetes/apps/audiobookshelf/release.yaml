@@ -22,7 +22,7 @@ spec:
           main:
             image:
               repository: ghcr.io/advplyr/audiobookshelf
-              tag: 2.33.1
+              tag: 2.34.0
             env:
               # TODO: can't use cluster-secrets as it's in another namespace
               TZ: ${TIMEZONE}
