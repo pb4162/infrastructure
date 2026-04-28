@@ -23,7 +23,7 @@ spec:
       resizerReplicaCount: 2
       snapshotterReplicaCount: 2
     defaultSettings:
-      backupTargetCredentialSecret: cifs-secret
+      backupTargetCredentialSecret: s3-secret
       defaultDataLocality: best-effort
       replicaAutoBalance: least-effort
       defaultReplicaCount: 2
