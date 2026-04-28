@@ -22,8 +22,9 @@ spec:
       provisionerReplicaCount: 2
       resizerReplicaCount: 2
       snapshotterReplicaCount: 2
-    defaultSettings:
+    defaultBackupStore:
       backupTargetCredentialSecret: s3-secret
+    defaultSettings:
       defaultDataLocality: best-effort
       replicaAutoBalance: least-effort
       defaultReplicaCount: 2
