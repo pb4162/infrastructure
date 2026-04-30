@@ -1,0 +1,21 @@
+apiVersion: monitoring.coreos.com/v1alpha1
+kind: ScrapeConfig
+metadata:
+  name: node-exporter-podman-scrape-config
+  namespace: monitoring
+  labels:
+    release: kube-prometheus-stack
+spec:
+  jobName: node-exporter-podman
+  scrapeInterval: 20s
+  metricsPath: /metrics
+  staticConfigs:
+    - targets:
+        - "node-exporter.podman.${ROOT_DOMAIN}"
+  basicAuth:
+    username:
+      name: node-exporter-podman-basic-auth
+      key: username
+    password:
+      name: node-exporter-podman-basic-auth
+      key: password
