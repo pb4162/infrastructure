@@ -1,0 +1,21 @@
+apiVersion: monitoring.coreos.com/v1alpha1
+kind: ScrapeConfig
+metadata:
+  name: smartctl-exporter-proxmox-scrape-config
+  namespace: monitoring
+  labels:
+    release: kube-prometheus-stack
+spec:
+  jobName: smartctl-exporter-proxmox
+  scrapeInterval: 20s
+  metricsPath: /metrics
+  staticConfigs:
+    - targets:
+        - "smartctl-exporter.proxmox.${ROOT_DOMAIN}"
+  basicAuth:
+    username:
+      name: smartctl-exporter-proxmox-basic-auth
+      key: username
+    password:
+      name: smartctl-exporter-proxmox-basic-auth
+      key: password
