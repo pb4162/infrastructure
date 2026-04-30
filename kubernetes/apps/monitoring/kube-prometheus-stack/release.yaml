@@ -156,7 +156,7 @@ spec:
         - --collector.processes
         - --collector.systemd
       extraHostVolumeMounts:
-        - name: system_bus_socket
+        - name: system-bus-socket
           hostPath: /var/run/dbus/system_bus_socket
           type: Socket
           mountPath: /var/run/dbus/system_bus_socket
