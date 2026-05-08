@@ -20,6 +20,7 @@ spec:
     image:
       registry: pbcr.local
       repository: pb/nextcloud
+      tag: 33.0.0-apache
     resources:
       limits:
         memory: 6Gi
