@@ -28,6 +28,8 @@ spec:
         kubeSchedulerAlerting: false
         kubeSchedulerRecording: false
     grafana: 
+      deploymentStrategy:
+        type: Recreate
       resources:
         limits:
           memory: 256Mi
