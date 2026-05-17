@@ -48,6 +48,7 @@ spec:
       compactor:
         retention_enabled: true
         delete_request_store: s3
+        retention_delete_delay: 0s
       auth_enabled: false
       commonConfig:
         replication_factor: 1
