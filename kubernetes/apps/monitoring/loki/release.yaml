@@ -49,6 +49,7 @@ spec:
         retention_enabled: true
         delete_request_store: s3
         retention_delete_delay: 0s
+        compaction_interval: 10m
       auth_enabled: false
       commonConfig:
         replication_factor: 1
