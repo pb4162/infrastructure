@@ -18,6 +18,11 @@ spec:
       name: loki-values
   values:
     deploymentMode: SingleBinary
+    monitoring:
+      rules:
+        enabled: true
+        labels:
+          release: kube-prometheus-stack
     lokiCanary:
       resources:
         limits:
