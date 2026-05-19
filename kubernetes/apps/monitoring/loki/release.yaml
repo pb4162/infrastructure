@@ -50,6 +50,7 @@ spec:
         delete_request_store: s3
         retention_delete_delay: 0s
         compaction_interval: 10m
+        working_directory: /var/loki/compactor/retention
       auth_enabled: false
       commonConfig:
         replication_factor: 1
