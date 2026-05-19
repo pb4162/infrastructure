@@ -23,6 +23,10 @@ spec:
         enabled: true
         labels:
           release: kube-prometheus-stack
+      serviceMonitor:
+        enabled: true
+        labels:
+          release: kube-prometheus-stack
     lokiCanary:
       resources:
         limits:
