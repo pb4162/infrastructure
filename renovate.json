@@ -6,7 +6,8 @@
     "github>pb4162/infrastructure//renovate/kubernetes.json",
     "github>pb4162/infrastructure//renovate/limits.json",
     "github>pb4162/infrastructure//renovate/groups.json",
-    "github>pb4162/infrastructure//renovate/versionings.json"
+    "github>pb4162/infrastructure//renovate/versionings.json",
+    "github>pb4162/infrastructure//renovate/misc.json"
   ],
   "ignorePaths": [
     "**/gotk-components.yaml"
