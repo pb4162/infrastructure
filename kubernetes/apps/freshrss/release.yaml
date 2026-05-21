@@ -22,7 +22,7 @@ spec:
           main:
             image:
               repository: freshrss/freshrss
-              tag: 1.28.1
+              tag: 1.29.1
             env:
               # TODO: can't use cluster-secrets as it's in another namespace
               TZ: ${TIMEZONE}
