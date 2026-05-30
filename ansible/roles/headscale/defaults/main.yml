@@ -1,2 +1,2 @@
 headscale_config_private: {}
-headscale_ui_cleanup: true
+headscale_ui_cleanup: false

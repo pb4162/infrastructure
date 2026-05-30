@@ -14,4 +14,4 @@ argument_specs:
       headscale_ui_cleanup:
         type: "bool"
         required: false
-        default: true
+        default: false

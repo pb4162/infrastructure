@@ -1,1 +1,1 @@
-velero_cleanup: true
+velero_cleanup: false
