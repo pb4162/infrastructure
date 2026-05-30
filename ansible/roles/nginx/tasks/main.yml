@@ -17,6 +17,13 @@
   loop: "{{ nginx_additional_modules }}"
   when: (ansible_distribution | lower) == "debian"
 
+- name: "Install additional nginx modules when on OpenBSD"
+  community.general.openbsd_pkg:
+    state: present
+    name: "nginx-{{ item }}"
+  loop: "{{ nginx_additional_modules }}"
+  when: (ansible_distribution | lower) == "openbsd"
+
 - name: "Enable and start nginx service on OpenBSD"
   ansible.builtin.service:
     name: nginx
