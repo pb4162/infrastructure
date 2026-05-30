@@ -3,7 +3,7 @@
   when: ansible_distribution | lower == "debian"
 
 - name: Do OpenBSD-specific install tasks
-  ansible.builtin.import_tasks: install_debian.yml
+  ansible.builtin.import_tasks: install_openbsd.yml
   when: ansible_distribution | lower == "openbsd"
 
 - name: "Pull updates from crowdsec hub"
