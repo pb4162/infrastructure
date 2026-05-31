@@ -72,6 +72,7 @@
   ansible.builtin.file:
     path: /etc/nginx/stream.conf.d
     state: directory
+  when: ("stream" in nginx_additional_modules)
 
 - name: "Install conf.d files"
   ansible.builtin.copy:
@@ -92,4 +93,5 @@
   loop_control:
     label: "{{ item.key }}"
   notify: "Restart nginx ({{ ansible_distribution | lower }})"
+  when: ("stream" in nginx_additional_modules)
 
