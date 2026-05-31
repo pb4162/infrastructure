@@ -12,17 +12,20 @@
   ansible.builtin.get_url:
     url: "https://github.com/GoodiesHQ/headscale-admin/releases/download/{{ headscale_ui_version }}/admin.zip"
     dest: "/root/headscale-ui/{{ headscale_ui_version }}"
+  register: headscale_ui_download_info
 
 - name: "Create unzip directory"
   ansible.builtin.file:
     path: "/root/headscale-ui/{{ headscale_ui_version }}/extracted"
     state: directory
 
+# TODO: proper idempotence for unarchive on OpenBSD
 - name: "Unzip release"
   ansible.builtin.unarchive:
     src: "/root/headscale-ui/{{ headscale_ui_version }}/admin.zip"
     dest: "/root/headscale-ui/{{ headscale_ui_version }}/extracted"
     remote_src: yes
+  when: headscale_ui_download_info.changed is true
 
 - name: "Create web root directory"
   ansible.builtin.file:
