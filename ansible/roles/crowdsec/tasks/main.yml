@@ -66,9 +66,7 @@
   register: crowdsec_hub_install_info
   changed_when: >-
     (
-      (ansible_distribution | lower == "openbsd" and "Nothing to do" not in crowdsec_hub_install_info.stdout)
-      or
-      (ansible_distribution | lower == "debian" and "Nothing to install" not in crowdsec_hub_install_info.stdout)
+      ("Nothing to" not in crowdsec_hub_install_info.stdout)
     )
   loop: "{{ crowdsec_hub_items }}"
   notify: "Restart crowdsec ({{ ansible_distribution | lower }})"
