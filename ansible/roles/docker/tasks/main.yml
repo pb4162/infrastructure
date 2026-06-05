@@ -1,0 +1,47 @@
+- name: "Install curl and ca-certificates"
+  ansible.builtin.apt:
+    state: present
+    name:
+      - curl
+      - ca-certificates
+
+- name: "Add apt repository key"
+  ansible.builtin.get_url:
+    url: https://download.docker.com/linux/debian/gpg
+    dest: /etc/apt/trusted.gpg.d/docker.asc
+    mode: 0644
+
+- name: "Add apt repository"
+  ansible.builtin.deb822_repository:
+    state: present
+    enabled: true
+    name: docker
+    trusted: true
+    uris: https://download.docker.com/linux/debian
+    signed_by: /etc/apt/trusted.gpg.d/docker.asc
+    suites: "{{ ansible_distribution_release }}"
+    install_python_debian: true
+    components:
+      - stable
+  register: docker_apt_repo_add
+
+- name: "apt: Update"
+  ansible.builtin.apt:
+    update_cache: yes
+  when: docker_apt_repo_add.changed is true
+
+- name: "Install docker packages"
+  ansible.builtin.apt:
+    state: present
+    update_cache: true
+    name:
+      - docker-ce
+      - docker-ce-cli
+      - containerd.io
+      - docker-buildx-plugin
+      - docker-compose-plugin
+
+- name: "Create {{ docker_data_dir }} directory to store persistent data in"
+  ansible.builtin.file:
+    path: "{{ docker_data_dir }}"
+    state: directory
