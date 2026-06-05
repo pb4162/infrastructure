@@ -1,0 +1,48 @@
+- name: "Bootstrap new user, admin permissions and ssh keys on debian VPS"
+  hosts: debian_vps
+  become: true
+  # become_method: su
+  become_flags: "-"
+  tags: [bootstrap, never]
+
+  # TODO: hacky workaround for become_method not taking precedence over
+  # ansible_become_method specified in inventory
+  vars:
+    ansible_become_method: su
+
+  roles:
+    - role: user
+      tags: [user]
+    - role: sudo
+      tags: [sudo]
+    - role: sshkey
+      tags: [sshkey]
+
+
+- name: Configure
+  hosts: debian_vps
+  become: true
+
+  roles:
+    - role: sshd
+      tags: [ssh, sshd]
+    - name: common-packages
+      tags: [common, packages]
+    - name: network-tuning
+      tags: [network, network-tuning]
+    - role: borg-backup
+      tags: [borg-backup, borg, backup]
+    - role: crowdsec
+      tags: [crowdsec]
+    - name: tailscale
+      tags: [network, tailscale]
+    - name: acme
+      tags: acme
+    - name: docker
+      tags: docker
+    - name: mailcow
+      tags: mailcow
+    - name: gatus
+      tags: gatus
+    - name: nginx
+      tags: nginx
