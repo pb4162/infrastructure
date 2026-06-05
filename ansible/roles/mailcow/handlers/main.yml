@@ -1,0 +1,5 @@
+- name: "Restart mailcow"
+  community.docker.docker_compose_v2:
+    project_src: "{{ mailcow_dir }}"
+    state: restarted
+    wait: true

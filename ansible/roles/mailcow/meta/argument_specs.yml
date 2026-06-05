@@ -1,0 +1,40 @@
+argument_specs:
+  main:
+    options:
+      mailcow_install_path:
+        type: str
+        required: true
+      mailcow_domain:
+        type: str
+        required: true
+      mailcow_timezone:
+        type: str
+        required: true
+      mailcow_release:
+        type: str
+        required: false
+        default: master
+      mailcow_skip_clamd:
+        type: str
+        required: false
+        default: y
+      mailcow_http_port:
+        type: int
+        required: false
+        default: 8080
+      mailcow_https_port:
+        type: int
+        required: false
+        default: 8443
+      mailcow_external_unbound_certs:
+        type: bool
+        required: false
+        default: false
+      mailcow_update:
+        type: bool
+        required: false
+        default: false
+      mailcow_backup_delete_days:
+        type: int
+        required: false
+        default: 7

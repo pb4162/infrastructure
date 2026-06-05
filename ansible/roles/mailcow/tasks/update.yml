@@ -1,0 +1,22 @@
+- name: "Check if updates are available"
+  ansible.builtin.shell: >-
+    ./update.sh --check
+  args:
+    chdir: "{{ mailcow_dir }}"
+  register: mailcow_update_check
+  changed_when: false
+  failed_when: false
+
+- name: "Run mailcow_updater.sh if updates are available"
+  ansible.builtin.shell: >-
+    mailcow_updater.sh >> ~/mailcow_update_log.txt
+  args:
+    chdir: "{{ mailcow_dir }}"
+  when: mailcow_update_check.rc == 0
+
+- name: "Run garbage collection after update"
+  ansible.builtin.shell: >-
+    ./update.sh --gc >> ~/mailcow_update_log.txt
+  args:
+    chdir: "{{ mailcow_dir }}"
+  when: mailcow_update_check.rc == 0

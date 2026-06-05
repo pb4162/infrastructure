@@ -1,0 +1,7 @@
+mailcow_update: false
+mailcow_skip_clamd: y
+mailcow_release: master
+mailcow_http_port: 8080
+mailcow_https_port: 8443
+mailcow_external_unbound_certs: false
+mailcow_backup_delete_days: 7

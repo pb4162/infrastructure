@@ -1,0 +1,8 @@
+#!/bin/bash
+
+set -euo pipefail
+
+until ./update.sh --force
+do
+  sleep 1
+done

@@ -1,0 +1,5 @@
+- ansible.builtin.import_tasks: install.yml
+  when: mailcow_update is false
+
+- ansible.builtin.import_tasks: update.yml
+  when: mailcow_update is true
