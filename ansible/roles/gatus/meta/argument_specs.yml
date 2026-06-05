@@ -1,0 +1,17 @@
+argument_specs:
+  main:
+    options:
+      docker_data_dir:
+        type: str
+        required: true
+      gatus_env:
+        type: dict
+        required: false
+        default: {}
+      gatus_version:
+        type: str
+        required: true
+      gatus_port:
+        type: int
+        required: false
+        default: 8080

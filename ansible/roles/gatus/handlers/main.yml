@@ -1,0 +1,13 @@
+- name: Restart gatus
+  community.docker.docker_container:
+    env: "{{ {'GATUS_CONFIG_PATH': '/config'} | ansible.builtin.combine(gatus_env, recursive=true) }}"
+    image: "ghcr.io/twin/gatus:{{ gatus_version }}"
+    name: gatus
+    restart: true
+    volumes:
+      - "{{ gatus_config_path }}:/config/config.yaml"
+      - "{{ gatus_endpoints_path }}:/config/endpoints.yaml"
+      - "{{ gatus_db_path }}:/data"
+    ports:
+      - "127.0.0.1:{{ gatus_port }}:8080"
+    restart_policy: unless-stopped

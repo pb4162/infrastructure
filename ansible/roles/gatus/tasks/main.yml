@@ -1,0 +1,44 @@
+- name: Set gatus_data_dir
+  ansible.builtin.set_fact:
+    gatus_data_dir: "{{ (docker_data_dir, 'gatus') | path_join }}"
+
+- name: Set config and data paths
+  ansible.builtin.set_fact:
+    gatus_config_path: "{{ (gatus_data_dir, 'config.yaml') | path_join }}"
+    gatus_endpoints_path: "{{ (gatus_data_dir, 'endpoints.yaml') | path_join }}"
+    gatus_db_path: "{{ (gatus_data_dir, 'data') | path_join }}"
+
+- name: Create data directories
+  ansible.builtin.file:
+    path: "{{ (gatus_data_dir, item) | path_join }}"
+    state: directory
+  loop:
+    - ""
+    - "{{ gatus_db_path }}"
+
+- name: Install config file
+  ansible.builtin.template:
+    backup: true
+    dest: "{{ gatus_config_path }}"
+    src: config.yaml.j2
+  notify: Restart gatus
+
+- name: Install endpoints file
+  ansible.builtin.template:
+    backup: true
+    dest: "{{ gatus_endpoints_path }}"
+    src: endpoints.yaml.j2
+  notify: Restart gatus
+
+- name: Create gatus container
+  community.docker.docker_container:
+    env: "{{ {'GATUS_CONFIG_PATH': '/config'} | ansible.builtin.combine(gatus_env, recursive=true) }}"
+    image: "ghcr.io/twin/gatus:{{ gatus_version }}"
+    name: gatus
+    volumes:
+      - "{{ gatus_config_path }}:/config/config.yaml"
+      - "{{ gatus_endpoints_path }}:/config/endpoints.yaml"
+      - "{{ gatus_db_path }}:/data"
+    ports:
+      - "127.0.0.1:{{ gatus_port }}:8080"
+    restart_policy: unless-stopped
