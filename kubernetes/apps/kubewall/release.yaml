@@ -23,7 +23,7 @@ spec:
           main:
             image:
               repository: ghcr.io/kubewall/kubewall
-              tag: 0.0.18
+              tag: 0.0.20
             args:
               - "--no-open-browser"
               - "--listen=:7080"
