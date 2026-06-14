@@ -5,8 +5,6 @@
     mode: a+x
     force: "{{ flux_update }}"
 
-# - ansible.builtin.import_tasks: version_check.yml
-
 - name: "Get flux version info"
   ansible.builtin.command: flux version -o json
   register: flux_version_info

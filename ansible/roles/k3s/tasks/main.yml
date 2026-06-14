@@ -14,9 +14,6 @@
     mode: a+x
     force: "{{ k3s_update }}"
 
-# TODO: review and remove
-# - ansible.builtin.import_tasks: version_check.yml
-
 - name: "Get k3s version info"
   ansible.builtin.command: kubectl version -o json
   register: k3s_version_info
