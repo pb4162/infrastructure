@@ -131,10 +131,9 @@ spec:
         port: 443
     global:
       sendAnonymousUsage: false
-    logs:
-      access:
-        enabled: true
-        format: common
-        fields:
-          headers:
-            defaultmode: keep
+    accessLog:
+      enabled: true
+      format: common
+      fields:
+        headers:
+          defaultmode: keep

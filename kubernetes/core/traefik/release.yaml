@@ -90,13 +90,12 @@ spec:
       sendAnonymousUsage: false
     additionalArguments:
       - "--api.insecure=true"
-    logs:
-      access:
-        enabled: true
-        format: common
-        fields:
-          headers: 
-            defaultmode: keep
+    accessLog:
+      enabled: true
+      format: common
+      fields:
+        headers:
+          defaultmode: keep
     experimental:
       plugins:
         bouncer:
