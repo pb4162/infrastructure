@@ -13,24 +13,6 @@ spec:
         name: headlamp
       interval: 5m
   releaseName: headlamp
-  postRenderers:
-    - kustomize:
-        patches:
-          - target:
-              kind: Deployment
-              name: headlamp
-            patch: |
-              apiVersion: apps/v1
-              kind: Deployment
-              metadata:
-                name: headlamp
-              spec:
-                template:
-                  spec:
-                    hostAliases:
-                      - hostnames:
-                          - authentik.${ROOT_DOMAIN}
-                        ip: ${TRAEFIK_IP}
   values:
     config:
       oidc:
