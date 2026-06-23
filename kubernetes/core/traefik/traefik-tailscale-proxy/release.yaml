@@ -56,6 +56,7 @@ spec:
       enabled: false
     api:
       dashboard: false
+      disableDashboardAd: true
     metrics:
       addInternals: true
       prometheus:
