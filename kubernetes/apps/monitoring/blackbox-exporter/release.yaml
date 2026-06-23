@@ -24,7 +24,7 @@ spec:
       rules:
         - alert: BlackboxProbeFailed
           expr: 'probe_success == 0'
-          for: 0m
+          for: 1m
           labels:
             severity: critical
           annotations:
@@ -51,7 +51,7 @@ spec:
 
         - alert: BlackboxProbeHttpFailure
           expr: 'probe_http_status_code <= 199 OR probe_http_status_code >= 400'
-          for: 0m
+          for: 1m
           labels:
             severity: critical
           annotations:
