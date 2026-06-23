@@ -117,8 +117,9 @@ spec:
                   passthrough: true
                 service: tailscale-proxy-service-https
     service:
-      ipFamilyPolicy: "PreferDualStack"
-      type: ClusterIP
+      spec:
+        ipFamilyPolicy: "PreferDualStack"
+        type: ClusterIP
     # TODO: figure out how to get ts-sidecar to run with stricter permissions
     podSecurityContext:
       runAsNonRoot: false
