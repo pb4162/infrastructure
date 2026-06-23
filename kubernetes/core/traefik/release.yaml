@@ -7,7 +7,7 @@ spec:
   chart:
     spec:
       chart: traefik
-      version: 39.0.9
+      version: 41.0.0
       sourceRef:
         kind: HelmRepository
         name: traefik
@@ -17,6 +17,8 @@ spec:
     - name: cert-manager
       namespace: cert-manager
   values:
+    api:
+      disableDashboardAd: true
     priorityClassName: "system-cluster-critical"  # inherited from k3s HelmChart
     deployment:
       replicas: 2
@@ -88,13 +90,12 @@ spec:
       sendAnonymousUsage: false
     additionalArguments:
       - "--api.insecure=true"
-    logs:
-      access:
-        enabled: true
-        format: common
-        fields:
-          headers: 
-            defaultmode: keep
+    accessLog:
+      enabled: true
+      format: common
+      fields:
+        headers:
+          defaultmode: keep
     experimental:
       plugins:
         bouncer:

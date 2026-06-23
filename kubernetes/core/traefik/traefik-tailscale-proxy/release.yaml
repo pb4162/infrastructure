@@ -7,7 +7,7 @@ spec:
   chart:
     spec:
       chart: traefik
-      version: 39.0.9
+      version: 41.0.0
       sourceRef:
         kind: HelmRepository
         name: traefik
@@ -56,6 +56,7 @@ spec:
       enabled: false
     api:
       dashboard: false
+      disableDashboardAd: true
     metrics:
       addInternals: true
       prometheus:
@@ -130,10 +131,9 @@ spec:
         port: 443
     global:
       sendAnonymousUsage: false
-    logs:
-      access:
-        enabled: true
-        format: common
-        fields:
-          headers:
-            defaultmode: keep
+    accessLog:
+      enabled: true
+      format: common
+      fields:
+        headers:
+          defaultmode: keep
