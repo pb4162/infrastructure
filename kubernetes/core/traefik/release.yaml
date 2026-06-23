@@ -1,4 +1,4 @@
-Version: helm.toolkit.fluxcd.io/v2
+apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
   name: traefik
@@ -89,7 +89,7 @@ spec:
     global:
       sendAnonymousUsage: false
     additionalArguments:
-      - "--.insecure=true"
+      - "--api.insecure=true"
     logs:
       access:
         enabled: true
