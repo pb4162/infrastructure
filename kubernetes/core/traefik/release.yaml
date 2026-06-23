@@ -1,4 +1,4 @@
-apiVersion: helm.toolkit.fluxcd.io/v2
+Version: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
   name: traefik
@@ -17,6 +17,8 @@ spec:
     - name: cert-manager
       namespace: cert-manager
   values:
+    api:
+      disableDashboardAd: true
     priorityClassName: "system-cluster-critical"  # inherited from k3s HelmChart
     deployment:
       replicas: 2
@@ -87,7 +89,7 @@ spec:
     global:
       sendAnonymousUsage: false
     additionalArguments:
-      - "--api.insecure=true"
+      - "--.insecure=true"
     logs:
       access:
         enabled: true
