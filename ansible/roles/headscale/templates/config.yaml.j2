@@ -1,1 +1,1 @@
-{{ headscale_config_base | combine(headscale_config, headscale_config_private, recursive=true, list_merge="append") | to_nice_yaml }}
+{{ headscale_config_base | combine(headscale_config, headscale_config_private, recursive=true, list_merge="prepend") | to_nice_yaml }}
