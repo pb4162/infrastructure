@@ -30,6 +30,8 @@
       tags: [common, packages]
     - name: network-tuning
       tags: [network, network-tuning]
+    - role: borg-server
+      tags: [borg-server, borg, backup]
     - role: borg-backup
       tags: [borg-backup, borg, backup]
     - role: crowdsec
