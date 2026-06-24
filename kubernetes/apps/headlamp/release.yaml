@@ -29,10 +29,6 @@ spec:
       accessModes:
         - ReadWriteOnce
       size: 5Gi
-    volumes:
-      - name: plugins-dir
-        persistentVolumeClaim:
-          claimName: headlamp
     podSecurityContext:
       fsGroup: 101
       fsGroupChangePolicy: "OnRootMismatch"
