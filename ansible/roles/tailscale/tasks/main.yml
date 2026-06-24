@@ -8,7 +8,7 @@
       sysctl_set: true
       state: present
       reload: true
-      sysctl_file: /etc/sysctl.d/50-ansible_managed.conf
+      sysctl_file: /etc/sysctl.d/90-ansible_managed.conf
 
   - name: "Enable ipv6 forwarding for subnet routers/exit nodes"
     ansible.posix.sysctl:
@@ -17,7 +17,7 @@
       sysctl_set: true
       state: present
       reload: true
-      sysctl_file: /etc/sysctl.d/50-ansible_managed.conf
+      sysctl_file: /etc/sysctl.d/90-ansible_managed.conf
   when: tailscale_flags is search("--advertise-exit-node|--advertise-routes")
 
 - ansible.builtin.import_tasks: openwrt.yml

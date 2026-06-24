@@ -5,7 +5,7 @@
     sysctl_set: true
     state: present
     reload: true
-    sysctl_file: /etc/sysctl.d/50-ansible_managed.conf
+    sysctl_file: /etc/sysctl.d/90-ansible_managed.conf
 
 - name: "sysctl: Raise fs.inotify.max_user_watches to 1048576"
   ansible.posix.sysctl:
@@ -14,4 +14,4 @@
     sysctl_set: true
     state: present
     reload: true
-    sysctl_file: /etc/sysctl.d/50-ansible_managed.conf
+    sysctl_file: /etc/sysctl.d/90-ansible_managed.conf
