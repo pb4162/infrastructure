@@ -19,6 +19,21 @@
     path: /etc/borgmatic
     state: directory
 
+- name: Register this host with the backup server if using one
+  when: borg_server_host is not none
+  block:
+    - name: Generate OpenSSH key for use with backup server
+      community.crypto.openssh_keypair:
+        path: "~/.ssh/id_rsa"
+      register: openssh_keypair
+
+    - name: Upload the public key to the backup server
+      ansible.posix.authorized_key:
+        key: "{{ openssh_keypair.public_key }}"
+        key_options: 'command="cd {{ ("~/repos", inventory_hostname) | path_join }};borg serve --restrict-to-path {{ ("~/repos", inventory_hostname) | path_join }}",restrict'
+        user: "{{ borg_server_user }}"
+      delegate_to: "{{ borg_server_host | default('null') }}"
+
 - name: "Merge borgmatic_(config,config_base,config_private) into final config"
   ansible.builtin.set_fact:
     borgmatic_config_final: "{{ borgmatic_config_base | combine(borgmatic_config, borgmatic_config_private, recursive=true, list_merge='append') }}"

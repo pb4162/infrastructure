@@ -1,1 +1,2 @@
 borgmatic_config_private: {}
+borg_server_host: null

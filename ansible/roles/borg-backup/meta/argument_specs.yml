@@ -8,3 +8,7 @@ argument_specs:
         type: "dict"
         required: false
         default: {}
+      borg_server_host:
+        type: "str"
+        required: false
+        default: null
