@@ -1,3 +1,7 @@
+- name: "Gather facts for borg backup server"
+  hosts: debian_vps
+  tags: [borg-backup, borg, backup]
+
 - name: "Bootstrap new user, admin permissions and ssh keys on openbsd VPS"
   hosts: openbsd_vps
   become: true
