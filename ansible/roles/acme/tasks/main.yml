@@ -4,7 +4,6 @@
     name: acme.sh
   when: ansible_distribution | lower == "openbsd"
 
-# TODO
 - name: "Install acme.sh on Debian"
   ansible.builtin.apt:
     state: present
