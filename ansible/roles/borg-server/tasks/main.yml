@@ -1,0 +1,61 @@
+- name: Install borgbackup and cifs-utils
+  ansible.builtin.apt:
+    name:
+      - borgbackup
+      - cifs-utils
+    state: present
+
+- name: Configure user account
+  ansible.builtin.user:
+    name: "{{ borg_server_user }}"
+    create_home: true
+    shell: /bin/bash
+    state: present
+
+- name: Get user account info
+  ansible.builtin.getent:
+    database: passwd
+    key: "{{ borg_server_user }}"
+  register: borg_server_user_info
+
+- name: Set user uid and gid
+  ansible.builtin.set_fact:
+    borg_server_user_uid: "{{ borg_server_user_info.ansible_facts.getent_passwd[borg_server_user][1] }}"
+    borg_server_user_gid: "{{ borg_server_user_info.ansible_facts.getent_passwd[borg_server_user][2] }}"
+
+- name: Create ~/.ssh and ~/repos directories
+  ansible.builtin.file:
+    path: "{{ (borg_server_user_home_dir, item) | path_join }}"
+    state: directory
+    owner: "{{ borg_server_user_uid }}"
+    group: "{{ borg_server_user_gid }}"
+  loop:
+    - ".ssh"
+    - "repos"
+
+# https://wiki.archlinux.org/title/Samba#Storing_share_passwords
+- name: Create /etc/samba/credentials directory
+  ansible.builtin.file:
+    path: /etc/samba/credentials
+    state: directory
+    owner: root
+    group: root
+    mode: 0700
+
+- name: Create smb credentials file
+  ansible.builtin.template:
+    dest: /etc/samba/credentials/borg
+    mode: 0600
+    owner: root
+    group: root
+    src: smbcreds.j2
+
+- name: Mount borg repo smb share
+  ansible.posix.mount:
+    backup: true
+    fstype: cifs
+    opts: "uid={{ borg_server_user_uid }},gid={{ borg_server_user_gid }},credentials=/etc/samba/credentials/borg,nofail"
+    opts_no_log: true
+    path: "{{ (borg_server_user_home_dir, 'repos') | path_join }}"
+    src: "{{ borg_server_smb_path }}"
+    state: mounted

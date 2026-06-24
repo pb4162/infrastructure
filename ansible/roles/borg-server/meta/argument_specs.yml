@@ -1,0 +1,20 @@
+argument_specs:
+  main:
+    options:
+      borg_server_user:
+        type: str
+        required: false
+        default: borg
+      borg_server_user_home_dir:
+        type: str
+        required: false
+        default: "/home/{{ borg_server_user }}"
+      borg_server_smb_path:
+        type: str
+        required: true
+      borg_server_smb_username:
+        type: str
+        required: true
+      borg_server_smb_password:
+        type: str
+        required: true
