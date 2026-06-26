@@ -15,13 +15,13 @@ data:
         enabled: true
         podMonitor:
           enabled: true
+          labels:
+            release: kube-prometheus-stack
         prometheusRule:
           enabled: true
           excludeRules:
             - CNPGClusterHACritical
             - CNPGClusterHAWarning
-      additionalLabels:
-        release: kube-prometheus-stack
       superuserSecret: cnpg-superuser-secret
     backups:
       enabled: true
