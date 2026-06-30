@@ -4,7 +4,7 @@
       "customType": "regex",
       "managerFilePatterns": ["/kubernetes/.+\\.yaml$/", "/ansible/.+\\.yml$/"],
       "matchStrings": [
-        "\\s*# renovate: datasource=(?<datasource>.*?) depName=(?<depName>.*?)( versioning=(?<versioning>.*?))?\\s+\\S+?:\\s+(?<currentValue>\\S+)",
+        "\\s*# renovate: datasource=(?<datasource>.*?) depName=(?<depName>.*?)( versioning=(?<versioning>.*?))?\\s+\\S+?:\\s+(?<currentValue>\\S+)"
       ],
       "versioningTemplate": "{{#if versioning}}{{{versioning}}}{{else}}semver{{/if}}"
     }
