@@ -23,8 +23,7 @@ spec:
     version:
       postgresql: "16"
     cluster:
-      # renovate: datasource=docker depName=ghcr.io/tensorchord/cloudnative-vectorchord
-      imageName: ghcr.io/tensorchord/cloudnative-vectorchord:16.9-0.4.3
+      imageName: ghcr.io/tensorchord/cloudnative-vectorchord:${CNPG_IMMICH_CONTAINER_VERSION}
       initdb:
         postInitApplicationSQL:
           # Commands based on: https://immich.app/docs/administration/postgres-standalone/#without-superuser-permission
