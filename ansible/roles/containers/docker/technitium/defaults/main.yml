@@ -1,0 +1,2 @@
+docker_data_dir: "~/docker"
+technitium_env_private: {}

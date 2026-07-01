@@ -1,0 +1,17 @@
+argument_specs:
+  main:
+    options:
+      docker_data_dir:
+        type: str
+        required: false
+        default: "~/docker"
+      technitium_version:
+        type: str
+        required: true
+      technitium_env_private:
+        type: str
+        required: false
+        default: {}
+      root_domain:
+        type: str
+        required: true
