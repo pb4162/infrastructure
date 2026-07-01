@@ -1,0 +1,7 @@
+semaphoreui_env:
+  SEMAPHORE_ADMIN_NAME: Admin
+  SEMAPHORE_ADMIN: admin
+  SEMAPHORE_ADMIN_EMAIL: admin@localhost
+  SEMAPHORE_DB_DIALECT: sqlite
+semaphoreui_env_private: {}
+docker_data_dir: "~/docker"

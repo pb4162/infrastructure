@@ -1,0 +1,39 @@
+- name: Set semaphoreui_data_dir
+  ansible.builtin.set_fact:
+    semaphoreui_data_dir: "{{ (docker_data_dir, 'semaphoreui') | path_join }}"
+
+- name: Set subpath variables
+  ansible.builtin.set_fact:
+    semaphoreui_data_path: "{{ (semaphoreui_data_dir, 'data') | path_join }}"
+    semaphoreui_config_path: "{{ (semaphoreui_data_dir, 'config') | path_join }}"
+    semaphoreui_tmp_path: "{{ (semaphoreui_data_dir, 'tmp') | path_join }}"
+
+- name: Create directories
+  ansible.builtin.file:
+    path: "{{ item }}"
+    state: directory
+    owner: "1001"
+    group: "1001"
+  loop:
+    - "{{ semaphoreui_data_dir }}"
+    - "{{ semaphoreui_data_path }}"
+    - "{{ semaphoreui_config_path }}"
+    - "{{ semaphoreui_tmp_path }}"
+
+- name: Create container
+  community.docker.docker_container:
+    image: "{{ pbcr_registry_url }}/pb/semaphoreui:{{ semaphoreui_version }}"
+    name: semaphoreui
+    env: "{{ semaphoreui_env | ansible.builtin.combine(semaphoreui_env_private, recursive=true) }}"
+    volumes:
+      - "{{ semaphoreui_data_path }}:/var/lib/semaphore"
+      - "{{ semaphoreui_config_path }}:/etc/semaphore"
+      - "{{ semaphoreui_tmp_path }}:/tmp/semaphore"
+    networks:
+      - { name: bridge }
+    labels:
+      traefik.enable: "true"
+      traefik.http.routers.semaphoreui.rule: "Host(`semaphore.{{ root_domain }}`)"
+      traefik.http.services.semaphoreui.loadbalancer.server.port: 3000
+    restart_policy: unless-stopped
+

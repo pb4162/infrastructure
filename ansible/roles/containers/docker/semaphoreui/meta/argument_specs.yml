@@ -1,0 +1,28 @@
+argument_specs:
+  main:
+    options:
+      docker_data_dir:
+        type: str
+        required: false
+        default: "~/docker"
+      semaphore_ui_env:
+        type: dict
+        required: false
+        default:
+          SEMAPHORE_ADMIN_NAME: Admin
+          SEMAPHORE_ADMIN: admin
+          SEMAPHORE_ADMIN_EMAIL: admin@localhost
+          SEMAPHORE_DB_DIALECT: sqlite
+      semaphoreui_env_private:
+        type: dict
+        required: false
+        default: {}
+      pbcr_registry_url:
+        type: str
+        required: true
+      semaphoreui_version:
+        type: str
+        required: true
+      root_domain:
+        type: str
+        required: true
