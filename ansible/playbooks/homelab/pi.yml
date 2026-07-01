@@ -1,0 +1,42 @@
+- name: "Bootstrap new user, admin permissions and ssh keys on pi"
+  hosts: pi
+  become: true
+  # become_method: su
+  become_flags: "-"
+  tags: [bootstrap, never]
+
+  # TODO: hacky workaround for become_method not taking precedence over
+  # ansible_become_method specified in inventory
+  vars:
+    ansible_become_method: su
+
+  roles:
+    - role: sshkey
+      tags: sshkey
+
+
+- name: "Configure"
+  hosts: pi
+  become: true
+
+  roles:
+    - role: sshd
+      tags: [ssh, sshd]
+    - role: common-packages
+      tags: [common, packages]
+    - role: network-tuning
+      tags: [network, tuning]
+    - role: tailscale
+      tags: [tailscale]
+    - role: docker
+      tags: [docker, containers]
+    - role: containers/traefik
+      tags: [traefik, containers]
+    - role: containers/docker/semaphoreui
+      tags: [semaphoreui, semaphore, containers]
+    - role: containers/docker/technitium
+      tags: [technitium, dns, containers]
+    - role: borg-server
+      tags: [borg-server, backup]
+    - role: borg-backup
+      tags: [borg, backup]
