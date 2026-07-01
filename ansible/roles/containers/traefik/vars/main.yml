@@ -1,0 +1,54 @@
+traefik_static_config_base:
+  entryPoints:
+    web:
+      address: ":80"
+      http:
+        redirections:
+          entryPoint:
+            to: websecure
+            scheme: https
+            permanent: true
+    websecure:
+      address: ":443"
+      asDefault: true
+      http:
+        tls: true
+  providers:
+    file:
+      filename: "/etc/traefik/dynamic.yml"
+
+traefik_base_options: &base
+  image: "docker.io/traefik:{{ traefik_version }}"
+  name: traefik
+  env: "{{ traefik_env_vars }}"
+  volumes:
+    - "{{ traefik_static_config_path }}:/etc/traefik/traefik.yml:ro"
+    - "{{ traefik_dynamic_config_path }}:/etc/traefik/dynamic.yml:ro"
+    - "{{ traefik_certs_path }}:/letsencrypt"
+    - >-
+      {{
+        "/run/user/{{ getent_passwd[ansible_user][1] }}/podman/podman.sock" if container_tool == "podman"
+        else "/run/docker.sock" if container_tool == "docker"
+      }}:/var/run/docker.sock:ro
+
+traefik_docker_options:
+  <<: *base
+  ports:
+    - "80:80"
+    - "443:443"
+  networks:
+    - { name: bridge }
+  restart_policy: unless-stopped
+
+traefik_podman_options:
+  <<: *base
+  publish:
+    - "80:80"
+    - "443:443"
+  network:
+    - bridge
+  state: quadlet
+  quadlet_options:
+    - |
+      [Install]
+      WantedBy=multi-user.target default.target

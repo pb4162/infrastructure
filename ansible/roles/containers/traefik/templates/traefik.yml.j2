@@ -1,0 +1,1 @@
+{{ traefik_static_config_base | combine(traefik_static_config, traefik_static_config_private, recursive=true, list_merge="append") | to_nice_yaml }}

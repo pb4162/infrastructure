@@ -1,0 +1,9 @@
+traefik_dashboard_subdomain: traefik
+container_tool: "docker"
+podman_rootless_data_dir: "~/podman"
+docker_data_dir: "~/docker"
+traefik_static_config: {}
+traefik_static_config_private: {}
+traefik_dynamic_config: {}
+traefik_dynamic_config_private: {}
+traefik_env_vars: {}

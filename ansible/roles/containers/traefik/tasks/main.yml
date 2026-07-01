@@ -1,0 +1,78 @@
+- become: "{{ false if container_tool == 'podman' else true }}"
+  block:
+  - name: Set containers_data_dir
+    ansible.builtin.set_fact:
+      containers_data_dir: >-
+        {{
+          podman_rootless_data_dir if container_tool == "podman"
+          else docker_data_dir if container_tool == "docker"
+        }}
+
+  - name: Set traefik_data_dir
+    ansible.builtin.set_fact:
+      traefik_data_dir: "{{ (containers_data_dir, 'traefik') | path_join }}"
+
+  - name: Set config and certs paths
+    ansible.builtin.set_fact:
+      traefik_static_config_path: "{{ (traefik_data_dir, 'traefik.yml') | path_join }}"
+      traefik_dynamic_config_path: "{{ (traefik_data_dir, 'dynamic.yml') | path_join }}"
+      traefik_certs_path: "{{ (traefik_data_dir, 'certs') | path_join }}"
+
+  - name: "Set net.ipv4.ip_unprivileged_port_start when using podman"
+    ansible.posix.sysctl:
+      name: net.ipv4.ip_unprivileged_port_start
+      value: 80
+      sysctl_set: true
+      state: present
+      reload: true
+      sysctl_file: /etc/sysctl.d/90-ansible_managed.conf
+    become: true
+    when: container_tool == "podman"
+
+  - name: Create ~/.config/systemd/user directory when using podman
+    ansible.builtin.file:
+      state: directory
+      path: ~/.config/systemd/user/
+    when: container_tool == "podman"
+
+  - name: Create data directories
+    ansible.builtin.file:
+      path: "{{ item }}"
+      state: directory
+    loop:
+      - "{{ traefik_data_dir }}"
+      - "{{ traefik_certs_path }}"
+
+  - name: Install static config file
+    ansible.builtin.template:
+      backup: true
+      dest: "{{ traefik_static_config_path }}"
+      src: traefik.yml.j2
+    notify: "Restart traefik ({{ container_tool }})"
+
+  - name: Install dynamic config file
+    ansible.builtin.template:
+      backup: true
+      dest: "{{ traefik_dynamic_config_path }}"
+      src: dynamic.yml.j2
+
+  - name: Create container (podman)
+    containers.podman.podman_container: "{{ traefik_podman_options }}"
+    notify:
+      - Run systemctl daemon-reload (user)
+      - Restart traefik (podman)
+    when: container_tool == "podman"
+
+  - meta: flush_handlers
+
+  - name: Enable and start traefik service (podman)
+    ansible.builtin.systemd_service:
+      name: traefik.service
+      state: started
+      enabled: true
+      scope: user
+    when: container_tool == "podman"
+
+  - name: Create container (docker)
+    community.docker.docker_container: "{{ traefik_docker_options }}"
+    when: container_tool == "docker"

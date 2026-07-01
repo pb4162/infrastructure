@@ -1,0 +1,42 @@
+argument_specs:
+  main:
+    options:
+      traefik_dashboard_subdomain:
+        type: str
+        required: false
+        default: traefik
+      container_tool:
+        type: str
+        required: false
+        default: docker
+      podman_rootless_data_dir:
+        type: str
+        required: false
+        default: "~/podman"
+      docker_data_dir:
+        type: str
+        required: false
+        default: "~/docker"
+      traefik_static_config:
+        type: dict
+        required: false
+        default: {}
+      traefik_static_config_private:
+        type: dict
+        required: false
+        default: {}
+      traefik_dynamic_config:
+        type: dict
+        required: false
+        default: {}
+      traefik_dynamic_config_private:
+        type: dict
+        required: false
+        default: {}
+      traefik_env_vars:
+        type: dict
+        required: false
+        default: {}
+      traefik_version:
+        type: str
+        required: true

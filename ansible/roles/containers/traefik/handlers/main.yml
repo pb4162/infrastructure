@@ -1,0 +1,9 @@
+- name: Restart traefik (podman)
+  become: false
+  ansible.builtin.systemd_service:
+    name: traefik.service
+    state: restarted
+    scope: user
+
+- name: Restart traefik (docker)
+  community.docker.docker_container: "{{ traefik_docker_options | combine({'restart': true}, recursive=true) }}"
