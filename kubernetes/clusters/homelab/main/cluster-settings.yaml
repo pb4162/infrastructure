@@ -9,4 +9,4 @@ data:
   JELLYFIN_MEDIA_VOLUME_SIZE: "1536Gi"
   NEXTCLOUD_STORAGE_VOLUME_SIZE: "1024Gi"
   # renovate: datasource=docker depName=ghcr.io/tensorchord/cloudnative-vectorchord versioning=loose
-  CNPG_IMMICH_CONTAINER_VERSION: 16.9-0.4.3
+  CNPG_IMMICH_CONTAINER_VERSION: 16.14
