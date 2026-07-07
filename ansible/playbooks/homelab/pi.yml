@@ -26,6 +26,8 @@
       tags: [common, packages]
     - role: network-tuning
       tags: [network, tuning]
+    - role: wifi
+      tags: [network, wifi]
     - role: tailscale
       tags: [tailscale]
     - role: docker
