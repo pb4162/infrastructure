@@ -1,11 +1,14 @@
 - name: Connect to Wi-Fi
   community.general.nmcli:
     type: wifi
-    conn_name: "{{ wifi_ssid }}"
-    ifname: "{{ wifi_interface }}"
-    ssid: "{{ wifi_ssid }}"
+    conn_name: "{{ item.ssid }}"
+    ifname: "{{ item.interface }}"
+    ssid: "{{ item.ssid }}"
     wifi_sec:
-      key-mgmt: "{{ wifi_security }}"
-      psk: "{{ wifi_password }}"
+      key-mgmt: "{{ item.security }}"
+      psk: "{{ item.password }}"
     autoconnect: true
     state: present
+  loop: "{{ wifi_networks }}"
+  loop_control:
+    label: "{{ item.ssid }}"
