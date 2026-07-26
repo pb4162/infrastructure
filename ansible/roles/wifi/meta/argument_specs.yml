@@ -1,16 +1,6 @@
 argument_specs:
   main:
     options:
-      wifi_ssid:
-        type: "str"
-        required: true
-      wifi_interface:
-        type: "str"
-        required: true
-      wifi_security:
-        type: "str"
-        required: true
-      wifi_password:
-        type: "str"
-        required: true
-
+      wifi_networks:
+        type: list
+        elements: str
