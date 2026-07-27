@@ -138,7 +138,7 @@ spec:
         enabled: true
         type: persistentVolumeClaim
         accessMode: ReadWriteOnce
-        size: 100Gi
+        size: 120Gi
         advancedMounts:
           main:
             garage:
