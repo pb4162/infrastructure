@@ -4,6 +4,10 @@
       "matchPackageNames": ["/aio-talk/", "/aio-talk-recording/"],
       "versioning": "regex:^(?<major>\\d{8})_(?<minor>\\d{6})$",
       "maxMajorIncrement": 0
+    },
+    {
+      "matchPackageNames": ["/^pbcr\\.local\\//"],
+      "versioning": "regex:^(?<major>\\d+)\\.(?<minor>\\d+)\\.(?<patch>\\d+)(-(?<prerelease>.*))?$"
     }
   ]
 }
