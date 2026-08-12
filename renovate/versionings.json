@@ -6,7 +6,7 @@
       "maxMajorIncrement": 0
     },
     {
-      "matchPackageNames": ["/^pbcr\\.local\\//"],
+      "matchDepNames": ["/^pbcr\\.local\\//"],
       "versioning": "regex:^(?<major>\\d+)\\.(?<minor>\\d+)\\.(?<patch>\\d+)(-(?<prerelease>.*))?$"
     }
   ]
