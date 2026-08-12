@@ -57,6 +57,7 @@ spec:
           size: 1Gi
           type: persistentVolumeClaim
           storageClass: longhorn
+          accessMode: ReadWriteOnce
     server:
       enabled: true
       controllers:
@@ -99,3 +100,4 @@ spec:
           size: 10Gi
           type: persistentVolumeClaim
           storageClass: longhorn
+          accessMode: ReadWriteMany
