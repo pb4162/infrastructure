@@ -70,7 +70,9 @@ spec:
       persistence:
         nextcloud:
           existingClaim: nextcloud
-          readOnly: true
+          globalMounts:
+            - path: /nextcloud
+              readOnly: true
       ingress:
         main:
           enabled: true
