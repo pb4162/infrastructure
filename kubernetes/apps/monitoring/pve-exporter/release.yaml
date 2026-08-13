@@ -22,7 +22,7 @@ spec:
           main:
             image:
               repository: ghcr.io/prometheus-pve/prometheus-pve-exporter
-              tag: 3.9.0
+              tag: 3.10.0
     service:
       main:
         controller: main
