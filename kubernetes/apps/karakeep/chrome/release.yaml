@@ -23,10 +23,7 @@ spec:
             image:
               repository: ghcr.io/karakeep-app/karakeep-chrome
               tag: 151.0.7922.47-r1
-            command:
-              - chromium-browser
-              - --headless
-              - --no-sandbox
+            args:
               - --disable-gpu
               - --disable-dev-shm-usage
               - --hide-scrollbars
