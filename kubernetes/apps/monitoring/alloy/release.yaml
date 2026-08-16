@@ -19,6 +19,11 @@ spec:
     crds: CreateReplace
   values:
     alloy:
+      securityContext:
+        runAsUser: 0
+        runAsGroup: 0
+      mounts:
+        varlog: true
       configMap:
         create: true
         content: |
