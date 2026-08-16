@@ -7,13 +7,17 @@ spec:
   chart:
     spec:
       chart: vpa
-      version: 4.12.5
+      version: 5.0.0
       sourceRef:
         kind: HelmRepository
         name: fairwinds-stable
         namespace: flux-system
       interval: 5m
   releaseName: vpa
+  install:
+    crds: CreateReplace
+  upgrade:
+    crds: CreateReplace
   values:
     recommender:
       extraArgs:
