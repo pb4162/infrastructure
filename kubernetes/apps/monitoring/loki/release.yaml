@@ -7,7 +7,7 @@ spec:
   chart:
     spec:
       chart: loki
-      version: 7.0.0
+      version: 18.9.0
       sourceRef:
         kind: HelmRepository
         name: grafana-community
@@ -17,7 +17,7 @@ spec:
     - kind: Secret
       name: loki-values
   values:
-    deploymentMode: SingleBinary
+    deploymentMode: Monolithic
     monitoring:
       rules:
         enabled: true
