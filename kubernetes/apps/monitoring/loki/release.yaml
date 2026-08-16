@@ -17,7 +17,7 @@ spec:
     - kind: Secret
       name: loki-values
   values:
-    deploymentMode: SingleBinary
+    deploymentMode: Monolithic
     monitoring:
       rules:
         enabled: true
