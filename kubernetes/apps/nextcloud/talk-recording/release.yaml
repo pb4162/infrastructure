@@ -28,7 +28,7 @@ spec:
           main:
             image:
               repository: ghcr.io/nextcloud-releases/aio-talk-recording
-              tag: "20260805_083533"
+              tag: "20260817_082005"
             env:
               NC_DOMAIN: nextcloud.${ROOT_DOMAIN}
               RECORDING_SECRET:
