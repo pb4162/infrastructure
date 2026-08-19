@@ -20,6 +20,7 @@ spec:
     image:
       registry: "docker.gitea.com"
       repository: gitea
+      tag: main-nightly
       digest: sha256:aa44431c5a926fa08a99c95a2a717a2eb9907c391f33919f0d89b184f61a549d
     strategy:
       type: Recreate
