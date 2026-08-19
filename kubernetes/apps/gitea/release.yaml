@@ -20,7 +20,7 @@ spec:
     image:
       registry: "docker.gitea.com"
       repository: gitea
-      tag: sha256:de6a0cbc7d421aa4a67a75cae9396dec9814c95b4061f8c5bac5e6d9a59438f6
+      tag: "1.27.2"
     strategy:
       type: Recreate
     ingress:
