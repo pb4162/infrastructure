@@ -47,12 +47,10 @@ spec:
       kubernetesCRD:
         allowCrossNamespace: true
         allowExternalNameServices: true
-        throttleDuration: 15
       kubernetesIngress:
         publishedService:
           enabled: true
         allowExternalNameServices: true
-        throttleDuration: 15
     service:
       spec:
         ipFamilyPolicy: "PreferDualStack"
@@ -92,6 +90,8 @@ spec:
       sendAnonymousUsage: false
     additionalArguments:
       - "--api.insecure=true"
+      - "--providers.kubernetesCRD.throttleDuration=15s"
+      - "--providers.kubernetesIngress.throttleDuration=15s"
     accessLog:
       enabled: true
       format: common
