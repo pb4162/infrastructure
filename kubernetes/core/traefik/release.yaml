@@ -19,7 +19,6 @@ spec:
   values:
     api:
       disableDashboardAd: true
-    priorityClassName: "system-cluster-critical"  # inherited from k3s HelmChart
     deployment:
       replicas: 2
     metrics:
