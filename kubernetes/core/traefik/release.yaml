@@ -47,10 +47,12 @@ spec:
       kubernetesCRD:
         allowCrossNamespace: true
         allowExternalNameServices: true
+        throttleDuration: 15
       kubernetesIngress:
         publishedService:
           enabled: true
         allowExternalNameServices: true
+        throttleDuration: 15
     service:
       spec:
         ipFamilyPolicy: "PreferDualStack"
