@@ -7,7 +7,7 @@
     },
     {
       "matchDepNames": ["/^pbcr\\.local\\//"],
-      "versioning": "regex:^(?<major>\\d+)\\.(?<minor>\\d+)\\.(?<patch>\\d+)(-(?<build>.*))?$"
+      "versioning": "regex:^(?<major>\\d+)\\.(?<minor>\\d+)\\.(?<patch>\\d+)(-(?<compatibility>.+))?-pb(?<build>\\d+)$"
     }
   ]
 }
