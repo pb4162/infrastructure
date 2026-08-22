@@ -17,6 +17,10 @@ spec:
     - name: cert-manager
       namespace: cert-manager
   values:
+    image:
+      registry: pbcr.local
+      repository: pb/traefik
+      tag: v3.7.10-pb1
     api:
       disableDashboardAd: true
     deployment:
@@ -98,7 +102,6 @@ spec:
         headers:
           defaultmode: keep
     experimental:
-      plugins:
+      localPlugins:
         bouncer:
           moduleName: "github.com/maxlerebourg/crowdsec-bouncer-traefik-plugin"
-          version: "v1.3.5"
