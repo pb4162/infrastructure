@@ -32,7 +32,7 @@ spec:
         type: Recreate
       resources:
         limits:
-          memory: 256Mi
+          memory: 512Mi
       ingress:
         enabled: true
         hosts:
