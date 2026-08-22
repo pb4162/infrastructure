@@ -95,13 +95,10 @@ spec:
       - "--api.insecure=true"
       - "--providers.kubernetesCRD.throttleDuration=15s"
       - "--providers.kubernetesIngress.throttleDuration=15s"
+      - "--experimental.localPlugins.bouncer.moduleName=github.com/maxlerebourg/crowdsec-bouncer-traefik-plugin"
     accessLog:
       enabled: true
       format: common
       fields:
         headers:
           defaultmode: keep
-    experimental:
-      localPlugins:
-        bouncer:
-          moduleName: "github.com/maxlerebourg/crowdsec-bouncer-traefik-plugin"
