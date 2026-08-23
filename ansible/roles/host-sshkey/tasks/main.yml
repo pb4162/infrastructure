@@ -1,0 +1,14 @@
+- name: Generate host's own OpenSSH key
+  community.crypto.openssh_keypair:
+    path: "~/.ssh/id_rsa"
+  register: openssh_keypair
+
+- name: Upload key to hosts
+  ansible.posix.authorized_key:
+    key: "{{ openssh_keypair.public_key }}"
+    user: "{{ item.user }}"
+    path: "{{ item.path | default(omit) }}"
+  delegate_to: "{{ item.host }}"
+  loop: "{{ sshkey_hosts }}"
+  loop_control:
+    label: "{{ item.host }}"
