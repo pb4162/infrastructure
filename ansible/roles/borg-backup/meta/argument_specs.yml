@@ -12,3 +12,7 @@ argument_specs:
         type: "str"
         required: false
         default: null
+      borgmatic_scripts:
+        type: dict
+        required: false
+        default: {}

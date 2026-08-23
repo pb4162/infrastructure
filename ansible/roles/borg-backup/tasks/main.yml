@@ -34,6 +34,15 @@
         user: "{{ borg_server_user }}"
       delegate_to: "{{ borg_server_host | default('null') }}"
 
+- name: "Install scripts to /usr/local/bin"
+  ansible.builtin.copy:
+    content: "{{ item.value }}"
+    dest: "/usr/local/bin/{{ item.key }}"
+    mode: a+x
+  loop: "{{ borgmatic_scripts | dict2items }}"
+  loop_control:
+    label: "{{ item.key }}"
+
 - name: "Merge borgmatic_(config,config_base,config_private) into final config"
   ansible.builtin.set_fact:
     borgmatic_config_final: "{{ borgmatic_config_base | combine(borgmatic_config, borgmatic_config_private, recursive=true, list_merge='append') }}"
