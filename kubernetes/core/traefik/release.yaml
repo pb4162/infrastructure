@@ -20,7 +20,7 @@ spec:
     image:
       registry: pbcr.local
       repository: pb/traefik
-      tag: v3.7.10-pb1
+      tag: v3.7.11-pb1
     api:
       disableDashboardAd: true
     deployment:
