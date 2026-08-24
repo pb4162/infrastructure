@@ -1,0 +1,21 @@
+apiVersion: monitoring.coreos.com/v1alpha1
+kind: ScrapeConfig
+metadata:
+  name: smartctl-exporter-pi-scrape-config
+  namespace: monitoring
+  labels:
+    release: kube-prometheus-stack
+spec:
+  jobName: prometheus-smartctl-exporter
+  scrapeInterval: 20s
+  metricsPath: /metrics
+  staticConfigs:
+    - targets:
+        - "smartctl-exporter.pi.${ROOT_DOMAIN}"
+  basicAuth:
+    username:
+      name: smartctl-exporter-pi-basic-auth
+      key: username
+    password:
+      name: smartctl-exporter-pi-basic-auth
+      key: password
