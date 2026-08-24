@@ -1,0 +1,21 @@
+apiVersion: monitoring.coreos.com/v1alpha1
+kind: ScrapeConfig
+metadata:
+  labels:
+    release: kube-prometheus-stack
+  name: cadvisor-podman-scrape-config
+  namespace: monitoring
+spec:
+  basicAuth:
+    password:
+      key: password
+      name: cadvisor-podman-basic-auth
+    username:
+      key: username
+      name: cadvisor-podman-basic-auth
+  jobName: cadvisor-podman
+  metricsPath: /metrics
+  scrapeInterval: 20s
+  staticConfigs:
+  - targets:
+    - cadvisor.podman.${ROOT_DOMAIN}
