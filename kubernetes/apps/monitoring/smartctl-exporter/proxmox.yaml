@@ -1,7 +1,7 @@
 apiVersion: monitoring.coreos.com/v1alpha1
 kind: ScrapeConfig
 metadata:
-  name: smartctl-exporter-proxmox-scrape-config
+  name: smartctl-exporter-proxmox
   namespace: monitoring
   labels:
     release: kube-prometheus-stack

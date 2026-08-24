@@ -1,7 +1,7 @@
 apiVersion: monitoring.coreos.com/v1alpha1
 kind: ScrapeConfig
 metadata:
-  name: node-exporter-podman-scrape-config
+  name: node-exporter-podman
   namespace: monitoring
   labels:
     release: kube-prometheus-stack

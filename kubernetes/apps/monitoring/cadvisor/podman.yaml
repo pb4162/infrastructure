@@ -3,7 +3,7 @@ kind: ScrapeConfig
 metadata:
   labels:
     release: kube-prometheus-stack
-  name: cadvisor-podman-scrape-config
+  name: cadvisor-podman
   namespace: monitoring
 spec:
   basicAuth:
