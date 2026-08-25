@@ -24,7 +24,7 @@ data:
             - CNPGClusterHAWarning
       superuserSecret: cnpg-superuser-secret
     backups:
-      enabled: true
+      enabled: false
       method: plugin
       pluginConfiguration:
         name: barman-cloud.cloudnative-pg.io

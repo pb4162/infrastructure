@@ -36,6 +36,8 @@
       tags: [tailscale]
     - role: docker
       tags: [docker, containers]
+    - role: smartctl-exporter
+      tags: [smartctl-exporter, monitoring]
     - role: containers/traefik
       tags: [traefik, containers]
     - role: containers/docker/semaphoreui
