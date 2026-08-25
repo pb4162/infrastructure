@@ -35,7 +35,7 @@ spec:
     image:
       registry: pbcr.local
       repository: pb/headlamp
-      tag: "v0.45.0-pb2"
+      tag: "v0.45.0-pb3"
     config:
       oidc:
         secret:
