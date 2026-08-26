@@ -1,0 +1,90 @@
+- name: Update helm repositories
+  hosts: k8s_first_master_node
+  become: true
+
+  tags:
+    - helm
+
+  tasks:
+    - name: "Update helm repositories"
+      kubernetes.core.helm:
+        name: dummy
+        namespace: kube-system
+        state: absent
+        update_repo_cache: true
+
+
+- name: Update OS
+  hosts: k8s_cluster
+  become: true
+
+  serial: 1
+  tags:
+    - apt
+
+  tasks:
+    - name: "apt: Update"
+      ansible.builtin.apt:
+        update_cache: yes
+
+    - name: "apt: Upgrade"
+      ansible.builtin.apt:
+        name: "*"
+        state: latest
+
+    - name: "Check /var/run/reboot-required"
+      ansible.builtin.stat:
+        path: "/var/run/reboot-required"
+        get_checksum: false
+      register: var_run_reboot_required
+
+    - name: "Reboot if needed"
+      ansible.builtin.reboot:
+      when: var_run_reboot_required.stat.exists
+
+    - name: "Wait for k8s to be up and running"
+      ansible.builtin.shell: kubectl cluster-info
+      register: cluster_info
+      until: cluster_info.stdout.find("control plane is running") != -1
+      retries: 30
+      delay: 10
+
+
+- name: "Update k3s"
+  hosts: k8s_cluster
+  become: true
+
+  serial: 1
+
+  tags:
+    - k3s
+
+  roles:
+    - role: k3s
+      k3s_update: true
+
+  tasks:
+    - name: "Wait for k3s to be up and running"
+      ansible.builtin.shell: kubectl cluster-info
+      register: cluster_info
+      until: cluster_info.stdout.find("control plane is running") != -1
+      retries: 30
+      delay: 10
+
+
+- name: "Update flux"
+  hosts: k8s_first_master_node
+  become: true
+
+  tags:
+    - flux
+
+  roles:
+    - role: flux/cli
+      flux_update: true
+      tags:
+        - flux-cli
+    - role: flux/bootstrap
+      flux_update: true
+      tags:
+        - flux-bootstrap
