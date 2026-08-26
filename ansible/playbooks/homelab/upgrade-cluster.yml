@@ -22,26 +22,10 @@
   tags:
     - apt
 
+  roles:
+    - role: apt-os-update
+
   tasks:
-    - name: "apt: Update"
-      ansible.builtin.apt:
-        update_cache: yes
-
-    - name: "apt: Upgrade"
-      ansible.builtin.apt:
-        name: "*"
-        state: latest
-
-    - name: "Check /var/run/reboot-required"
-      ansible.builtin.stat:
-        path: "/var/run/reboot-required"
-        get_checksum: false
-      register: var_run_reboot_required
-
-    - name: "Reboot if needed"
-      ansible.builtin.reboot:
-      when: var_run_reboot_required.stat.exists
-
     - name: "Wait for k8s to be up and running"
       ansible.builtin.shell: kubectl cluster-info
       register: cluster_info
