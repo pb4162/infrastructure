@@ -10,7 +10,7 @@ spec:
   volumeMode: Filesystem
   resources:
     requests:
-      storage: 100Gi
+      storage: ${ABS_MEDIA_VOLUME_SIZE}
   storageClassName: truenas-smb
 ---
 apiVersion: v1
