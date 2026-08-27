@@ -1,9 +1,18 @@
 argument_specs:
   main:
     options:
+      borgmatic_config_group:
+        type: "dict"
+        required: false
+        default: {}
+      borgmatic_config_group_private:
+        type: "dict"
+        required: false
+        default: {}
       borgmatic_config:
         type: "dict"
-        required: true
+        required: false
+        default: {}
       borgmatic_config_private:
         type: "dict"
         required: false

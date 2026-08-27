@@ -1,3 +1,6 @@
+borgmatic_config_group: {}
+borgmatic_config_group_private: {}
+borgmatic_config: {}
 borgmatic_config_private: {}
 borg_server_host: null
 borgmatic_scripts: {}

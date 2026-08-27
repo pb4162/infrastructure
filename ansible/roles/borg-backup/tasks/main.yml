@@ -34,6 +34,13 @@
         user: "{{ borg_server_user }}"
       delegate_to: "{{ borg_server_host | default('null') }}"
 
+    - name: Create borg repo directory on backup server
+      ansible.builtin.file:
+        path: "{{ ('home', borg_server_user, 'repos', inventory_hostname) | path_join }}"
+        state: directory
+        owner: "{{ borg_server_user }}"
+      delegate_to: "{{ borg_server_host | default('null') }}"
+
 - name: "Install scripts to /usr/local/bin"
   ansible.builtin.copy:
     content: "{{ item.value }}"
@@ -43,9 +50,17 @@
   loop_control:
     label: "{{ item.key }}"
 
-- name: "Merge borgmatic_(config,config_base,config_private) into final config"
+- name: "Merge borgmatic_(config,config_base,config_private,config_group,config_group_private) into final config"
   ansible.builtin.set_fact:
-    borgmatic_config_final: "{{ borgmatic_config_base | combine(borgmatic_config, borgmatic_config_private, recursive=true, list_merge='append') }}"
+    borgmatic_config_final: "{{
+      borgmatic_config_base | combine(
+        borgmatic_config_group,
+        borgmatic_config_group_private,
+        borgmatic_config,
+        borgmatic_config_private,
+        recursive=true,
+        list_merge='append')
+      }}"
 
 - name: "Copy final config to /etc/borgmatic/config.yaml"
   ansible.builtin.copy:
@@ -58,6 +73,7 @@
 - name: "Create borg repo"
   ansible.builtin.shell: >-
     BORG_PASSPHRASE={{ borgmatic_config_final.encryption_passphrase | quote }}
+    BORG_UNKNOWN_UNENCRYPTED_REPO_ACCESS_IS_OK=yes
     borgmatic -v 1 repo-create --encryption repokey
   register: create_repo_info
   changed_when: ("Repository already exists" not in create_repo_info.stdout)
