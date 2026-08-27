@@ -1,0 +1,13 @@
+- name: Update all packages on the system
+  community.general.openbsd_pkg:
+    name: '*'
+    state: latest
+
+- name: Remove all unused dependencies
+  community.general.openbsd_pkg:
+    name: '*'
+    autoremove: true
+
+- name: Reboot
+  ansible.builtin.reboot:
+  when: force_reboot is true
