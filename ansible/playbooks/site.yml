@@ -1,0 +1,202 @@
+- name: Bootstrap configurations needed for all future playbooks
+  hosts: all
+  become: true
+  become_flags: "-"
+  tags: [bootstrap]
+
+  vars:
+    ansible_become_method: su
+
+  roles:
+    - role: sshkey
+      tags: [sshkey]
+
+
+- name: Apply common configurations on all hosts except for the router
+  hosts: all:!router
+  become: true
+  tags: [bootstrap]
+
+  roles:
+    - role: user
+      tags: [user]
+    - role: priv-esc
+      tags: [sudo, doas, priv-esc]
+    - role: sshd
+      tags: [ssh, sshd]
+    - role: timezone
+      tags: [timezone, tz]
+
+
+- name: Install common packages for all hosts
+  hosts: all
+  become: true
+  tags: [common]
+
+  roles:
+    - role: common-packages
+      tags: [common, packages]
+
+
+- name: Tune network settings for all hosts except for openbsd_vps and router
+  hosts: all:!openbsd_vps:!router
+  become: true
+  tags: [common]
+
+  roles:
+    - role: network-tuning
+      tags: [network, tuning]
+
+
+- name: Setup backup servers
+  hosts: backup_servers
+  become: true
+
+  roles:
+    - role: borg-server
+      tags: [borg-server, borg, backup]
+
+
+- name: Setup backups
+  hosts: all:!router
+  become: true
+
+  roles:
+    - role: borg-backup
+      tags: [borg, backup]
+
+
+- name: Setup docker
+  hosts: docker
+  become: true
+
+  roles:
+    - role: docker
+      tags: [docker, containers]
+
+
+- name: Setup nginx
+  hosts: nginx
+  become: true
+  tags: [webservers]
+
+  roles:
+    - name: acme
+      tags: [acme]
+    - name: nginx
+      tags: [nginx]
+
+
+- name: Setup traefik
+  hosts: traefik
+  become: true
+
+  roles:
+    - role: containers/traefik
+      tags: [traefik, containers, webservers]
+
+
+- name: Setup crowdsec on VPSes
+  hosts: remote
+  become: true
+
+  roles:
+    - role: crowdsec
+      tags: [crowdsec]
+
+
+- name: Setup control_plane host
+  hosts: control_plane
+  become: true
+
+  roles:
+    - role: wifi
+      tags: [network, wifi]
+    - role: containers/docker/semaphoreui
+      tags: [semaphoreui, semaphore, containers]
+    - role: containers/docker/technitium
+      tags: [technitium, dns, containers]
+    - role: host-sshkey
+      tags: [host-sshkey]
+
+
+- name: Setup misc_vps
+  hosts: misc_vps
+  become: true
+
+  roles:
+    - name: mailcow
+      tags: mailcow
+    - name: gatus
+      tags: [gatus, monitoring]
+
+
+- name: Setup headscale_vps
+  hosts: headscale_vps
+  become: true
+
+  roles:
+    - role: headscale
+      tags: headscale
+
+
+- name: Setup tailscale on all hosts except headscale_vps
+  hosts: all:!headscale_vps
+  become: true
+
+  roles:
+    - role: tailscale
+      tags: [tailscale]
+
+
+- name: Prepare k8s_cluster
+  hosts: k8s_cluster
+  become: true
+
+  roles:
+    - role: disable-swap
+      tags: [disable-swap, swap]
+    - role: longhorn-packages
+      tags: [longhorn, packages]
+    - role: mini-pc/inotify
+      tags: inotify
+
+
+- name: "Setup k8s_first_master_node"
+  hosts: k8s_first_master_node
+  become: true
+
+  roles:
+    - role: k3s
+      tags: k3s
+    - role: helm
+      tags: helm
+    - role: velero-cli
+      tags: velero-cli
+    - role: longhorn-cli
+      tags: longhorn-cli
+    - role: flux/cli
+      tags:
+        - flux
+        - flux-cli
+
+
+- name: "Install k3s on rest of nodes"
+  hosts: k8s_cluster
+  become: true
+  gather_facts: true
+
+  roles:
+    - role: k3s
+      tags: k3s
+
+
+- name: "Bootstrap flux on k8s_first_master_node"
+  hosts: k8s_first_master_node
+  become: true
+
+  roles:
+    - role: flux/bootstrap
+      tags:
+        - flux
+        - flux-bootstrap
