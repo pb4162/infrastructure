@@ -1,5 +1,5 @@
 - name: "Install tailscale"
-  community.general.opkg:
+  community.general.apk:
     state: present
     name: tailscale
 
