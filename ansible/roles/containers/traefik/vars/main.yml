@@ -27,7 +27,7 @@ traefik_base_options: &base
     - "{{ traefik_certs_path }}:/letsencrypt"
     - >-
       {{
-        "/run/user/{{ getent_passwd[ansible_user][1] }}/podman/podman.sock" if container_tool == "podman"
+        (("/run/user", getent_passwd[ansible_user][1], "podman/podman.sock") | path_join) if container_tool == "podman"
         else "/run/docker.sock" if container_tool == "docker"
       }}:/var/run/docker.sock:ro
 
