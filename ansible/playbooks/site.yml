@@ -35,7 +35,7 @@
 
   roles:
     - role: common-packages
-      tags: [common, packages]
+      tags: [common, packages, common-packages]
 
 
 - name: Tune network settings for all hosts except for openbsd_vps and router
@@ -45,7 +45,7 @@
 
   roles:
     - role: network-tuning
-      tags: [network, tuning]
+      tags: [network, tuning, network-tuning]
 
 
 - name: Setup backup servers
@@ -63,7 +63,7 @@
 
   roles:
     - role: borg-backup
-      tags: [borg, backup]
+      tags: [borg, backup, borg-backup]
 
 
 - name: Setup docker
@@ -92,7 +92,7 @@
   become: true
 
   roles:
-    - role: containers/traefik
+    - role: traefik
       tags: [traefik, containers, webservers]
 
 
@@ -112,9 +112,9 @@
   roles:
     - role: wifi
       tags: [network, wifi]
-    - role: containers/docker/semaphoreui
+    - role: semaphoreui
       tags: [semaphoreui, semaphore, containers]
-    - role: containers/docker/technitium
+    - role: technitium
       tags: [technitium, dns, containers]
     - role: host-sshkey
       tags: [host-sshkey]
@@ -157,8 +157,8 @@
     - role: disable-swap
       tags: [disable-swap, swap]
     - role: longhorn-packages
-      tags: [longhorn, packages]
-    - role: mini-pc/inotify
+      tags: [longhorn, packages, longhorn-packages]
+    - role: inotify
       tags: inotify
 
 
@@ -175,7 +175,7 @@
       tags: velero-cli
     - role: longhorn-cli
       tags: longhorn-cli
-    - role: flux/cli
+    - role: flux-cli
       tags:
         - flux
         - flux-cli
@@ -196,7 +196,7 @@
   become: true
 
   roles:
-    - role: flux/bootstrap
+    - role: flux-bootstrap
       tags:
         - flux
         - flux-bootstrap
