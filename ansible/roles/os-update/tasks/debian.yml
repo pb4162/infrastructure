@@ -7,6 +7,10 @@
     name: "*"
     state: latest
 
+- name: "apt: Remove dependencies that are no longer required"
+  ansible.builtin.apt:
+    autoremove: yes
+
 - name: "Check /var/run/reboot-required"
   ansible.builtin.stat:
     path: "/var/run/reboot-required"
@@ -15,4 +19,4 @@
 
 - name: "Reboot if needed"
   ansible.builtin.reboot:
-  when: var_run_reboot_required.stat.exists
+  when: var_run_reboot_required.stat.exists or force_reboot is true

@@ -1,0 +1,5 @@
+- ansible.builtin.import_tasks: sudo.yml
+  when: ansible_system | lower == "linux"
+
+- ansible.builtin.import_tasks: doas.yml
+  when: ("bsd" in (ansible_system | lower))

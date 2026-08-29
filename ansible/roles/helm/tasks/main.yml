@@ -34,9 +34,38 @@
     state: present
     name: helm
 
+- name: "apt: Install gnupg"
+  ansible.builtin.apt:
+    state: present
+    name: gnupg
+
+- name: "Download helm-diff plugin gpg key"
+  ansible.builtin.get_url:
+    url: https://github.com/databus23.gpg
+    dest: ~/databus23.gpg
+    mode: 0644
+
+- name: "Install helm-diff plugin gpg key"
+  ansible.builtin.command: gpg --import ~/databus23.gpg
+  register: import_result
+  changed_when: ("imported" in import_result.stderr)
+
+- name: "Export gpg key DB so helm can find it"
+  ansible.builtin.command: gpg --output ~/.gnupg/pubring.gpg --export
+  args:
+    creates: ~/.gnupg/pubring.gpg
+
+- name: "Set helm_diff_arch"
+  ansible.builtin.set_fact:
+    helm_diff_arch: >-
+      {{
+        "amd64" if ansible_architecture == "x86_64"
+        else "arm64" if ansible_architecture == "aarch64"
+      }}
+
 - name: "helm: Install helm-diff plugin"
   kubernetes.core.helm_plugin:
-    plugin_path: https://github.com/databus23/helm-diff
+    plugin_path: "https://github.com/databus23/helm-diff/releases/download/{{ helm_diff_plugin_version }}/helm-diff-linux-{{ helm_diff_arch }}.tgz"
     state: present
 
 - name: "apt: Install python3-yaml"
