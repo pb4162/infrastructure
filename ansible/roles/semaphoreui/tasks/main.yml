@@ -33,7 +33,7 @@
       - { name: bridge }
     labels:
       traefik.enable: "true"
-      traefik.http.routers.semaphoreui.rule: "Host(`semaphore.{{ root_domain }}`)"
+      traefik.http.routers.semaphoreui.rule: "Host(`semaphore.{{ root_domain }}`) || Host(`semui-webhook.{{ root_domain }}`)"
       traefik.http.services.semaphoreui.loadbalancer.server.port: 3000
     restart_policy: unless-stopped
 
