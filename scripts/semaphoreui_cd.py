@@ -27,8 +27,15 @@ def run_site_playbook(*, tags=None, limits=None):
 BASE_DIR = "ansible"
 SITE_PLAYBOOK = "playbooks/site.yml"
 
-BEFORE_PUSH_COMMIT = os.getenv("BEFORE_PUSH_COMMIT")
-AFTER_PUSH_COMMIT = os.getenv("AFTER_PUSH_COMMIT")
+parsed = {}
+
+for arg in sys.argv[1:]:
+    if "=" in arg:
+        key, val = arg.split("=", 1)
+        parsed[key] = val
+
+BEFORE_PUSH_COMMIT = parsed.get("BEFORE_PUSH_COMMIT")
+AFTER_PUSH_COMMIT = parsed.get("AFTER_PUSH_COMMIT")
 
 diff_command = ["git", "diff", "--name-only", BEFORE_PUSH_COMMIT, AFTER_PUSH_COMMIT]
 changed_files = subprocess.check_output(diff_command, text=True).split()
