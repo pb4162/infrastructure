@@ -18,7 +18,7 @@ def run_site_playbook(*, tags=None, limits=None):
         "Authorization": f"Bearer {os.getenv('SEMAPHOREUI_KEY')}"
     }
     requests.post(
-        f"{os.getenv('SEMAPHOREUI_HOST')}/api/project/{os.getenv('SEMAPHOREUI_PROJECT_ID')}/tasks"
+        f"{os.getenv('SEMAPHOREUI_HOST')}/api/project/{os.getenv('SEMAPHOREUI_PROJECT_ID')}/tasks",
         data=payload,
         headers=headers,
     )
