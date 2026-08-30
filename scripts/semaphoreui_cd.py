@@ -36,6 +36,10 @@ for arg in sys.argv[1:]:
 
 BEFORE_PUSH_COMMIT = parsed.get("BEFORE_PUSH_COMMIT")
 AFTER_PUSH_COMMIT = parsed.get("AFTER_PUSH_COMMIT")
+CLONE_URL = parsed.get("CLONE_URL")
+
+subprocess.run(["git", "clone", CLONE_URL])
+os.chdir(CLONE_URL.split("/")[-1].removesuffix(".git"))
 
 diff_command = ["git", "diff", "--name-only", BEFORE_PUSH_COMMIT, AFTER_PUSH_COMMIT]
 changed_files = subprocess.check_output(diff_command, text=True).split()
