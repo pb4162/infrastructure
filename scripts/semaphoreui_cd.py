@@ -2,6 +2,7 @@ import os
 import sys
 import subprocess
 import requests
+import textwrap
 
 
 def run_site_playbook(*, tags=None, limits=None):
@@ -24,8 +25,10 @@ def run_site_playbook(*, tags=None, limits=None):
     )
 
 
+# TODO: pull these from env
 BASE_DIR = "ansible"
 SITE_PLAYBOOK = "playbooks/site.yml"
+GITHUB_USER = "pb4162"
 
 parsed = {}
 
@@ -39,7 +42,15 @@ AFTER_PUSH_COMMIT = parsed.get("AFTER_PUSH_COMMIT")
 CLONE_URL = parsed.get("CLONE_URL")
 GITHUB_PAT = os.getenv("GITHUB_PAT")
 
-subprocess.run(["git", "config", "--global", f"url.\"https://x-token-auth:{GITHUB_PAT}@github.com/\".insteadOf", "https://github.com/"])
+subprocess.run(["git", "config", "credential.helper" "cache", "--timeout", "300"])
+subprocess.run(textwrap.dedent(f"""
+    git credential approve <<'EOT'
+    url={CLONE_URL}
+    username={GITHUB_USER}
+    password={GITHUB_PAT}
+    EOT
+"""))
+
 subprocess.run(["git", "clone", CLONE_URL])
 os.chdir(CLONE_URL.split("/")[-1].removesuffix(".git"))
 
