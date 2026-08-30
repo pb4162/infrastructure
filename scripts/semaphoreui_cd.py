@@ -37,7 +37,9 @@ for arg in sys.argv[1:]:
 BEFORE_PUSH_COMMIT = parsed.get("BEFORE_PUSH_COMMIT")
 AFTER_PUSH_COMMIT = parsed.get("AFTER_PUSH_COMMIT")
 CLONE_URL = parsed.get("CLONE_URL")
+GITHUB_PAT = os.getenv("GITHUB_PAT")
 
+subprocess.run(["git", "config", "--global", f"url.\"https://x-token-auth:{GITHUB_PAT}@github.com/\".insteadOf", "https://github.com/"])
 subprocess.run(["git", "clone", CLONE_URL])
 os.chdir(CLONE_URL.split("/")[-1].removesuffix(".git"))
 
