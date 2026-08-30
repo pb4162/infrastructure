@@ -41,6 +41,7 @@ BEFORE_PUSH_COMMIT = parsed.get("BEFORE_PUSH_COMMIT")
 AFTER_PUSH_COMMIT = parsed.get("AFTER_PUSH_COMMIT")
 CLONE_URL = parsed.get("CLONE_URL")
 GITHUB_PAT = os.getenv("GITHUB_PAT")
+REPO_PATH = CLONE_URL.split("/")[-1].removesuffix(".git")
 
 subprocess.run(["git", "config", "credential.helper" "cache", "--timeout", "300"])
 subprocess.run(textwrap.dedent(f"""
@@ -51,11 +52,17 @@ subprocess.run(textwrap.dedent(f"""
     EOT
 """), shell=True)
 
-subprocess.run(["git", "clone", CLONE_URL])
-os.chdir(CLONE_URL.split("/")[-1].removesuffix(".git"))
+if not os.path.exists(REPO_PATH):
+    subprocess.run(["git", "clone", CLONE_URL])
+    os.chdir(REPO_PATH)
+else:
+    os.chdir(REPO_PATH)
+    subprocess.run(["git", "pull"])
 
 diff_command = ["git", "diff", "--name-only", BEFORE_PUSH_COMMIT, AFTER_PUSH_COMMIT]
 changed_files = subprocess.check_output(diff_command, text=True).split()
+
+subprocess.run(["git", "credential-cache", "exit"])
 
 RUN_FULL_PLAYBOOK_PATHS = [
     f"{BASE_DIR}/{p}" for p in [
