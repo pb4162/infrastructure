@@ -49,7 +49,7 @@ subprocess.run(textwrap.dedent(f"""
     username={GITHUB_USER}
     password={GITHUB_PAT}
     EOT
-"""))
+"""), shell=True)
 
 subprocess.run(["git", "clone", CLONE_URL])
 os.chdir(CLONE_URL.split("/")[-1].removesuffix(".git"))
