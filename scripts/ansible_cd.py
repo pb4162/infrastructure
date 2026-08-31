@@ -1,13 +1,16 @@
 import os
 import sys
+import json
 import subprocess
-import requests
 import textwrap
+import requests
 
 
 def run_site_playbook(*, tags=None, limits=None):
     if tags is None:
         tags = []
+    if limits is None:
+        limits = []
     payload = {
         "template_id": int(os.getenv("SEMAPHOREUI_TASK_TEMPLATE_ID")),
         "limit": ",".join(limits),
@@ -16,53 +19,32 @@ def run_site_playbook(*, tags=None, limits=None):
         }
     }
     headers = {
-        "Authorization": f"Bearer {os.getenv('SEMAPHOREUI_KEY')}"
+        "Authorization": f"Bearer {os.getenv('SEMAPHOREUI_KEY')}",
+        "Content-Type": "application/json"
     }
-    requests.post(
+    r = requests.post(
         f"{os.getenv('SEMAPHOREUI_HOST')}/api/project/{os.getenv('SEMAPHOREUI_PROJECT_ID')}/tasks",
-        data=payload,
+        data=json.dumps(payload),
         headers=headers,
     )
+    print("Sending payload:", payload)
+    print(f"Got {r} from semaphoreui instance")
 
 
 # TODO: pull these from env
 BASE_DIR = "ansible"
 SITE_PLAYBOOK = "playbooks/site.yml"
-GITHUB_USER = "pb4162"
 
-parsed = {}
+BEFORE_PUSH_COMMIT = os.getenv("CI_PREV_COMMIT_SHA")
+AFTER_PUSH_COMMIT = os.getenv("CI_COMMIT_SHA")
 
-for arg in sys.argv[1:]:
-    if "=" in arg:
-        key, val = arg.split("=", 1)
-        parsed[key] = val
-
-BEFORE_PUSH_COMMIT = parsed.get("BEFORE_PUSH_COMMIT")
-AFTER_PUSH_COMMIT = parsed.get("AFTER_PUSH_COMMIT")
-CLONE_URL = parsed.get("CLONE_URL")
-GITHUB_PAT = os.getenv("GITHUB_PAT")
-REPO_PATH = CLONE_URL.split("/")[-1].removesuffix(".git")
-
-subprocess.run(["git", "config", "credential.helper" "cache", "--timeout", "300"])
-subprocess.run(textwrap.dedent(f"""
-    git credential approve <<'EOT'
-    url={CLONE_URL}
-    username={GITHUB_USER}
-    password={GITHUB_PAT}
-    EOT
-"""), shell=True)
-
-if not os.path.exists(REPO_PATH):
-    subprocess.run(["git", "clone", CLONE_URL])
-    os.chdir(REPO_PATH)
+diff_command = ["git", "diff", "--name-only"]
+if BEFORE_PUSH_COMMIT == "0"*40:
+    diff_command.append("HEAD~1")
 else:
-    os.chdir(REPO_PATH)
-    subprocess.run(["git", "pull"])
+    diff_command.extend([BEFORE_PUSH_COMMIT, AFTER_PUSH_COMMIT])
 
-diff_command = ["git", "diff", "--name-only", BEFORE_PUSH_COMMIT, AFTER_PUSH_COMMIT]
 changed_files = subprocess.check_output(diff_command, text=True).split()
-
-subprocess.run(["git", "credential-cache", "exit"])
 
 RUN_FULL_PLAYBOOK_PATHS = [
     f"{BASE_DIR}/{p}" for p in [
