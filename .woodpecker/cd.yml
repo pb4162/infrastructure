@@ -1,0 +1,35 @@
+when:
+  - event: push
+    branch: main
+  - event: manual
+
+
+clone:
+  git:
+    image: woodpeckerci/plugin-git
+    settings:
+      depth: 0
+      partial: false
+      branch: ${CI_COMMIT_BRANCH=FORWARDED_CI_COMMIT_BRANCH}
+      remote: ${CI_REPO_CLONE_URL=FORWARDED_CI_REPO_CLONE_URL}
+      sha: ${CI_COMMIT_SHA=FORWARDED_CI_COMMIT_SHA}
+      path: ${CI_WORKSPACE=FORWARDED_CI_WORKSPACE}
+      target-branch: ${CI_COMMIT_TARGET_BRANCH=FORWARDED_CI_COMMIT_TARGET_BRANCH}
+
+
+steps:
+  - name: Run ansible_cd python script
+    image: python:3.14.7
+    environment:
+      SEMAPHOREUI_KEY:
+        from_secret: semaphoreui_key
+      SEMAPHOREUI_HOST:
+        from_secret: semaphoreui_host
+      SEMAPHOREUI_PROJECT_ID:
+        from_secret: semaphoreui_project_id
+      SEMAPHOREUI_TASK_TEMPLATE_ID:
+        from_secret: semaphoreui_task_template_id
+    commands:
+      - pip install requests
+      - git config --global --add safe.directory '.'
+      - python scripts/ansible_cd.py
