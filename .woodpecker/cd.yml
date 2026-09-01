@@ -7,11 +7,8 @@ when:
 steps:
   - name: Pull repo with ansible_cd python script
     image: woodpeckerci/plugin-git
-    settings:
-      depth: 0
-      partial: false
-      remote: "https://github.com/pb4162/infrastructure.git"
-      path: "script_home"
+    commands:
+      - git clone https://github.com/pb4162/infrastructure.git script_home
 
   - name: Run ansible_cd python script
     image: python:3.14.7
