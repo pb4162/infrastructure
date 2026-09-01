@@ -4,20 +4,15 @@ when:
   - event: manual
 
 
-clone:
-  git:
+steps:
+  - name: Pull repo with ansible_cd python script
     image: woodpeckerci/plugin-git
     settings:
       depth: 0
       partial: false
-      branch: ${FORWARDED_CI_COMMIT_BRANCH:-$CI_COMMIT_BRANCH}
-      remote: ${FORWARDED_CI_REPO_CLONE_URL:-$CI_REPO_CLONE_URL}
-      sha: ${FORWARDED_CI_COMMIT_SHA:-$CI_COMMIT_SHA}
-      path: ${FORWARDED_CI_WORKSPACE:-$CI_WORKSPACE}
-      target-branch: ${FORWARDED_CI_COMMIT_TARGET_BRANCH:-$CI_COMMIT_TARGET_BRANCH}
+      remote: "https://github.com/pb4162/infrastructure.git"
+      path: "script_home"
 
-
-steps:
   - name: Run ansible_cd python script
     image: python:3.14.7
     environment:
@@ -32,4 +27,4 @@ steps:
     commands:
       - pip install requests
       - git config --global --add safe.directory '.'
-      - python scripts/ansible_cd.py
+      - python script_home/scripts/ansible_cd.py
