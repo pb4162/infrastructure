@@ -6,7 +6,7 @@ when:
 
 steps:
   - name: Pull repo with ansible_cd python script
-    image: woodpeckerci/plugin-git
+    image: alpine/git:v2.54.0
     commands:
       - git clone https://github.com/pb4162/infrastructure.git script_home
 
