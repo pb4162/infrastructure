@@ -1,6 +1,7 @@
 when:
   - event: push
     branch: main
+    path: 'ansible/*'
   - event: manual
 
 
