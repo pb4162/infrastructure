@@ -6,4 +6,4 @@
     scope: user
 
 - name: Restart traefik (docker)
-  community.docker.docker_container: "{{ traefik_docker_options | combine({'restart': true}, recursive=true) }}"
+  community.docker.docker_container: "{{ traefik_docker_restart_options }}"

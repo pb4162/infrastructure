@@ -31,7 +31,7 @@ traefik_base_options: &base
         else "/run/docker.sock" if container_tool == "docker"
       }}:/var/run/docker.sock:ro
 
-traefik_docker_options:
+traefik_docker_options: &docker_options
   <<: *base
   ports:
     - "80:80"
@@ -39,6 +39,10 @@ traefik_docker_options:
   networks:
     - { name: bridge }
   restart_policy: unless-stopped
+
+traefik_docker_restart_options:
+  <<: *docker_options
+  restart: true
 
 traefik_podman_options:
   <<: *base
