@@ -6,29 +6,45 @@ import textwrap
 import requests
 
 
-def run_site_playbook(*, tags=None, limits=None):
+def run_playbooks(*, repo, tags=None, limits=None):
     if tags is None:
         tags = []
     if limits is None:
         limits = []
-    payload = {
-        "template_id": int(os.getenv("SEMAPHOREUI_TASK_TEMPLATE_ID")),
-        "limit": ",".join(limits),
-        "params": {
-            "tags": tags
+
+    print("Got repo:", repo)
+    if repo == "infrastructure":
+        template_ids = [os.getenv("SEMAPHOREUI_TASK_TEMPLATE_ID")]
+    elif repo == "infrastructure-private":
+        template_ids = [os.getenv("SEMAPHOREUI_PRIVATE_TASK_TEMPLATE_ID")]
+    elif repo == "secrets":
+        template_ids = [
+            os.getenv("SEMAPHOREUI_TASK_TEMPLATE_ID"),
+            os.getenv("SEMAPHOREUI_PRIVATE_TASK_TEMPLATE_ID")
+        ]
+    else:
+        print("Error: Unknown repo:", repo)
+        sys.exit(1)
+
+    for template_id in template_ids:
+        payload = {
+            "template_id": template_id,
+            "limit": ",".join(limits),
+            "params": {
+                "tags": tags
+            }
         }
-    }
-    headers = {
-        "Authorization": f"Bearer {os.getenv('SEMAPHOREUI_KEY')}",
-        "Content-Type": "application/json"
-    }
-    r = requests.post(
-        f"{os.getenv('SEMAPHOREUI_HOST')}/api/project/{os.getenv('SEMAPHOREUI_PROJECT_ID')}/tasks",
-        data=json.dumps(payload),
-        headers=headers,
-    )
-    print("Sending payload:", payload)
-    print(f"Got {r} from semaphoreui instance")
+        headers = {
+            "Authorization": f"Bearer {os.getenv('SEMAPHOREUI_KEY')}",
+            "Content-Type": "application/json"
+        }
+        r = requests.post(
+            f"{os.getenv('SEMAPHOREUI_HOST')}/api/project/{os.getenv('SEMAPHOREUI_PROJECT_ID')}/tasks",
+            data=json.dumps(payload),
+            headers=headers,
+        )
+        print("Sending payload:", payload)
+        print(f"Got {r.status_code} from semaphoreui instance")
 
 
 # TODO: pull these from env
@@ -57,7 +73,7 @@ RUN_FULL_PLAYBOOK_PATHS = [
 ]
 
 if any(p in changed_files for p in RUN_FULL_PLAYBOOK_PATHS):
-    run_site_playbook()
+    run_playbooks(repo=os.getenv("CI_REPO_NAME"))
     sys.exit(0)
 
 tags = []
@@ -91,4 +107,4 @@ if len(tags) == 0 and len(limits) == 0:
     print("tags and limits lists empty, exiting")
     sys.exit(0)
 
-run_site_playbook(tags=tags, limits=limits)
+run_playbooks(repo=os.getenv("CI_REPO_NAME"), tags=tags, limits=limits)
