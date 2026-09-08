@@ -13,7 +13,7 @@ argument_specs:
         required: false
         default: {}
       technitium_env_private:
-        type: str
+        type: dict
         required: false
         default: {}
       root_domain:
