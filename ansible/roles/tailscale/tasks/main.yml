@@ -26,6 +26,9 @@
 - ansible.builtin.import_tasks: debian.yml
   when: ansible_distribution | lower == "debian"
 
+- ansible.builtin.import_tasks: openbsd.yml
+  when: ansible_distribution | lower == "openbsd"
+
 - name: "Set tailscale_up_command"
   ansible.builtin.set_fact:
     tailscale_up_command: "tailscale up --reset {{ tailscale_flags }} --auth-key {{ tailscale_auth_key }}"
