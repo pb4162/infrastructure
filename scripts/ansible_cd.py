@@ -26,6 +26,8 @@ def run_playbooks(*, repo, tags=None, limits=None):
         print("Error: Unknown repo:", repo)
         sys.exit(1)
 
+    template_ids = [int(tid) for tid in template_ids]
+
     for template_id in template_ids:
         payload = {
             "template_id": template_id,
