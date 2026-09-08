@@ -1,0 +1,6 @@
+argument_specs:
+  main:
+    options:
+      local_dns_records:
+        type: dict
+        required: true

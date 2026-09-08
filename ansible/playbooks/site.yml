@@ -66,6 +66,15 @@
       tags: [borg, backup, borg-backup]
 
 
+- name: Setup local dns records in /etc/hosts
+  hosts: remote
+  become: true
+
+  roles:
+    - role: local-dns-records
+      tags: [local-dns-records]
+
+
 - name: Setup docker
   hosts: docker
   become: true

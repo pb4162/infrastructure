@@ -1,0 +1,11 @@
+- name: "Add entries to /etc/hosts"
+  ansible.builtin.lineinfile:
+    path: /etc/hosts
+    regexp: "{{ item.value }}\\s+{{ item.key }}"
+    line: "{{ item.value }} {{ item.key }}"
+    owner: root
+    group: "{{ 'root' if (ansible_distribution | lower == 'debian') else 'wheel' }}"
+    mode: '0644'
+  loop: "{{ local_dns_records | dict2items }}"
+  loop_control:
+    label: "{{ item.key }}"
