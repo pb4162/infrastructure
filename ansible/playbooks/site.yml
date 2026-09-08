@@ -105,6 +105,15 @@
       tags: [crowdsec]
 
 
+- name: Setup dns servers
+  hosts: dns-servers
+  become: true
+
+  roles:
+    - role: technitium
+      tags: [technitium, dns, containers]
+
+
 - name: Setup control_plane host
   hosts: control_plane
   become: true
