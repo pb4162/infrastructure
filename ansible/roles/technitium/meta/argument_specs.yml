@@ -19,3 +19,6 @@ argument_specs:
       root_domain:
         type: str
         required: true
+      technitium_cluster_zone:
+        type: str
+        required: true

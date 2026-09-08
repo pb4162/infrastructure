@@ -35,6 +35,10 @@
       net.ipv4.ip_local_port_range: "1024 65535"
     labels:
       traefik.enable: "true"
-      traefik.http.routers.technitium.rule: "Host(`dns.{{ root_domain }}`)"
-      traefik.http.services.technitium.loadbalancer.server.port: 5380
+      traefik.http.routers.technitium.rule: "Host(`dns.{{ inventory_hostname }}.{{ root_domain }}`)"
+      traefik.http.services.technitium.loadbalancer.server.port: 80
+      traefik.tcp.routers.technitium-cluster.entrypoints: websecure
+      traefik.tcp.routers.technitium-cluster.rule: "HostSNI(`{{ technitium_env['DNS_SERVER_DOMAIN'] }}.{{ technitium_cluster_zone }}.{{ root_domain }}`)"
+      traefik.tcp.services.technitium-cluster.loadbalancer.server.port: 443
+      traefik.tcp.routers.technitium-cluster.tls.passthrough: "true"
     restart_policy: unless-stopped
