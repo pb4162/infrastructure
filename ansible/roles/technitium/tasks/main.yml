@@ -20,7 +20,7 @@
   community.docker.docker_container:
     image: "docker.io/technitium/dns-server:{{ technitium_version }}"
     name: dns-server
-    env: "{{ technitium_env_base | ansible.builtin.combine(technitium_env_private, recursive=true) }}"
+    env: "{{ technitium_env_base | ansible.builtin.combine(technitium_env, technitium_env_private, recursive=true) }}"
     volumes:
       - "{{ technitium_config_path }}:/etc/dns"
       - "{{ technitium_logs_path }}:/var/log/technitium/dns"
