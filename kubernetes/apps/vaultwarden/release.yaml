@@ -35,7 +35,7 @@ spec:
           backup:
             image:
               repository: ttionya/vaultwarden-backup
-              tag: 1.27.0
+              tag: 1.27.1
             env:
               BACKUP_KEEP_DAYS: 30
               CRON: "0 0 * * *"
