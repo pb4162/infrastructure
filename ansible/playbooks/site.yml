@@ -140,8 +140,8 @@
       tags: headscale
 
 
-- name: Setup tailscale on all hosts except headscale_vps
-  hosts: all:!headscale_vps
+- name: Setup tailscale
+  hosts: all
   become: true
 
   roles:
