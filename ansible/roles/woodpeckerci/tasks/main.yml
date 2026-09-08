@@ -1,0 +1,66 @@
+- name: Set woodpecker_data_dir
+  ansible.builtin.set_fact:
+    woodpecker_data_dir: "{{ (docker_data_dir, 'woodpeckerci') | path_join }}"
+
+- name: Set subpath variables
+  ansible.builtin.set_fact:
+    woodpecker_server_data_path: "{{ (woodpecker_data_dir, 'server') | path_join }}"
+    woodpecker_agent_data_path: "{{ (woodpecker_data_dir, 'agent') | path_join }}"
+
+- name: Create directories
+  ansible.builtin.file:
+    path: "{{ item }}"
+    state: directory
+    owner: 1000
+    group: 1000
+  loop:
+    - "{{ woodpecker_server_data_path }}"
+    - "{{ woodpecker_agent_data_path }}"
+
+- name: Create woodpecker docker network
+  community.docker.docker_network:
+    name: woodpecker
+    state: present
+
+- name: Create server container
+  community.docker.docker_container:
+    image: "woodpeckerci/woodpecker-server:{{ woodpecker_version }}"
+    name: woodpecker-server
+    env: "{{
+      woodpecker_env_base | ansible.builtin.combine(
+        woodpecker_env_server_base,
+        woodpecker_env_server,
+        woodpecker_env_server_private,
+        recursive=true
+      )
+      }}"
+    volumes:
+      - "{{ woodpecker_server_data_path }}:/var/lib/woodpecker"
+    networks:
+      - { name: bridge }
+      - { name: woodpecker }
+    labels:
+      traefik.enable: "true"
+      traefik.docker.network: bridge
+      traefik.http.routers.woodpecker.rule: "Host(`ci.{{ root_domain }}`)"
+      traefik.http.services.woodpecker.loadbalancer.server.port: 8000
+    restart_policy: unless-stopped
+
+- name: Create agent container
+  community.docker.docker_container:
+    image: "woodpeckerci/woodpecker-agent:{{ woodpecker_version }}"
+    name: woodpecker-agent
+    command: agent
+    env: "{{
+      woodpecker_env_base | ansible.builtin.combine(
+        woodpecker_env_agent_base,
+        recursive=true
+      )
+      }}"
+    volumes:
+      - "{{ woodpecker_agent_data_path }}:/etc/woodpecker"
+      # TODO: docker socket proxy?
+      - "/var/run/docker.sock:/var/run/docker.sock"
+    networks:
+      - { name: woodpecker }
+    restart_policy: unless-stopped

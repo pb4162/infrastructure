@@ -1,0 +1,8 @@
+woodpecker_env_base:
+  WOODPECKER_AGENT_SECRET: "{{ woodpecker_agent_secret }}"
+woodpecker_env_server_base:
+  WOODPECKER_HOST: "https://ci.{{ root_domain }}"
+woodpecker_env_agent_base:
+  WOODPECKER_SERVER: woodpecker-server:9000
+  WOODPECKER_KEEPALIVE_TIME: 30s
+  WOODPECKER_RETRY_TIMEOUT: 10m

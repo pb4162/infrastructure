@@ -1,0 +1,13 @@
+argument_specs:
+  main:
+    options:
+      docker_data_dir:
+        type: str
+        required: false
+        default: "~/docker"
+      woodpecker_version:
+        type: str
+        required: true
+      root_domain:
+        type: str
+        required: true

@@ -114,8 +114,8 @@
       tags: [network, wifi]
     - role: semaphoreui
       tags: [semaphoreui, semaphore, containers]
-    - role: technitium
-      tags: [technitium, dns, containers]
+    - role: woodpeckerci
+      tags: [woodpeckerci, woodpecker, containers]
     - role: host-sshkey
       tags: [host-sshkey]
 
