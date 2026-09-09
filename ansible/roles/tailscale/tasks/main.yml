@@ -35,7 +35,7 @@
 
 - name: "Get state file content"
   ansible.builtin.command: >-
-    cat ~/tailscale_up_command.txt
+    cat /root/tailscale_up_command.txt
   register: tailscale_state
   changed_when: false
   failed_when: false
@@ -61,5 +61,5 @@
 - name: "Store tailscale_up_command in state file"
   ansible.builtin.copy:
     content: "{{ tailscale_up_command }}"
-    dest: "~/tailscale_up_command.txt"
+    dest: "/root/tailscale_up_command.txt"
 
