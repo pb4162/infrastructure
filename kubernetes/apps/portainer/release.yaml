@@ -16,7 +16,7 @@ spec:
   values:
     trusted_origins:
       enabled: true
-      domains: "portainer.${LOCAL_ROOT_DOMAIN},portainer.${ROOT_DOMAIN}"
+      domains: "https://portainer.${LOCAL_ROOT_DOMAIN},https://portainer.${ROOT_DOMAIN}"
     resources:
       limits:
         memory: 512Mi
