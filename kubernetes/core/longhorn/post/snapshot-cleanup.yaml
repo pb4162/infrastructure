@@ -1,10 +1,10 @@
 apiVersion: longhorn.io/v1beta2
 kind: RecurringJob
 metadata:
-  name: snapshot-cleanup-daily
+  name: snapshot-cleanup-every-6-hours
   namespace: longhorn-system
 spec:
-  cron: "0 3 * * *"
+  cron: "0 */6 * * *"
   task: "snapshot-cleanup"
   groups:
     - default
