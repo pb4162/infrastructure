@@ -33,7 +33,7 @@ spec:
                         ip: ${TRAEFIK_IP}
   values:
     image:
-      registry: pbcr.local
+      registry: registry.pb4162.dev
       repository: pb/headlamp
       tag: "v0.45.0-pb3"
     config:

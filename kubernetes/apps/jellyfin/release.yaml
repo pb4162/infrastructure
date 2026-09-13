@@ -17,7 +17,7 @@ spec:
     deploymentStrategy:
       type: Recreate
     image:
-      repository: pbcr.local/pb/jellyfin
+      repository: registry.pb4162.dev/pb/jellyfin
       tag: 10.11.11-pb1
     resources:
       limits:

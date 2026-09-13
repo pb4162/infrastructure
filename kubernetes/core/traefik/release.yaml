@@ -18,7 +18,7 @@ spec:
       namespace: cert-manager
   values:
     image:
-      registry: pbcr.local
+      registry: registry.pb4162.dev
       repository: pb/traefik
       tag: v3.7.13-pb3
     api:

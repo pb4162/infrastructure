@@ -18,7 +18,7 @@ spec:
       kind: Secret
   values:
     image:
-      registry: pbcr.local
+      registry: registry.pb4162.dev
       repository: pb/nextcloud
       tag: 34.0.3-apache-pb1
     resources:
