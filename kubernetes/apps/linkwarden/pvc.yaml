@@ -1,13 +1,39 @@
+---
 apiVersion: v1
+kind: PersistentVolume
+metadata:
+  annotations:
+    pv.kubernetes.io/provisioned-by: smb.csi.k8s.io
+  name: linkwarden
+spec:
+  capacity:
+    storage: 50Gi
+  accessModes:
+    - ReadWriteMany
+  persistentVolumeReclaimPolicy: Retain
+  storageClassName: smb
+  mountOptions:
+    - dir_mode=0770
+    - file_mode=0770
+  csi:
+    driver: smb.csi.k8s.io
+    volumeHandle: "//${NAS_URL}/linkwarden##"
+    volumeAttributes:
+      source: "//${NAS_URL}/linkwarden"
+    nodeStageSecretRef:
+      name: smbcreds
+      namespace: kube-system
+---
 kind: PersistentVolumeClaim
+apiVersion: v1
 metadata:
   name: linkwarden
   namespace: linkwarden
 spec:
   accessModes:
-    - ReadWriteOnce
-  volumeMode: Filesystem
+    - ReadWriteMany
   resources:
     requests:
       storage: 50Gi
-  storageClassName: truenas-smb
+  volumeName: linkwarden
+  storageClassName: smb
