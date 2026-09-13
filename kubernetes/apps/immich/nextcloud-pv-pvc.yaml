@@ -17,9 +17,9 @@ spec:
     - file_mode=0770
   csi:
     driver: smb.csi.k8s.io
-    volumeHandle: "//${TRUENAS_URL}/nextcloud##"
+    volumeHandle: "//${NAS_URL}/nextcloud##"
     volumeAttributes:
-      source: "//${TRUENAS_URL}/nextcloud"
+      source: "//${NAS_URL}/nextcloud"
     nodeStageSecretRef:
       name: smbcreds
       namespace: kube-system

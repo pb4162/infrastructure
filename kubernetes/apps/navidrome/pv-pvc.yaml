@@ -17,9 +17,9 @@ spec:
     - file_mode=0770
   csi:
     driver: smb.csi.k8s.io
-    volumeHandle: "//${TRUENAS_URL}/jellyfin##"
+    volumeHandle: "//${NAS_URL}/jellyfin##"
     volumeAttributes:
-      source: "//${TRUENAS_URL}/jellyfin"
+      source: "//${NAS_URL}/jellyfin"
     nodeStageSecretRef:
       name: smbcreds
       namespace: kube-system
