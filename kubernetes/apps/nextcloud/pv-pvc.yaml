@@ -1,0 +1,39 @@
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  annotations:
+    pv.kubernetes.io/provisioned-by: smb.csi.k8s.io
+  name: nextcloud
+spec:
+  capacity:
+    storage: ${NEXTCLOUD_STORAGE_VOLUME_SIZE}
+  accessModes:
+    - ReadWriteMany
+  persistentVolumeReclaimPolicy: Retain
+  storageClassName: smb
+  mountOptions:
+    - dir_mode=0770
+    - file_mode=0770
+  csi:
+    driver: smb.csi.k8s.io
+    volumeHandle: "//${NAS_URL}/nextcloud##"
+    volumeAttributes:
+      source: "//${NAS_URL}/nextcloud"
+    nodeStageSecretRef:
+      name: smbcreds
+      namespace: kube-system
+---
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: nextcloud
+  namespace: nextcloud
+spec:
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: ${NEXTCLOUD_STORAGE_VOLUME_SIZE}
+  volumeName: nextcloud
+  storageClassName: smb
