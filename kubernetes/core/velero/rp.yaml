@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: skip-csi-smb-policy
+  namespace: velero
+data:
+  rp.yaml: |
+    version: v1
+    volumePolicies:
+      - conditions:
+          csi:
+            driver: smb.csi.k8s.io
+        action:
+          type: skip

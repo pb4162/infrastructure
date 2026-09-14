@@ -1,0 +1,95 @@
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: velero
+  namespace: velero
+spec:
+  chart:
+    spec:
+      chart: velero
+      version: 12.0.0
+      sourceRef:
+        kind: HelmRepository
+        name: vmware-tanzu
+      interval: 5m
+  releaseName: velero
+  valuesFrom:
+    - kind: Secret
+      name: velero-values
+  values:
+    initContainers:
+      - name: velero-plugin-for-aws
+        image: velero/velero-plugin-for-aws:v1.10.1
+        imagePullPolicy: IfNotPresent
+        volumeMounts:
+          - mountPath: /target
+            name: plugins
+    deployNodeAgent: true
+    metrics:
+      serviceMonitor:
+        enabled: true
+        additionalLabels:
+          release: kube-prometheus-stack
+      prometheusRule:
+        enabled: true
+        additionalLabels:
+          release: kube-prometheus-stack
+        spec:
+          - alert: VeleroBackupPartialFailures
+            annotations:
+              message: Velero backup {{ $labels.schedule }} has {{ $value | humanizePercentage }} partially failed backups.
+            expr: |-
+              velero_backup_partial_failure_total{schedule!=""} / velero_backup_attempt_total{schedule!=""} > 0.25
+            for: 15m
+            labels:
+              severity: warning
+          - alert: VeleroBackupFailures
+            annotations:
+              message: Velero backup {{ $labels.schedule }} has {{ $value | humanizePercentage }} failed backups.
+            expr: |-
+              velero_backup_failure_total{schedule!=""} / velero_backup_attempt_total{schedule!=""} > 0.25
+            for: 15m
+            labels:
+              severity: warning
+    configuration:
+      features: EnableCSI
+      volumeSnapshotLocation:
+        - name: local
+          provider: aws
+    nodeAgent:
+      extraArgs:
+        - "--node-agent-configmap=node-agent-config"
+    schedules:
+      backup-daily: &backup-daily
+        disabled: false
+        schedule: "0 0 * * *"
+        useOwnerReferencesInBackup: false
+        paused: false
+        template: &backup-template
+          csiSnapshotTimeout: 40m
+          resourcePolicy:
+            kind: configmap
+            name: skip-csi-smb-policy
+          includedResources:
+            - secret
+            - configmap
+            - persistentVolume
+            - persistentVolumeClaim
+            - certificates.cert-manager.io
+          snapshotVolumes: true
+          storageLocation: local
+          volumeSnapshotLocations:
+            - local
+          ttl: "336h"
+      backup-weekly:
+        <<: *backup-daily
+        schedule: "0 0 * * 0"
+        template:
+          <<: *backup-template
+          ttl: "720h"
+      backup-monthly:
+        <<: *backup-daily
+        schedule: "0 0 1 * *"
+        template:
+          <<: *backup-template
+          ttl: "8760h"
