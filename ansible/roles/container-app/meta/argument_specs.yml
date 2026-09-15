@@ -15,4 +15,8 @@ argument_specs:
         elements: dict
         required: false
         default: []
-
+      app_networks:
+        type: list
+        elements: str
+        required: false
+        default: []

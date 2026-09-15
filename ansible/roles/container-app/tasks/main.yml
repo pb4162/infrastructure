@@ -2,6 +2,12 @@
   ansible.builtin.set_fact:
     app_base_dir: "{{ (container_data_dir, app_name) | path_join }}"
 
+- name: Create app networks
+  community.docker.docker_network:
+    state: present
+    name: "{{ item }}"
+  loop: "{{ app_networks }}"
+
 - name: Create app directories
   ansible.builtin.file:
     path: "{{ (app_base_dir, (item.path | default(item))) | path_join }}"
