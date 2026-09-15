@@ -1,0 +1,4 @@
+- name: Install and configure registry
+  ansible.builtin.include_role:
+    name: container-app
+    public: false
