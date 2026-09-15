@@ -10,6 +10,10 @@
   roles:
     - role: sshkey
       tags: [sshkey]
+    - role: user
+      tags: [user]
+    - role: priv-esc
+      tags: [sudo, doas, priv-esc]
 
 
 - name: Apply common configurations on all hosts except for the router
@@ -18,10 +22,6 @@
   tags: [bootstrap]
 
   roles:
-    - role: user
-      tags: [user]
-    - role: priv-esc
-      tags: [sudo, doas, priv-esc]
     - role: sshd
       tags: [ssh, sshd]
     - role: timezone
