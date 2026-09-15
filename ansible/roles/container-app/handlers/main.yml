@@ -1,5 +1,15 @@
-- name: Restart app containers
+- name: Restart app containers (docker)
   community.docker.docker_container: "{{ item | combine({'restart': true}, {'restart_policy': 'unless-stopped'}) }}"
+  loop: "{{ app_containers }}"
+  loop_control:
+    label: "{{ item.name }}"
+
+- name: Restart app containers (podman)
+  become: false
+  ansible.builtin.systemd_service:
+    name: "{{ item.name }}.service"
+    state: restarted
+    scope: user
   loop: "{{ app_containers }}"
   loop_control:
     label: "{{ item.name }}"

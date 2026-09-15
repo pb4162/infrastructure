@@ -1,6 +1,10 @@
 argument_specs:
   main:
     options:
+      container_tool:
+        type: str
+        required: false
+        default: docker
       container_data_dir:
         type: str
         required: true

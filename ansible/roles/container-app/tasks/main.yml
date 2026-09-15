@@ -2,11 +2,20 @@
   ansible.builtin.set_fact:
     app_base_dir: "{{ (container_data_dir, app_name) | path_join }}"
 
-- name: Create app networks
+- name: Create app networks (docker)
   community.docker.docker_network:
     state: present
     name: "{{ item }}"
   loop: "{{ app_networks }}"
+  when: container_tool == "docker"
+
+- name: Create app networks (podman)
+  become: false
+  containers.podman.podman_network:
+    state: present
+    name: "{{ item }}"
+  loop: "{{ app_networks }}"
+  when: container_tool == "podman"
 
 - name: Create app directories
   ansible.builtin.file:
@@ -29,14 +38,45 @@
   loop: "{{ app_templates }}"
   loop_control:
     label: "{{ item.path }}"
-  notify: Restart app containers
+  notify: "Restart app containers ({{ container_tool }})"
   register: app_template_copy
   changed_when:
   - app_template_copy.changed
   - not (item.inhibit_restart | default(false))
 
-- name: Create app containers
+- name: Create app containers (docker)
   community.docker.docker_container: "{{ item | combine({'restart_policy': 'unless-stopped'}) }}"
   loop: "{{ app_containers }}"
   loop_control:
     label: "{{ item.name }}"
+  when: container_tool == "docker"
+
+- name: Create app containers (podman)
+  become: false
+  containers.podman.podman_container: "{{ item }}"
+  loop: "{{ app_containers }}"
+  loop_control:
+    label: "{{ item.name }}"
+  when: container_tool == "podman"
+  register: podman_results
+
+- name: Run systemctl daemon-reload (user)
+  become: false
+  ansible.builtin.systemd_service:
+    daemon_reload: true
+    scope: user
+  when:
+    - container_tool == "podman"
+    - podman_results.results | select('changed') | length > 0
+
+- name: Enable and start systemd services (podman)
+  become: false
+  ansible.builtin.systemd_service:
+    name: "{{ item.name }}.service"
+    state: started
+    enabled: true
+    scope: user
+  loop: "{{ app_containers }}"
+  loop_control:
+    label: "{{ item.name }}"
+  when: container_tool == "podman"
