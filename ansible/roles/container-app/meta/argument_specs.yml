@@ -9,7 +9,8 @@ argument_specs:
         required: true
       app_directories:
         type: list
-        required: true
+        required: false
+        default: []
       app_templates:
         type: list
         elements: dict

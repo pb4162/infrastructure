@@ -15,6 +15,7 @@
     group: "{{ item.group | default('root') }}"
     state: directory
   loop: "{{ [''] + app_directories }}"
+  when: (app_directories | length != 0)
   loop_control:
     label: "{{ (app_base_dir, (item.path | default(item))) | path_join }}"
 
