@@ -1,3 +1,51 @@
+app_name: woodpeckerci
+app_directories:
+  - path: server
+    owner: 1000
+    group: 1000
+  - path: agent
+    owner: 1000
+    group: 1000
+app_networks:
+  - woodpecker
+app_containers:
+  - image: "woodpeckerci/woodpecker-server:{{ woodpecker_version }}"
+    name: woodpecker-server
+    env: "{{
+      woodpecker_env_base | ansible.builtin.combine(
+        woodpecker_env_server_base,
+        woodpecker_env_server,
+        woodpecker_env_server_private,
+        recursive=true
+      )
+      }}"
+    volumes:
+      - "{{ (app_base_dir, 'server') | path_join }}:/var/lib/woodpecker"
+    networks:
+      - { name: bridge }
+      - { name: woodpecker }
+    labels:
+      traefik.enable: "true"
+      traefik.docker.network: bridge
+      traefik.http.routers.woodpecker.rule: "Host(`ci.{{ root_domain }}`)"
+      traefik.http.services.woodpecker.loadbalancer.server.port: 8000
+
+  - image: "woodpeckerci/woodpecker-agent:{{ woodpecker_version }}"
+    name: woodpecker-agent
+    command: agent
+    env: "{{
+      woodpecker_env_base | ansible.builtin.combine(
+        woodpecker_env_agent_base,
+        recursive=true
+      )
+      }}"
+    volumes:
+      - "{{ (app_base_dir, 'agent') | path_join }}:/etc/woodpecker"
+      # TODO: docker socket proxy?
+      - "/var/run/docker.sock:/var/run/docker.sock"
+    networks:
+      - { name: woodpecker }
+
 woodpecker_env_base:
   WOODPECKER_AGENT_SECRET: "{{ woodpecker_agent_secret }}"
 woodpecker_env_server_base:
