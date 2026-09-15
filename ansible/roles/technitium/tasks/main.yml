@@ -1,44 +1,4 @@
-- name: Set technitium_data_dir
-  ansible.builtin.set_fact:
-    technitium_data_dir: "{{ (docker_data_dir, 'technitium') | path_join }}"
-
-- name: Set subpath variables
-  ansible.builtin.set_fact:
-    technitium_config_path: "{{ (technitium_data_dir, 'config') | path_join }}"
-    technitium_logs_path: "{{ (technitium_data_dir, 'logs') | path_join }}"
-
-- name: Create directories
-  ansible.builtin.file:
-    path: "{{ item }}"
-    state: directory
-  loop:
-    - "{{ technitium_data_dir }}"
-    - "{{ technitium_config_path }}"
-    - "{{ technitium_logs_path }}"
-
-- name: Create container
-  community.docker.docker_container:
-    image: "docker.io/technitium/dns-server:{{ technitium_version }}"
-    name: dns-server
-    env: "{{ technitium_env_base | ansible.builtin.combine(technitium_env, technitium_env_private, recursive=true) }}"
-    volumes:
-      - "{{ technitium_config_path }}:/etc/dns"
-      - "{{ technitium_logs_path }}:/var/log/technitium/dns"
-    networks:
-      - { name: bridge }
-    ports:
-      - "53:53/udp" #DNS service
-      - "53:53/tcp" #DNS service
-      - "853:853/udp" #DNS-over-QUIC service
-      - "853:853/tcp" #DNS-over-TLS service
-    sysctls:
-      net.ipv4.ip_local_port_range: "1024 65535"
-    labels:
-      traefik.enable: "true"
-      traefik.http.routers.technitium.rule: "Host(`dns.{{ inventory_hostname }}.{{ root_domain }}`)"
-      traefik.http.services.technitium.loadbalancer.server.port: 80
-      traefik.tcp.routers.technitium-cluster.entrypoints: websecure
-      traefik.tcp.routers.technitium-cluster.rule: "HostSNI(`{{ technitium_env['DNS_SERVER_DOMAIN'] }}.{{ technitium_cluster_zone }}.{{ root_domain }}`)"
-      traefik.tcp.services.technitium-cluster.loadbalancer.server.port: 443
-      traefik.tcp.routers.technitium-cluster.tls.passthrough: "true"
-    restart_policy: unless-stopped
+- name: Install and configure technitium
+  ansible.builtin.include_role:
+    name: container-app
+    public: false

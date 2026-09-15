@@ -1,3 +1,32 @@
+app_name: technitium
+app_directories:
+  - config
+  - logs
+app_containers:
+  - image: "docker.io/technitium/dns-server:{{ technitium_version }}"
+    name: dns-server
+    env: "{{ technitium_env_base | ansible.builtin.combine(technitium_env, technitium_env_private, recursive=true) }}"
+    volumes:
+      - "{{ (app_base_dir, 'config') | path_join }}:/etc/dns"
+      - "{{ (app_base_dir, 'logs') | path_join }}:/var/log/technitium/dns"
+    networks:
+      - { name: bridge }
+    ports:
+      - "53:53/udp" #DNS service
+      - "53:53/tcp" #DNS service
+      - "853:853/udp" #DNS-over-QUIC service
+      - "853:853/tcp" #DNS-over-TLS service
+    sysctls:
+      net.ipv4.ip_local_port_range: "1024 65535"
+    labels:
+      traefik.enable: "true"
+      traefik.http.routers.technitium.rule: "Host(`dns.{{ inventory_hostname }}.{{ root_domain }}`)"
+      traefik.http.services.technitium.loadbalancer.server.port: 80
+      traefik.tcp.routers.technitium-cluster.entrypoints: websecure
+      traefik.tcp.routers.technitium-cluster.rule: "HostSNI(`{{ technitium_env['DNS_SERVER_DOMAIN'] }}.{{ technitium_cluster_zone }}.{{ root_domain }}`)"
+      traefik.tcp.services.technitium-cluster.loadbalancer.server.port: 443
+      traefik.tcp.routers.technitium-cluster.tls.passthrough: "true"
+
 technitium_env_base:
   DNS_SERVER_DOMAIN: dns-server #The primary domain name used by this DNS Server to identify itself.
   DNS_SERVER_WEB_SERVICE_HTTP_PORT: "80" #The TCP port number for the DNS web console over HTTP protocol.
