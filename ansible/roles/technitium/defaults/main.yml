@@ -1,3 +1,2 @@
-docker_data_dir: "~/docker"
 technitium_env: {}
 technitium_env_private: {}
