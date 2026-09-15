@@ -1,10 +1,6 @@
 argument_specs:
   main:
     options:
-      docker_data_dir:
-        type: str
-        required: false
-        default: "~/docker"
       semaphore_ui_env:
         type: dict
         required: false
