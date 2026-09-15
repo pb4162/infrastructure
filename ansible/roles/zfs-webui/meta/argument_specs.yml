@@ -1,0 +1,9 @@
+argument_specs:
+  main:
+    options:
+      zfs_webui_version:
+        type: str
+        required: true
+      root_domain:
+        type: str
+        required: true

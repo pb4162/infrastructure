@@ -1,0 +1,23 @@
+app_name: zdash
+app_directories:
+  - config
+  - data
+app_containers:
+  - image: "ad4mts/zfdash:{{ zfs_webui_version }}"
+    name: zdash
+    privileged: true
+    volumes:
+      - "{{ (app_base_dir, 'data') | path_join }}:/opt/zfdash/data"
+      - "{{ (app_base_dir, 'config') | path_join }}:/root/.config/ZfDash"
+      - /etc:/host-etc:ro
+      - /dev/disk:/dev/disk:ro
+      - /run/udev:/run/udev:ro
+      - ~/.ssh:/root/.ssh:ro
+    devices:
+      - /dev/zfs:/dev/zfs
+    networks:
+      - { name: bridge }
+    labels:
+      traefik.enable: "true"
+      traefik.http.routers.zfs-webui.rule: "Host(`zfs.{{ inventory_hostname }}.{{ root_domain }}`)"
+      traefik.http.services.zfs-webui.loadbalancer.server.port: 5001
