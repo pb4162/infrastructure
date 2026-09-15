@@ -1,3 +1,55 @@
+app_name: traefik
+chown_user: "{{ getent_passwd[ansible_user][1] if container_tool == 'podman' else omit }}"
+chown_group: "{{ getent_passwd[ansible_user][2] if container_tool == 'podman' else omit }}"
+
+quadlet_options: |-
+   [Install]
+   WantedBy=multi-user.target default.target
+
+app_directories:
+  - path: certs
+    owner: "{{ chown_user }}"
+    group: "{{ chown_group }}"
+
+app_templates:
+  - path: traefik.yml
+    owner: "{{ chown_user }}"
+    group: "{{ chown_group }}"
+    content: |
+      {{ traefik_static_config_base | combine(traefik_static_config, traefik_static_config_private, recursive=true, list_merge="append") | to_nice_yaml }}
+  - path: dynamic.yml
+    owner: "{{ chown_user }}"
+    group: "{{ chown_group }}"
+    inhibit_restart: true
+    content: |
+      {{ traefik_dynamic_config | combine(traefik_dynamic_config_private, recursive=true, list_merge="append") | to_nice_yaml }}
+
+app_containers:
+  - image: "docker.io/traefik:{{ traefik_version }}"
+    name: traefik
+    env: "{{ traefik_env_vars }}"
+    ports: "{{ ['80:80', '443:443'] if container_tool == 'docker' else omit }}"
+    publish: "{{ ['80:80', '443:443'] if container_tool == 'podman' else omit }}"
+    networks: "{{ [{'name': 'bridge'}] if container_tool == 'docker' else omit }}"
+    network: "{{ ['bridge'] if container_tool == 'podman' else omit }}"
+    volumes:
+      - "{{ (app_base_dir, 'traefik.yml') | path_join }}:/etc/traefik/traefik.yml:ro"
+      - "{{ (app_base_dir, 'dynamic.yml') | path_join }}:/etc/traefik/dynamic.yml:ro"
+      - "{{ (app_base_dir, 'certs') | path_join }}:/letsencrypt"
+      - >-
+        {{
+          (("/run/user", getent_passwd[ansible_user][1], "podman/podman.sock") | path_join) if container_tool == "podman"
+          else "/run/docker.sock" if container_tool == "docker"
+        }}:/var/run/docker.sock:ro
+
+    state: "{{ 'quadlet' if container_tool == 'podman' else 'present' }}"
+    quadlet_options: |-
+      {{
+        quadlet_options
+        if container_tool == 'podman'
+        else omit
+      }}
+
 traefik_static_config_base:
   entryPoints:
     web:
@@ -16,43 +68,3 @@ traefik_static_config_base:
   providers:
     file:
       filename: "/etc/traefik/dynamic.yml"
-
-traefik_base_options: &base
-  image: "docker.io/traefik:{{ traefik_version }}"
-  name: traefik
-  env: "{{ traefik_env_vars }}"
-  volumes:
-    - "{{ traefik_static_config_path }}:/etc/traefik/traefik.yml:ro"
-    - "{{ traefik_dynamic_config_path }}:/etc/traefik/dynamic.yml:ro"
-    - "{{ traefik_certs_path }}:/letsencrypt"
-    - >-
-      {{
-        (("/run/user", getent_passwd[ansible_user][1], "podman/podman.sock") | path_join) if container_tool == "podman"
-        else "/run/docker.sock" if container_tool == "docker"
-      }}:/var/run/docker.sock:ro
-
-traefik_docker_options: &docker_options
-  <<: *base
-  ports:
-    - "80:80"
-    - "443:443"
-  networks:
-    - { name: bridge }
-  restart_policy: unless-stopped
-
-traefik_docker_restart_options:
-  <<: *docker_options
-  restart: true
-
-traefik_podman_options:
-  <<: *base
-  publish:
-    - "80:80"
-    - "443:443"
-  network:
-    - bridge
-  state: quadlet
-  quadlet_options:
-    - |
-      [Install]
-      WantedBy=multi-user.target default.target
