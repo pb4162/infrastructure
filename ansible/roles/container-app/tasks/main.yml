@@ -29,7 +29,7 @@
   - not (item.inhibit_restart | default(false))
 
 - name: Create app containers
-  community.docker.docker_container: "{{ item }}"
+  community.docker.docker_container: "{{ item | combine({'restart_policy': 'unless-stopped'}) }}"
   loop: "{{ app_containers }}"
   loop_control:
     label: "{{ item.name }}"
