@@ -1,0 +1,18 @@
+argument_specs:
+  main:
+    options:
+      container_data_dir:
+        type: str
+        required: true
+      app_name:
+        type: str
+        required: true
+      app_directories:
+        type: list
+        required: true
+      app_templates:
+        type: list
+        elements: dict
+        required: false
+        default: []
+

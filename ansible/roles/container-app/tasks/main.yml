@@ -1,0 +1,35 @@
+- name: Set app_base_dir
+  ansible.builtin.set_fact:
+    app_base_dir: "{{ (container_data_dir, app_name) | path_join }}"
+
+- name: Create app directories
+  ansible.builtin.file:
+    path: "{{ (app_base_dir, (item.path | default(item))) | path_join }}"
+    owner: "{{ item.owner | default('root') }}"
+    group: "{{ item.group | default('root') }}"
+    state: directory
+  loop: "{{ [''] + app_directories }}"
+  loop_control:
+    label: "{{ (app_base_dir, (item.path | default(item))) | path_join }}"
+
+- name: Install config files
+  ansible.builtin.copy:
+    backup: true
+    content: "{{ item.content }}"
+    dest: "{{ (app_base_dir, item.path) | path_join }}"
+    owner: "{{ item.owner | default('root') }}"
+    group: "{{ item.group | default('root') }}"
+  loop: "{{ app_templates }}"
+  loop_control:
+    label: "{{ item.path }}"
+  notify: Restart app containers
+  register: app_template_copy
+  changed_when:
+  - app_template_copy.changed
+  - not (item.inhibit_restart | default(false))
+
+- name: Create app containers
+  community.docker.docker_container: "{{ item }}"
+  loop: "{{ app_containers }}"
+  loop_control:
+    label: "{{ item.name }}"
