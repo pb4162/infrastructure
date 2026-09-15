@@ -1,0 +1,20 @@
+app_name: gatus
+app_directories:
+  - data
+app_templates:
+  - path: config.yaml
+    content: |
+      {{ gatus_config | to_nice_yaml }}
+  - path: endpoints.yaml
+    content: |
+      {{ gatus_endpoints | to_nice_yaml }}
+app_containers:
+  - env: "{{ {'GATUS_CONFIG_PATH': '/config'} | ansible.builtin.combine(gatus_env, recursive=true) }}"
+    image: "ghcr.io/twin/gatus:{{ gatus_version }}"
+    name: gatus
+    volumes:
+      - "{{ (app_base_dir, 'config.yaml') | path_join }}:/config/config.yaml"
+      - "{{ (app_base_dir, 'endpoints.yaml') | path_join }}:/config/endpoints.yaml"
+      - "{{ (app_base_dir, 'data') | path_join }}:/data"
+    ports:
+      - "127.0.0.1:{{ gatus_port }}:8080"

@@ -1,9 +1,6 @@
 argument_specs:
   main:
     options:
-      docker_data_dir:
-        type: str
-        required: true
       gatus_env:
         type: dict
         required: false
@@ -15,3 +12,9 @@ argument_specs:
         type: int
         required: false
         default: 8080
+      gatus_config:
+        type: dict
+        required: true
+      gatus_endpoints:
+        type: dict
+        required: true
