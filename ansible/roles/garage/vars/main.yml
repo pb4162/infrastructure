@@ -1,0 +1,36 @@
+container_data_dir: "/mnt/tank/data"
+app_name: garage
+app_directories:
+  - metadata
+app_networks:
+  - garage
+app_containers:
+  - image: "dxflrs/garage:{{ garage_version }}"
+    name: garage
+    volumes:
+      - "{{ (app_base_dir, 'garage.toml') | path_join }}:/etc/garage.toml"
+      - "{{ (app_base_dir, 'metadata') | path_join }}:/var/lib/garage/meta"
+      - "{{ garage_data_path }}:/var/lib/garage/data"
+    labels:
+      traefik.enable: "true"
+      traefik.docker.network: bridge
+      traefik.http.routers.garage.rule: "Host(`garage.{{ inventory_hostname }}.{{ root_domain }}`)"
+      traefik.http.services.garage.loadbalancer.server.port: 3900
+    env: "{{ garage_env }}"
+    networks:
+      - { name: garage }
+      - { name: bridge }
+
+  - image: "khairul169/garage-webui:{{ garage_webui_version }}"
+    name: garage-webui
+    env: "{{ ({'API_BASE_URL': 'http://garage:3903', 'S3_ENDPOINT_URL': 'http://garage:3900'} | combine(garage_webui_env)) }}"
+    volumes:
+      - "{{ (app_base_dir, 'garage.toml') | path_join }}:/etc/garage.toml:ro"
+    labels:
+      traefik.enable: "true"
+      traefik.docker.network: bridge
+      traefik.http.routers.garage-web.rule: "Host(`garage-web.{{ inventory_hostname }}.{{ root_domain }}`)"
+      traefik.http.services.garage-web.loadbalancer.server.port: 3909
+    networks:
+      - { name: garage }
+      - { name: bridge }
