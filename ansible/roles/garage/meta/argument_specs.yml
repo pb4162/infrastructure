@@ -4,7 +4,7 @@ argument_specs:
       garage_version:
         type: str
         required: true
-      garage_data_path:
+      garage_data_dir:
         type: str
         required: true
       garage_env:
