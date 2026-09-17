@@ -1,0 +1,8 @@
+- name: Get tailscale IP info
+  ansible.builtin.command: tailscale ip -4
+  register: tailscale_ip_info
+  changed_when: false
+
+- name: Set tailscale_ipv4_address fact
+  ansible.builtin.set_fact:
+    tailscale_ipv4_address: "{{ tailscale_ip_info.stdout }}"
