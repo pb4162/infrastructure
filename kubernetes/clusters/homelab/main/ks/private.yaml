@@ -20,7 +20,6 @@ metadata:
 spec:
   dependsOn:
     - name: private-secrets
-    - name: core
   interval: 5m
   path: "./kubernetes/private"
   prune: true
