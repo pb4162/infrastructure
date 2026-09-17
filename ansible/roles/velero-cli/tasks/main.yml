@@ -1,15 +1,7 @@
-- name: Set velero_arch
-  ansible.builtin.set_fact:
-    velero_arch: >-
-      {{
-        "amd64" if ansible_architecture == "x86_64"
-        else "arm64" if ansible_architecture == "aarch64"
-      }}
-
 - name: "Define paths for tarball and untar directory"
   ansible.builtin.set_fact:
-    velero_tarball: "velero-{{ velero_version }}-linux-{{ velero_arch }}.tar.gz"
-    velero_untar_dest: "velero-{{ velero_version }}-linux-{{ velero_arch }}"
+    velero_tarball: "velero-{{ velero_version }}-linux-{{ release_arch }}.tar.gz"
+    velero_untar_dest: "velero-{{ velero_version }}-linux-{{ release_arch }}"
 
 - name: "Download release tarball"
   ansible.builtin.get_url:
@@ -25,7 +17,7 @@
 
 - name: "Copy velero binary to /usr/local/bin"
   ansible.builtin.copy:
-    src: "~/velero-{{ velero_version }}-linux-{{ velero_arch }}/velero"
+    src: "~/velero-{{ velero_version }}-linux-{{ release_arch }}/velero"
     dest: /usr/local/bin
     mode: a+x
     remote_src: yes
