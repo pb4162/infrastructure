@@ -1,0 +1,18 @@
+- name: "apt: Add backports repository"
+  ansible.builtin.deb822_repository:
+    state: present
+    enabled: true
+    name: backports
+    trusted: true
+    uris: http://deb.debian.org/debian
+    suites:
+      - "{{ ansible_distribution_release }}-backports"
+    components:
+      - main
+      - contrib
+  register: backports_apt_repo_add
+
+- name: "apt: Update"
+  ansible.builtin.apt:
+    update_cache: yes
+  when: backports_apt_repo_add.changed is true
