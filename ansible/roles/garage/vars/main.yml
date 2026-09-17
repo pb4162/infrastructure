@@ -1,3 +1,4 @@
+container_data_dir: "/mnt/tank/data"
 app_name: garage
 app_directories:
   - metadata
@@ -9,7 +10,7 @@ app_containers:
     volumes:
       - "{{ (app_base_dir, 'garage.toml') | path_join }}:/etc/garage.toml"
       - "{{ (app_base_dir, 'metadata') | path_join }}:/var/lib/garage/meta"
-      - "{{ garage_data_dir }}:/var/lib/garage/data"
+      - "{{ garage_data_path }}:/var/lib/garage/data"
     labels:
       traefik.enable: "true"
       traefik.docker.network: bridge
