@@ -18,6 +18,6 @@ spec:
   upgrade:
     crds: CreateReplace
   dependsOn:
-    - name: device-plugin-operator
+    - name: intel-device-plugin-operator
   values:
     sharedDevNum: 20
