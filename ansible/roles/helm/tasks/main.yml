@@ -55,17 +55,9 @@
   args:
     creates: ~/.gnupg/pubring.gpg
 
-- name: "Set helm_diff_arch"
-  ansible.builtin.set_fact:
-    helm_diff_arch: >-
-      {{
-        "amd64" if ansible_architecture == "x86_64"
-        else "arm64" if ansible_architecture == "aarch64"
-      }}
-
 - name: "helm: Install helm-diff plugin"
   kubernetes.core.helm_plugin:
-    plugin_path: "https://github.com/databus23/helm-diff/releases/download/{{ helm_diff_plugin_version }}/helm-diff-linux-{{ helm_diff_arch }}.tgz"
+    plugin_path: "https://github.com/databus23/helm-diff/releases/download/{{ helm_diff_plugin_version }}/helm-diff-linux-{{ release_arch }}.tgz"
     state: present
 
 - name: "apt: Install python3-yaml"
