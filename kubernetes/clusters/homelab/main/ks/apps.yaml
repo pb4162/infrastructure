@@ -20,7 +20,6 @@ metadata:
 spec:
   dependsOn:
     - name: apps-secrets
-    - name: core
   interval: 5m
   path: "./kubernetes/apps"
   prune: true
