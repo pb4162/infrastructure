@@ -6,7 +6,7 @@ metadata:
   namespace: flux-system
 spec:
   interval: 5m
-  path: "./kubernetes/core/longhorn/helm"
+  path: "./kubernetes/apps/longhorn/helm"
   prune: true
   sourceRef:
     kind: GitRepository
@@ -52,7 +52,7 @@ spec:
   dependsOn:
     - name: longhorn-helm
   interval: 5m
-  path: "./kubernetes/core/longhorn/post"
+  path: "./kubernetes/apps/longhorn/post"
   prune: true
   sourceRef:
     kind: GitRepository

@@ -5,7 +5,7 @@ metadata:
   namespace: flux-system
 spec:
   interval: 5m
-  path: "./kubernetes/core/metallb/helm"
+  path: "./kubernetes/apps/metallb/helm"
   prune: true
   sourceRef:
     kind: GitRepository
@@ -51,7 +51,7 @@ spec:
   dependsOn:
     - name: metallb-helm
   interval: 5m
-  path: "./kubernetes/core/metallb/post"
+  path: "./kubernetes/apps/metallb/post"
   prune: true
   sourceRef:
     kind: GitRepository

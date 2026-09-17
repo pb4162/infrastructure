@@ -6,7 +6,7 @@ metadata:
   namespace: flux-system
 spec:
   interval: 5m
-  path: "./kubernetes/core/cert-manager/helm"
+  path: "./kubernetes/apps/cert-manager/helm"
   prune: true
   sourceRef:
     kind: GitRepository
@@ -48,7 +48,7 @@ spec:
   dependsOn:
     - name: cert-manager-helm
   interval: 5m
-  path: "./kubernetes/core/cert-manager/post"
+  path: "./kubernetes/apps/cert-manager/post"
   prune: true
   sourceRef:
     kind: GitRepository
