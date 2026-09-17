@@ -1,4 +1,3 @@
-container_data_dir: "/mnt/tank/data"
 app_name: garage
 app_directories:
   - metadata
