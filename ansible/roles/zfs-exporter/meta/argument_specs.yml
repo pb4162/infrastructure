@@ -1,0 +1,6 @@
+argument_specs:
+  main:
+    options:
+      zfs_exporter_version:
+        type: str
+        required: true

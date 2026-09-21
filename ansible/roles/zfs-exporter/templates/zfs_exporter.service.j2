@@ -1,0 +1,14 @@
+[Unit]
+Description=zfs_exporter
+After=network-online.target
+
+[Service]
+Restart=always
+RestartSec=5
+TimeoutSec=5
+User=root
+Group=root
+ExecStart=/usr/local/bin/zfs_exporter --collector.dataset-snapshot --web.listen-address={{ tailscale_ipv4_address }}:{{ zfs_exporter_port }}
+
+[Install]
+WantedBy=multi-user.target

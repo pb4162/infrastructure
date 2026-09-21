@@ -1,0 +1,62 @@
+- name: "Define paths for tarball and untar directory"
+  ansible.builtin.set_fact:
+    zfs_exporter_tarball: "zfs_exporter-{{ zfs_exporter_version[1:] }}.linux-{{ release_arch }}.tar.gz"
+
+- name: "Download release tarball"
+  ansible.builtin.get_url:
+    url: "https://github.com/pdf/zfs_exporter/releases/download/{{ zfs_exporter_version }}/zfs_exporter-{{ zfs_exporter_version[1:] }}.linux-{{ release_arch }}.tar.gz"
+    dest: "~"
+    force: true
+
+- name: "Untar release tarball"
+  ansible.builtin.unarchive:
+    src: "~/{{ zfs_exporter_tarball }}"
+    dest: "~"
+    remote_src: yes
+
+- name: "Copy zfs_exporter binary to /usr/local/bin"
+  ansible.builtin.copy:
+    src: "~/zfs_exporter-{{ zfs_exporter_version[1:] }}.linux-{{ release_arch }}/zfs_exporter"
+    dest: /usr/local/bin
+    mode: a+x
+    remote_src: yes
+
+- name: "Install systemd service"
+  ansible.builtin.template:
+    dest: /etc/systemd/system/zfs_exporter.service
+    mode: 0660
+    owner: root
+    group: root
+    src: zfs_exporter.service.j2
+  notify:
+   - Run systemctl daemon-reload
+   - Restart zfs_exporter service
+
+- name: "Enable and start systemd service"
+  ansible.builtin.systemd_service:
+    name: zfs_exporter.service
+    state: started
+    enabled: true
+
+- name: Create scrape config kubernetes resource
+  delegate_to: "{{ groups['k8s_first_master_node'][0] }}"
+  kubernetes.core.k8s:
+    state: present
+    definition:
+      apiVersion: monitoring.coreos.com/v1alpha1
+      kind: ScrapeConfig
+      metadata:
+        labels:
+          release: kube-prometheus-stack
+        name: "zfs-exporter-{{ inventory_hostname }}"
+        namespace: monitoring
+      spec:
+        jobName: zfs_exporter
+        metricsPath: /metrics
+        scrapeInterval: 60s
+        staticConfigs:
+        - targets:
+            - "{{ tailscale_ipv4_address }}:{{ zfs_exporter_port }}"
+        relabelings:
+          - targetLabel: instance
+            replacement: "{{ inventory_hostname }}"
