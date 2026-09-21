@@ -11,4 +11,3 @@ borgmatic_config_base:
       frequency: "2 weeks"
   bootstrap:
     store_config_files: true
-

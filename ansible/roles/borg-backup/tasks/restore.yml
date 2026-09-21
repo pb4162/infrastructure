@@ -1,0 +1,21 @@
+- name: Do borgmatic extract
+  ansible.builtin.shell: >-
+    borgmatic extract
+    --archive {{ borgmatic_restore_archive | quote }}
+    {% if bormatic_restore_all_paths is false %}
+    {% for p in borgmatic_restore_paths %}
+    --restore-path {{ p | quote }}
+    {% endfor %}
+    {% endif %}
+    --destination {{ borgmatic_restore_dest }}
+
+- name: Do borgmatic restore
+  ansible.builtin.shell: >-
+    borgmatic restore
+    --archive {{ borgmatic_restore_archive | quote }}
+    {% if bormatic_restore_all_databases is false %}
+    {% for d in borgmatic_restore_databases %}
+    --database {{ d | quote }}
+    {% endfor %}
+    {% endif %}
+  when: (borgmatic_restore_all_databases is true or (borgmatic_restore_databases | length) > 0)

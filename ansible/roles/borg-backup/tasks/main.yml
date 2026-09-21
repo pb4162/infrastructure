@@ -34,9 +34,27 @@
         user: "{{ borg_server_user }}"
       delegate_to: "{{ borg_server_host | default('null') }}"
 
+    - name: Set known_host_key/aliases for when the client is the borg server itself
+      ansible.builtin.set_fact:
+        known_host_key: "{{ ansible_ssh_host_key_rsa_public }}"
+        known_host_aliases: "{{ ['localhost', '127.0.0.1', borg_server_host] }}"
+      when: "(inventory_hostname == borg_server_host)"
+
+    - name: Set known_host_key/aliases for when the client is not the borg server
+      ansible.builtin.set_fact:
+        known_host_key: "{{ lookup('pipe', 'ssh-keyscan -q -t rsa ' ~ hostvars[borg_server_host].ansible_host).split()[2] }}"
+        known_host_aliases: "{{ [borg_server_host, hostvars[borg_server_host]['ansible_host']] }}"
+      when: "(inventory_hostname != borg_server_host)"
+
+    - name: Update known_hosts with backup target
+      ansible.builtin.known_hosts:
+        state: present
+        name: "{{ borg_server_host }}"
+        key: "{{ known_host_aliases | join(',') }} ssh-rsa {{ known_host_key }}"
+
     - name: Create borg repo directory on backup server
       ansible.builtin.file:
-        path: "{{ ('home', borg_server_user, 'repos', inventory_hostname) | path_join }}"
+        path: "{{ ('/home', borg_server_user, 'repos', inventory_hostname) | path_join }}"
         state: directory
         owner: "{{ borg_server_user }}"
       delegate_to: "{{ borg_server_host | default('null') }}"
@@ -74,9 +92,13 @@
   ansible.builtin.shell: >-
     BORG_PASSPHRASE={{ borgmatic_config_final.encryption_passphrase | quote }}
     BORG_UNKNOWN_UNENCRYPTED_REPO_ACCESS_IS_OK=yes
+    BORG_RELOCATED_REPO_ACCESS_IS_OK=yes
     borgmatic -v 1 repo-create --encryption repokey
   register: create_repo_info
   changed_when: ("Repository already exists" not in create_repo_info.stdout)
+
+- ansible.builtin.import_tasks: restore.yml
+  when: (borgmatic_do_restore is true)
 
 # TODO: export repo key
 

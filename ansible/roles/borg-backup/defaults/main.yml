@@ -4,3 +4,10 @@ borgmatic_config: {}
 borgmatic_config_private: {}
 borg_server_host: null
 borgmatic_scripts: {}
+borgmatic_do_restore: false
+borgmatic_restore_archive: latest
+borgmatic_restore_dest: /tmp
+borgmatic_restore_paths: []
+borgmatic_restore_all_paths: false
+borgmatic_restore_databases: []
+borgmatic_restore_all_databases: false

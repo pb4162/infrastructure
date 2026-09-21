@@ -25,3 +25,33 @@ argument_specs:
         type: dict
         required: false
         default: {}
+      borgmatic_do_restore:
+        type: bool
+        required: false
+        default: false
+      borgmatic_restore_archive:
+        type: str
+        required: false
+        default: latest
+      borgmatic_restore_dest:
+        type: str
+        required: false
+        default: /tmp
+      borgmatic_restore_paths:
+        type: list
+        elements: str
+        required: false
+        default: []
+      borgmatic_restore_all_paths:
+        type: bool
+        required: false
+        default: false
+      borgmatic_restore_databases:
+        type: list
+        elements: str
+        required: false
+        default: []
+      borgmatic_restore_all_databases:
+        type: bool
+        required: false
+        default: false
