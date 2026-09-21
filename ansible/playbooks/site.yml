@@ -74,6 +74,8 @@
   roles:
     - role: zfs
       tags: [zfs]
+    - role: sanoid
+      tags: [sanoid]
 
 
 - name: Setup backup servers
@@ -115,8 +117,7 @@
       tags: garage
     - role: zfs-webui
       tags: [zfs-webui]
-    - role: sanoid
-      tags: [sanoid]
+
 
   tasks:
     - name: "Import registry role (public: false)"
