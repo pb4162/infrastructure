@@ -218,3 +218,36 @@
       tags:
         - flux
         - flux-bootstrap
+- name: Setup node-exporter on non-k8s hosts and except for the router
+  hosts: all:!k8s_cluster:!router
+  become: true
+  roles:
+    - role: node-exporter
+      tags: [node-exporter]
+
+
+- name: Setup smartctl-exporter
+  hosts: smartctl-exporter
+  become: true
+
+  roles:
+    - role: smartctl-exporter
+      tags: [smartctl-exporter]
+
+
+- name: Setup zfs-exporter
+  hosts: nases
+  become: true
+
+  roles:
+    - role: zfs-exporter
+      tags: [zfs-exporter]
+
+
+- name: Setup cadvisor
+  hosts: cadvisor
+  become: true
+
+  roles:
+    - role: cadvisor
+      tags: [cadvisor]
