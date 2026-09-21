@@ -1,0 +1,72 @@
+- name: Install sanoid (contains syncoid)
+  ansible.builtin.apt:
+    name: sanoid
+    state: present
+
+- name: Create syncoid user on syncoid source
+  ansible.builtin.user:
+    name: syncoid
+    shell: /bin/bash
+    create_home: true
+    state: present
+  delegate_to: "{{ syncoid_source }}"
+
+- name: Set zfs permissions for syncoid user on source
+  community.general.zfs_delegate_admin:
+    name: tank
+    state: present
+    users:
+      - syncoid
+    permissions:
+      - send
+      - hold
+      - mount
+      - snapshot
+      - destroy
+  delegate_to: "{{ syncoid_source }}"
+
+- name: Generate OpenSSH key for use with syncoid
+  community.crypto.openssh_keypair:
+    path: "~/.ssh/id_rsa_zfs"
+  register: openssh_keypair
+
+- name: Upload the public key to the syncoid source
+  ansible.posix.authorized_key:
+    key: "{{ openssh_keypair.public_key }}"
+    user: "syncoid"
+  delegate_to: "{{ syncoid_source }}"
+
+- name: Get tailscale facts for syncoid source
+  ansible.builtin.import_role:
+    name: tailscale-facts
+  delegate_to: "{{ syncoid_source }}"
+  delegate_facts: true
+
+- name: Get known host key for source over tailscale
+  ansible.builtin.command: "ssh-keyscan -q -t rsa {{ hostvars[syncoid_source].tailscale_ipv4_address }}"
+  changed_when: false
+  register: ssh_keyscan_info
+
+- name: Set known_host_aliases
+  ansible.builtin.set_fact:
+    known_host_aliases: "{{ [syncoid_source, hostvars[syncoid_source].tailscale_ipv4_address] }}"
+
+- name: Update known_hosts with syncoid source
+  ansible.builtin.known_hosts:
+    state: present
+    name: "{{ syncoid_source }}"
+    key: "{{ known_host_aliases | join(',') }} ssh-rsa {{ ssh_keyscan_info.stdout.split()[2] }}"
+
+- name: Create syncoid cron job
+  ansible.builtin.cron:
+    name: syncoid
+    minute: "0"
+    hour: "0"
+    user: root
+    job: >-
+      /usr/sbin/syncoid
+      --recursive
+      --no-privilege-elevation
+      --sshkey ~/.ssh/id_rsa_zfs
+      syncoid@{{ hostvars[syncoid_source].tailscale_ipv4_address }}:tank/data
+      tank/backup
