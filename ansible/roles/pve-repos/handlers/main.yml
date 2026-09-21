@@ -1,0 +1,3 @@
+- name: "apt: Update"
+  ansible.builtin.apt:
+    update_cache: true

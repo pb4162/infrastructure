@@ -1,0 +1,24 @@
+- name: Add proxmox community repo
+  ansible.builtin.deb822_repository:
+    state: present
+    enabled: true
+    name: pve-no-subscription
+    trusted: true
+    uris: http://download.proxmox.com/debian
+    signed_by: /usr/share/keyrings/proxmox-archive-keyring.gpg
+    suites: "{{ ansible_distribution_release }}"
+    components:
+      - pve-no-subscription
+  notify: "apt: Update"
+
+- name: Remove proxmox enterprise repo
+  ansible.builtin.deb822_repository:
+    state: absent
+    name: pve-enterprise
+  notify: "apt: Update"
+
+- name: Remove ceph enterprise repo
+  ansible.builtin.deb822_repository:
+    state: absent
+    name: ceph
+  notify: "apt: Update"
