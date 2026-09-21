@@ -1,0 +1,32 @@
+- name: "Install packages"
+  ansible.builtin.apt:
+    state: present
+    name:
+      - "linux-headers-{{ release_arch }}"
+      - zfsutils-linux
+      - zfs-dkms
+
+- name: "Load zfs kernel module"
+  community.general.modprobe:
+    name: zfs
+    state: present
+
+- name: "Scan for zpools that can be imported"
+  ansible.builtin.command: zpool import -s
+  changed_when: false
+  register: zpool_import_info
+
+- name: "Create or import zpools if they don't exist"
+  ansible.builtin.include_tasks: zpool.yml
+  loop: "{{ zfs_pools | dict2items }}"
+  loop_control:
+      label: "{{ item.key }}"
+
+- name: Create datasets
+  community.general.zfs:
+    name: "{{ item.0.key }}/{{ item.1.name | default(item.1) }}"
+    state: present
+    extra_zfs_properties: "{{ item.1.properties | default(omit) }}"
+  loop: "{{ zfs_pools | dict2items | subelements('value.datasets', skip_missing=true) }}"
+  loop_control:
+    label: "{{ item.0.key }}/{{ item.1.name | default(item.1) }}"

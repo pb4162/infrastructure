@@ -1,0 +1,23 @@
+- name: Check if zpool in import list
+  ansible.builtin.set_fact:
+    can_import_zpool: "{{ (zpool_import_info.stdout | regex_search('^\\s*pool:\\s*' ~ item.key, multiline=True)) is not none }}"
+
+- name: Import zpool
+  ansible.builtin.command: "zpool import -f {{ item.key }}"
+  when: can_import_zpool
+
+- name: "Check if zpool exists: {{ item.key }}"
+  ansible.builtin.command: zpool list {{ item.key }}
+  register: zpool_list_info
+  changed_when: false
+  failed_when: false
+
+- name: Create zpool
+  community.general.zpool:
+    state: present
+    name: "{{ item.key }}"
+    filesystem_properties: "{{ item.value.fs_props | default(omit) }}"
+    mountpoint: "{{ item.value.mountpoint }}"
+    pool_properties: "{{ item.value.pool_props | default(omit) }}"
+    vdevs: "{{ item.value.vdevs }}"
+  when: (zpool_list_info.rc != 0)

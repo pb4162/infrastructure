@@ -1,0 +1,5 @@
+- name: Disable and stop zfs-import-scan service
+  ansible.builtin.systemd_service:
+    name: zfs-import-scan.service
+    state: stopped
+    enabled: false

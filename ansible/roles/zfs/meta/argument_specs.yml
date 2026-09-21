@@ -1,0 +1,6 @@
+argument_specs:
+  main:
+    options:
+      zfs_pools:
+        type: dict
+        required: true
