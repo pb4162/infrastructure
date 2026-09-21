@@ -24,7 +24,7 @@
   ansible.posix.mount:
     backup: true
     fstype: cifs
-    opts: "uid={{ borg_server_user.id }},gid={{ borg_server_user.group }},credentials=/etc/samba/credentials/borg,nofail,noauto,x-systemd.automount,_netdev"
+    opts: "uid={{ borg_user_info.id }},gid={{ borg_user_info.group }},credentials=/etc/samba/credentials/borg,nofail,noauto,x-systemd.automount,_netdev"
     opts_no_log: true
     path: "{{ (borg_server_user_home_dir, borg_server_mount_dir) | path_join }}"
     src: "{{ borg_server_smb_path }}"
