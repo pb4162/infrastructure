@@ -9,7 +9,12 @@ argument_specs:
         required: true
       garage_env:
         type: dict
-        required: true
+        required: false
+        default: {}
+      garage_env_private:
+        type: dict
+        required: false
+        default: {}
       garage_webui_version:
         type: str
         required: true

@@ -15,7 +15,7 @@ app_containers:
       traefik.docker.network: bridge
       traefik.http.routers.garage.rule: "Host(`garage.{{ inventory_hostname }}.{{ root_domain }}`)"
       traefik.http.services.garage.loadbalancer.server.port: 3900
-    env: "{{ garage_env }}"
+    env: "{{ garage_env | combine(garage_env_private) }}"
     networks:
       - { name: garage }
       - { name: bridge }
