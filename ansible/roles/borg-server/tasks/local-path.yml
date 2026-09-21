@@ -1,0 +1,13 @@
+- name: Change mountpoint of local path zfs dataset
+  community.general.zfs:
+    name: "{{ borg_server_local_path_dataset }}"
+    state: present
+    extra_zfs_properties:
+      mountpoint: "{{ borg_server_local_path }}"
+
+- name: Change ownership of local path
+  ansible.builtin.file:
+    state: directory
+    path: "{{ borg_server_local_path }}"
+    owner: "{{ borg_user_info.uid }}"
+    group: "{{ borg_user_info.group }}"

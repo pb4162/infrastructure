@@ -1,0 +1,31 @@
+- name: Install cifs-utils
+  ansible.builtin.apt:
+    name: cifs-utils
+    state: present
+
+    # https://wiki.archlinux.org/title/Samba#Storing_share_passwords
+- name: Create /etc/samba/credentials directory
+  ansible.builtin.file:
+    path: /etc/samba/credentials
+    state: directory
+    owner: root
+    group: root
+    mode: 0700
+
+- name: Create smb credentials file
+  ansible.builtin.template:
+    dest: /etc/samba/credentials/borg
+    mode: 0600
+    owner: root
+    group: root
+    src: smbcreds.j2
+
+- name: Mount borg repo smb share
+  ansible.posix.mount:
+    backup: true
+    fstype: cifs
+    opts: "uid={{ borg_server_user.id }},gid={{ borg_server_user.group }},credentials=/etc/samba/credentials/borg,nofail,noauto,x-systemd.automount,_netdev"
+    opts_no_log: true
+    path: "{{ (borg_server_user_home_dir, borg_server_mount_dir) | path_join }}"
+    src: "{{ borg_server_smb_path }}"
+    state: mounted
