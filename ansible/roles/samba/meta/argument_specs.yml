@@ -1,0 +1,11 @@
+argument_specs:
+  main:
+    options:
+      samba_users:
+        type: list
+        elements: dict
+        required: true
+      samba_shares:
+        type: list
+        elements: dict
+        required: true

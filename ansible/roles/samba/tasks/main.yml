@@ -1,0 +1,96 @@
+- name: "Install packages"
+  ansible.builtin.apt:
+    state: present
+    name:
+      - samba
+      - samba-common
+      - smbclient
+      - acl
+
+- name: Enable and start smbd service
+  ansible.builtin.systemd_service:
+    name: smbd.service
+    state: started
+    enabled: true
+
+- name: Create smbusers group
+  ansible.builtin.group:
+    name: "smbusers"
+    state: present
+
+- name: Create smbadmins group
+  ansible.builtin.group:
+    name: "smbadmins"
+    state: present
+
+# https://oneuptime.com/blog/post/2026-02-21-ansible-configure-samba-server/view
+- name: Create system users for samba
+  ansible.builtin.user:
+    name: "{{ item.name }}"
+    groups: "{{ ((item.groups | default([])) + ['smbusers']) }}"
+    shell: /sbin/nologin
+    create_home: false
+    state: present
+  loop: "{{ samba_users }}"
+  loop_control:
+    label: "{{ item.name }}"
+
+- name: Add ansible_user to list of samba users
+  ansible.builtin.set_fact:
+    samba_users: "{{ samba_users + [{'name': ansible_user, 'password': ansible_password, 'admin': true}] }}"
+
+- name: Add ansible_user to smbusers group
+  ansible.builtin.user:
+    name: "{{ ansible_user }}"
+    groups: "smbusers"
+    append: true
+
+- name: Add admin users to smbadmins group
+  ansible.builtin.user:
+    name: "{{ item.name }}"
+    groups: "smbadmins"
+    append: true
+  loop: "{{ samba_users | selectattr('admin', 'defined') | selectattr('admin', 'sameas', true) }}"
+  loop_control:
+    label: "{{ item.name }}"
+
+# Set Samba passwords using smbpasswd
+# TODO: make idempotent
+- name: Set samba user passwords
+  ansible.builtin.shell:
+    cmd: "(echo '{{ item.password }}'; echo '{{ item.password }}') | smbpasswd -s -a {{ item.name }}"
+  loop: "{{ samba_users }}"
+  no_log: true
+  changed_when: false
+  loop_control:
+    label: "{{ item.name }}"
+
+# Enable the Samba accounts
+# TODO: make idempotent
+- name: Enable samba user accounts
+  ansible.builtin.command:
+    cmd: "smbpasswd -e {{ item.name }}"
+  loop: "{{ samba_users }}"
+  changed_when: false
+  loop_control:
+    label: "{{ item.name }}"
+
+- name: Add permissions for smbusers group to all samba mount paths
+  ansible.builtin.file:
+    path: "{{ item.path }}"
+    state: directory
+    group: smbusers
+  loop: "{{ samba_shares }}"
+  loop_control:
+    label: "{{ item.name }}"
+
+- name: Deploy samba configuration
+  ansible.builtin.template:
+    src: smb.conf.j2
+    dest: /etc/samba/smb.conf
+    owner: root
+    group: root
+    mode: '0644'
+    backup: true
+    validate: "testparm -s %s"
+  notify: Restart samba
