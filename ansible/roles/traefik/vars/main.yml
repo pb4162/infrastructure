@@ -42,7 +42,7 @@ app_containers:
           else "/run/docker.sock" if container_tool == "docker"
         }}:/var/run/docker.sock:ro
 
-    state: "{{ 'quadlet' if container_tool == 'podman' else 'present' }}"
+    state: "{{ 'quadlet' if container_tool == 'podman' else 'started' }}"
     quadlet_options: |-
       {{
         quadlet_options
