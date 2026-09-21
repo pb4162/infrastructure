@@ -1,4 +1,4 @@
-- name: Bootstrap configurations needed for all future playbooks
+- name: Upload ssh key
   hosts: all
   become: true
   become_flags: "-"
@@ -10,6 +10,18 @@
   roles:
     - role: sshkey
       tags: [sshkey]
+
+
+- name: Setup user and privilege escalation on all hosts except for the router
+  hosts: all:!router
+  become: true
+  become_flags: "-"
+  tags: [bootstrap]
+
+  vars:
+    ansible_become_method: su
+
+  roles:
     - role: user
       tags: [user]
     - role: priv-esc
