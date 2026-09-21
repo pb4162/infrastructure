@@ -1,0 +1,27 @@
+- name: Install cadvisor
+  ansible.builtin.include_role:
+    name: container-app
+    public: false
+
+- name: Create scrape config kubernetes resource
+  delegate_to: "{{ groups['k8s_first_master_node'][0] }}"
+  kubernetes.core.k8s:
+    state: present
+    definition:
+      apiVersion: monitoring.coreos.com/v1alpha1
+      kind: ScrapeConfig
+      metadata:
+        labels:
+          release: kube-prometheus-stack
+        name: "cadvisor-{{ inventory_hostname }}"
+        namespace: monitoring
+      spec:
+        jobName: cadvisor
+        metricsPath: /metrics
+        scrapeInterval: 30s
+        staticConfigs:
+        - targets:
+            - "{{ tailscale_ipv4_address }}:{{ cadvisor_port }}"
+        relabelings:
+          - targetLabel: instance
+            replacement: "{{ inventory_hostname }}"

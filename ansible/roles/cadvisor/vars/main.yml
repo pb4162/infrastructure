@@ -1,0 +1,49 @@
+app_name: cadvisor
+cadvisor_port: 8778
+cadvisor_container_ports:
+  - "{{ tailscale_ipv4_address }}:{{ cadvisor_port }}:8080"
+cadvisor_socket: >-
+  {{
+    (("/run/user", getent_passwd[ansible_user][1], "podman/podman.sock") | path_join) if container_tool == "podman"
+    else "/run/docker.sock"
+  }}
+cadvisor_devices:
+  - /dev/kmsg:/dev/kmsg
+quadlet_options: |-
+   [Install]
+   WantedBy=multi-user.target default.target
+
+app_containers:
+  - state: "{{ 'quadlet' if container_tool == 'podman' else 'started' }}"
+    image: "ghcr.io/google/cadvisor:{{ cadvisor_version }}"
+    name: cadvisor
+    privileged: true
+    ports: "{{ cadvisor_container_ports if container_tool == 'docker' else omit }}"
+    publish: "{{ cadvisor_container_ports if container_tool == 'podman' else omit }}"
+    command: >-
+      {{
+        '--podman=' ~ cadvisor_socket
+        if container_tool == 'podman' else omit
+      }}
+    volumes:
+    - "/:/rootfs:ro"
+    - "{{ cadvisor_socket }}:{{ cadvisor_socket }}:ro"
+    - "/sys:/sys:ro"
+    - "/sys/fs/cgroup:/sys/fs/cgroup:ro"
+    - >-
+      {{
+        ((('/home', ansible_user, '.local/share/containers') | path_join) ~ ':/var/lib/containers:ro')
+        if container_tool == "podman" else omit
+      }}
+    - "/dev/disk:/dev/disk:ro"
+    - "/etc/machine-id:/etc/machine-id:ro"
+    - "/var/run:/var/run:rw"
+    - "{{ '/var/lib/docker/:/var/lib/docker:ro' if container_tool == 'docker' else omit }}"
+    device: "{{ cadvisor_devices if container_tool == 'podman' else omit }}"
+    devices: "{{ cadvisor_devices if container_tool == 'docker' else omit }}"
+    quadlet_options: |-
+      {{
+        quadlet_options
+        if container_tool == 'podman'
+        else omit
+      }}

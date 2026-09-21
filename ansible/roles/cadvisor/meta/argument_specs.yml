@@ -1,0 +1,6 @@
+argument_specs:
+  main:
+    options:
+      cadvisor_version:
+        type: str
+        required: true
