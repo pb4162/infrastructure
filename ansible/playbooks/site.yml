@@ -66,6 +66,16 @@
       tags: [network, tuning, network-tuning]
 
 
+- name: Setup zfs and pools on NASes
+  hosts: nases
+  become: true
+  tags: [storage, zfs]
+
+  roles:
+    - role: zfs
+      tags: [zfs]
+
+
 - name: Setup backup servers
   hosts: backup_servers
   become: true
@@ -84,15 +94,6 @@
       tags: [borg, backup, borg-backup]
 
 
-- name: Setup local dns records in /etc/hosts
-  hosts: remote
-  become: true
-
-  roles:
-    - role: local-dns-records
-      tags: [local-dns-records]
-
-
 - name: Setup docker
   hosts: docker
   become: true
@@ -100,6 +101,38 @@
   roles:
     - role: docker
       tags: [docker, containers]
+
+
+- name: Setup primary NAS
+  hosts: nas
+  become: true
+  tags: [storage]
+
+  roles:
+    - role: samba
+      tags: [samba]
+    - role: garage
+      tags: garage
+    - role: zfs-webui
+      tags: [zfs-webui]
+    - role: sanoid
+      tags: [sanoid]
+
+  tasks:
+    - name: "Import registry role (public: false)"
+      tags: [registry]
+      ansible.builtin.import_role:
+        name: registry
+        public: false
+
+
+- name: Setup local dns records in /etc/hosts
+  hosts: remote
+  become: true
+
+  roles:
+    - role: local-dns-records
+      tags: [local-dns-records]
 
 
 - name: Setup nginx
@@ -236,6 +269,18 @@
       tags:
         - flux
         - flux-bootstrap
+
+
+- name: Setup zfs replication on offsite NAS
+  hosts: nas-offsite
+  become: true
+  tags: [storage]
+
+  roles:
+    - role: syncoid
+      tags: syncoid
+
+
 - name: Setup node-exporter on non-k8s hosts and except for the router
   hosts: all:!k8s_cluster:!router
   become: true
