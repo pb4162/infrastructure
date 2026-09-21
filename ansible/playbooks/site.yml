@@ -56,8 +56,8 @@
       tags: [common, packages, common-packages]
 
 
-- name: Tune network settings for all hosts except for openbsd_vps and router
-  hosts: all:!openbsd_vps:!router
+- name: Tune network settings for all hosts except for openbsd-vps and router
+  hosts: all:!openbsd-vps:!router
   become: true
   tags: [common]
 
