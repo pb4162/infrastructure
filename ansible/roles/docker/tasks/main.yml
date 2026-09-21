@@ -41,6 +41,12 @@
       - docker-buildx-plugin
       - docker-compose-plugin
 
+- name: "Enable and start docker socket"
+  ansible.builtin.systemd_service:
+    name: docker.socket
+    state: started
+    enabled: true
+
 - name: "Create {{ docker_data_dir }} directory to store persistent data in"
   ansible.builtin.file:
     path: "{{ docker_data_dir }}"
