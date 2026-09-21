@@ -1,13 +1,13 @@
 apiVersion: monitoring.coreos.com/v1
 kind: PrometheusRule
 metadata:
-  name: cadvisor-podman-rules
+  name: cadvisor-rules
   namespace: monitoring
   labels:
     release: kube-prometheus-stack
 spec:
   groups:
-  - name: cadvisor-podman
+  - name: cadvisor
     rules:
       - alert: ContainerKilled
         expr: time() - container_last_seen > 60
