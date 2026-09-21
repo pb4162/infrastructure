@@ -1,0 +1,44 @@
+- name: "Install package"
+  ansible.builtin.apt:
+    state: present
+    name: prometheus-smartctl-exporter
+
+- name: "Install systemd service"
+  ansible.builtin.template:
+    dest: /etc/systemd/system/smartctl_exporter.service
+    mode: 0660
+    owner: root
+    group: root
+    src: smartctl_exporter.service.j2
+  notify:
+   - Run systemctl daemon-reload
+   - Restart smartctl_exporter service
+
+- name: "Enable and start systemd service"
+  ansible.builtin.systemd_service:
+    name: smartctl_exporter.service
+    state: started
+    enabled: true
+
+- name: Create scrape config kubernetes resource
+  delegate_to: "{{ groups['k8s_first_master_node'][0] }}"
+  kubernetes.core.k8s:
+    state: present
+    definition:
+      apiVersion: monitoring.coreos.com/v1alpha1
+      kind: ScrapeConfig
+      metadata:
+        labels:
+          release: kube-prometheus-stack
+        name: "smartctl-exporter-{{ inventory_hostname }}"
+        namespace: monitoring
+      spec:
+        jobName: prometheus-smartctl-exporter
+        metricsPath: /metrics
+        scrapeInterval: 60s
+        staticConfigs:
+        - targets:
+            - "{{ tailscale_ipv4_address }}:{{ smartctl_exporter_port }}"
+        relabelings:
+          - targetLabel: instance
+            replacement: "{{ inventory_hostname }}"
