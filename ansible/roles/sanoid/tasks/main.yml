@@ -1,0 +1,25 @@
+- name: Install sanoid
+  ansible.builtin.apt:
+    name: sanoid
+    state: present
+
+- name: Create /etc/sanoid directory
+  ansible.builtin.file:
+    path: /etc/sanoid
+    state: directory
+    mode: 0660
+
+- name: Install sanoid.conf
+  ansible.builtin.template:
+    backup: true
+    dest: "/etc/sanoid/sanoid.conf"
+    mode: 0660
+    owner: root
+    group: root
+    src: sanoid.conf.j2
+
+- name: Enable and start sanoid systemd timer
+  ansible.builtin.systemd_service:
+    name: sanoid.timer
+    state: started
+    enabled: true
