@@ -16,6 +16,24 @@
       tags: [sudo, doas, priv-esc]
 
 
+- name: Bootstrap proxmox nodes
+  hosts: proxmox
+  become: true
+
+  roles:
+    - role: pve-pre
+      tags: [pve-pre]
+    - role: pve-repos
+      tags: [pve-repos]
+
+  tasks:
+    - name: Disable zfs-import-scan as the pools are managed exclusively by the nas VMs
+      tags: [zfs-import, zfs-import-scan]
+      ansible.builtin.import_role:
+        name: zfs
+        tasks_from: pve.yml
+
+
 - name: Apply common configurations on all hosts except for the router
   hosts: all:!router
   become: true
