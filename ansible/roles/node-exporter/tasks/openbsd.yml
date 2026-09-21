@@ -1,0 +1,11 @@
+- name: Install package on OpenBSD
+  community.general.openbsd_pkg:
+    name: node_exporter
+    state: present
+
+- name: Configure service
+  ansible.builtin.service:
+    name: node_exporter
+    arguments: "{{ node_exporter_args }}"
+    enabled: true
+    state: started

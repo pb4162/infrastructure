@@ -1,0 +1,28 @@
+- ansible.builtin.import_tasks: debian.yml
+  when: ansible_distribution | lower == "debian"
+
+- ansible.builtin.import_tasks: openbsd.yml
+  when: ansible_distribution | lower == "openbsd"
+
+- name: Create scrape config kubernetes resource
+  delegate_to: "{{ groups['k8s_first_master_node'][0] }}"
+  kubernetes.core.k8s:
+    state: present
+    definition:
+      apiVersion: monitoring.coreos.com/v1alpha1
+      kind: ScrapeConfig
+      metadata:
+        labels:
+          release: kube-prometheus-stack
+        name: "node-exporter-{{ inventory_hostname }}"
+        namespace: monitoring
+      spec:
+        jobName: node-exporter
+        metricsPath: /metrics
+        scrapeInterval: 20s
+        staticConfigs:
+        - targets:
+            - "{{ tailscale_ipv4_address }}:{{ node_exporter_port }}"
+        relabelings:
+          - targetLabel: instance
+            replacement: "{{ inventory_hostname }}"

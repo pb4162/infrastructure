@@ -1,0 +1,4 @@
+- name: Restart prometheus-node-exporter (debian)
+  ansible.builtin.systemd_service:
+    name: prometheus-node-exporter.service
+    state: restarted

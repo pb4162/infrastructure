@@ -1,0 +1,19 @@
+- name: Import apt-backports role
+  ansible.builtin.import_role:
+    name: apt-backports
+
+- name: Install package on Debian
+  ansible.builtin.apt:
+    name: prometheus-node-exporter
+    state: present
+
+- name: Install config file
+  ansible.builtin.template:
+    dest: /etc/default/prometheus-node-exporter
+    mode: 0644
+    owner: root
+    group: root
+    src: args.j2
+  notify:
+   - Run systemctl daemon-reload
+   - Restart prometheus-node-exporter (debian)
