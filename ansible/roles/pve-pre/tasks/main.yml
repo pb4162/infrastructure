@@ -1,0 +1,10 @@
+- name: Install pip
+  ansible.builtin.apt:
+    state: present
+    name: python3-pip
+
+- name: Install proxmoxer via pip onto system python
+  ansible.builtin.pip:
+    state: present
+    name: proxmoxer
+    break_system_packages: true
