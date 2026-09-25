@@ -1,6 +1,7 @@
 [Unit]
 Description=zfs_exporter
-After=network-online.target
+After=network-online.target tailscale-online.target
+Requires=tailscale-online.target
 
 [Service]
 Restart=always
