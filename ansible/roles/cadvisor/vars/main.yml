@@ -1,4 +1,6 @@
 app_name: cadvisor
+app_systemd_requires: [tailscale-online.target]
+app_systemd_after: [tailscale-online.target]
 cadvisor_port: 8778
 cadvisor_container_ports:
   - "{{ tailscale_ipv4_address }}:{{ cadvisor_port }}:8080"
