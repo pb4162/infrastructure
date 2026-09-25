@@ -80,3 +80,20 @@
   loop_control:
     label: "{{ item.name }}"
   when: container_tool == "podman"
+
+- when: container_tool == "docker"
+  block:
+  - name: Create systemd service (docker)
+    ansible.builtin.template:
+      dest: "/etc/systemd/system/{{ app_name }}-docker.service"
+      mode: 0644
+      owner: root
+      group: root
+      src: docker-service.service.j2
+    notify: Run systemctl daemon-reload
+
+  - name: Enable and start systemd service (docker)
+    ansible.builtin.systemd_service:
+      name: "{{ app_name }}-docker.service"
+      state: started
+      enabled: true

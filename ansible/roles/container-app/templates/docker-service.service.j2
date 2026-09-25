@@ -1,0 +1,14 @@
+[Unit]
+Description={{ app_name }} docker container
+Requires=docker.service {{ app_systemd_requires | join(" ") }}
+After=docker.service {{ app_systemd_after | join(" ") }}
+
+[Service]
+Type=oneshot
+RemainAfterExit=yes
+ExecStart=/usr/bin/docker start {{ app_containers | map(attribute="name") | list | join(" ") }}
+ExecStop=/usr/bin/docker stop {{ app_containers | map(attribute="name") | list | join(" ") }}
+Restart=on-failure
+
+[Install]
+WantedBy=multi-user.target

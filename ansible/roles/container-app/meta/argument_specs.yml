@@ -25,3 +25,13 @@ argument_specs:
         elements: str
         required: false
         default: []
+      app_systemd_requires:
+        type: list
+        elements: str
+        required: false
+        default: []
+      app_systemd_after:
+        type: list
+        elements: str
+        required: false
+        default: []
