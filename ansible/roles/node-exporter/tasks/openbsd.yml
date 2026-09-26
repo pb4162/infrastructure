@@ -3,9 +3,16 @@
     name: node_exporter
     state: present
 
+- name: Add node_exporter_flags to /etc/rc.conf.local
+  ansible.builtin.lineinfile:
+    path: /etc/rc.conf.local
+    line: "node_exporter_flags={{ node_exporter_args }}"
+    owner: root
+    group: wheel
+    mode: '0644'
+
 - name: Configure service
   ansible.builtin.service:
     name: node_exporter
-    arguments: "{{ node_exporter_args }}"
     enabled: true
     state: started
