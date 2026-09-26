@@ -126,14 +126,14 @@
     - role: samba
       tags: [samba]
     - role: garage
-      tags: garage
+      tags: [garage, container-app]
     - role: zfs-webui
-      tags: [zfs-webui]
+      tags: [zfs-webui, container-app]
 
 
   tasks:
     - name: "Import registry role (public: false)"
-      tags: [registry]
+      tags: [registry, container-app]
       ansible.builtin.import_role:
         name: registry
         public: false
@@ -166,7 +166,7 @@
 
   roles:
     - role: traefik
-      tags: [traefik, containers, webservers]
+      tags: [traefik, containers, webservers, container-app]
 
 
 - name: Setup crowdsec on VPSes
@@ -184,7 +184,7 @@
 
   roles:
     - role: technitium
-      tags: [technitium, dns, containers]
+      tags: [technitium, dns, containers, container-app]
 
 
 - name: Setup control_plane host
@@ -195,9 +195,9 @@
     - role: wifi
       tags: [network, wifi]
     - role: semaphoreui
-      tags: [semaphoreui, semaphore, containers]
+      tags: [semaphoreui, semaphore, containers, container-app]
     - role: woodpeckerci
-      tags: [woodpeckerci, woodpecker, containers]
+      tags: [woodpeckerci, woodpecker, containers, container-app]
     - role: host-sshkey
       tags: [host-sshkey]
 
