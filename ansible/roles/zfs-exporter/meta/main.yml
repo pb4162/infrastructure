@@ -1,3 +1,4 @@
 dependencies:
   - role: systemd-handlers
   - role: tailscale-facts
+  - role: release-arch
