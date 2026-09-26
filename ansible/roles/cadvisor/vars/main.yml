@@ -9,6 +9,13 @@ cadvisor_socket: >-
     (("/run/user", getent_passwd[ansible_user][1], "podman/podman.sock") | path_join) if container_tool == "podman"
     else "/run/docker.sock"
   }}
+cadvisor_command: >-
+  {% if container_tool == "podman" %}
+  --podman={{ cadvisor_socket }}
+  {% endif %}
+  {% if container_tool == "docker" %}
+  --docker_only
+  {% endif %}
 cadvisor_devices:
   - /dev/kmsg:/dev/kmsg
 quadlet_options: |-
@@ -22,11 +29,7 @@ app_containers:
     privileged: true
     ports: "{{ cadvisor_container_ports if container_tool == 'docker' else omit }}"
     publish: "{{ cadvisor_container_ports if container_tool == 'podman' else omit }}"
-    command: >-
-      {{
-        '--podman=' ~ cadvisor_socket
-        if container_tool == 'podman' else omit
-      }}
+    command: "{{ cadvisor_command }}"
     volumes:
     - "/:/rootfs:ro"
     - "{{ cadvisor_socket }}:{{ cadvisor_socket }}:ro"
