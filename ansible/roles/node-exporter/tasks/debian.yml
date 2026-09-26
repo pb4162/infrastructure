@@ -17,3 +17,22 @@
   notify:
    - Run systemctl daemon-reload
    - Restart prometheus-node-exporter (debian)
+
+- name: Create /etc/systemd/system/prometheus-node-exporter.service.d directory
+  ansible.builtin.file:
+    path: /etc/systemd/system/prometheus-node-exporter.service.d
+    state: directory
+
+- name: Install systemd drop-in file
+  ansible.builtin.copy:
+    dest: /etc/systemd/system/prometheus-node-exporter.service.d/override.conf
+    mode: 0644
+    owner: root
+    group: root
+    content: |
+      [Unit]
+      After=tailscale-online.target
+      Requires=tailscale-online.target
+  notify:
+   - Run systemctl daemon-reload
+   - Restart prometheus-node-exporter (debian)
