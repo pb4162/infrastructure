@@ -344,4 +344,4 @@
 
   roles:
     - role: cadvisor
-      tags: [cadvisor]
+      tags: [cadvisor, container-app]
