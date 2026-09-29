@@ -130,16 +130,30 @@
     - role: garage
     - role: sriov
       tags: sriov
-      tags: [garage, container-app]
-    - role: zfs-webui
-      tags: [zfs-webui, container-app]
-
 
   tasks:
+    - name: "Import garage role (public: false)"
+      tags: [garage, container-app]
+      ansible.builtin.import_role:
+        name: garage
+        public: false
+
+    - name: "Import zfs-webui role (public: false)"
+      tags: [zfs-webui, container-app]
+      ansible.builtin.import_role:
+        name: zfs-webui
+        public: false
+
     - name: "Import registry role (public: false)"
       tags: [registry, container-app]
       ansible.builtin.import_role:
         name: registry
+        public: false
+
+    - name: "import gow role (public: false)"
+      tags: [gow, container-app]
+      ansible.builtin.import_role:
+        name: gow
         public: false
 
 
