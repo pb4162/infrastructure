@@ -150,7 +150,7 @@
         name: registry
         public: false
 
-    - name: "import gow role (public: false)"
+    - name: "Import gow role (public: false)"
       tags: [gow, container-app]
       ansible.builtin.import_role:
         name: gow
