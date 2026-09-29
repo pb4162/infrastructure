@@ -18,7 +18,11 @@ cadvisor_command: >-
   {% endif %}
 cadvisor_devices:
   - /dev/kmsg:/dev/kmsg
+# TODO: depend on tailscale-online.target while in rootless mode
 quadlet_options: |-
+   [Service]
+   ExecStartPre=/usr/bin/tailscale wait
+
    [Install]
    WantedBy=multi-user.target default.target
 
