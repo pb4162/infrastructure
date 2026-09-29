@@ -36,3 +36,8 @@
   notify:
    - Run systemctl daemon-reload
    - Restart prometheus-node-exporter (debian)
+
+- name: Disable openipmi systemd service
+  ansible.builtin.systemd_service:
+    name: openipmi.service
+    enabled: false
