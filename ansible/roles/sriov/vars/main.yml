@@ -1,0 +1,2 @@
+sriov_dkms_deb: "i915-sriov-dkms_{{ sriov_dkms_version }}_{{ release_arch }}.deb"
+sriov_pci_fullpath: "/sys/devices/{{ sriov_pci_root_hub }}/{{ sriov_pci_bdf }}/sriov_numvfs"

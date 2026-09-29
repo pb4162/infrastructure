@@ -1,0 +1,54 @@
+- name: Install prerequisite packages
+  ansible.builtin.apt:
+    state: present
+    name:
+      - dkms
+      - build-essential
+      - sysfsutils
+
+- name: Install headers for Proxmox
+  ansible.builtin.apt:
+    state: present
+    name: proxmox-default-headers
+  when: ("proxmox" in group_names)
+
+- name: Install headers for Debian
+  ansible.builtin.apt:
+    state: present
+    name: "linux-headers-{{ release_arch }}"
+  when: ("proxmox" not in group_names)
+
+- name: Download deb package from github releases
+  ansible.builtin.get_url:
+    url: "https://github.com/strongtz/i915-sriov-dkms/releases/download/{{ sriov_dkms_version }}/{{ sriov_dkms_deb }}"
+    dest: "~"
+    force: true
+
+- name: Install dkms module
+  ansible.builtin.apt:
+    state: present
+    deb: "~/{{ sriov_dkms_deb }}"
+  notify: Reboot
+
+- name: Update grub parameters
+  ansible.builtin.lineinfile:
+    state: present
+    backrefs: true
+    path: /etc/default/grub
+    regexp: "^(GRUB_CMDLINE_LINUX=\"|'.*)(\"|')$"
+    line: "\\1intel_iommu=on i915.enable_guc=3 i915.max_vfs={{ sriov_vfs }} module_blacklist=xe i915.xelp_enable_ccs=1\\2"
+  notify: Reboot
+  register: grub_params
+
+- name: Recreate grub config and initramfs
+  ansible.builtin.shell: update-grub && update-initramfs -u
+  when: (grub_params.changed is true)
+  notify: Reboot
+
+- name: Add sysfs line to /etc/sysfs.conf
+  ansible.builtin.lineinfile:
+    state: present
+    path: /etc/sysfs.conf
+    line: "{{ sriov_pci_fullpath[5:] }} = {{ sriov_vfs }}"
+  when: ("proxmox" in group_names)
+  notify: Reboot
