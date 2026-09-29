@@ -13,9 +13,6 @@ spec:
         name: longhorn
       interval: 5m
   releaseName: longhorn
-  valuesFrom:
-    - kind: Secret
-      name: longhorn-values
   values:
     csi:
       attacherReplicaCount: 2
@@ -24,6 +21,7 @@ spec:
       snapshotterReplicaCount: 2
     defaultBackupStore:
       backupTargetCredentialSecret: s3-secret
+      backupTarget: s3://longhorn@garage/
     defaultSettings:
       defaultDataLocality: best-effort
       replicaAutoBalance: least-effort
