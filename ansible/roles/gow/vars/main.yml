@@ -1,0 +1,19 @@
+app_name: wolf
+app_directories:
+  - data
+app_containers:
+  # TODO: version pinning
+  - image: "ghcr.io/games-on-whales/wolf:stable"
+    name: wolf
+    network_mode: host
+    volumes:
+      - "{{ (app_base_dir, 'data') | path_join }}:/etc/wolf:rw"
+      - "/var/run/docker.sock:/var/run/docker.sock:rw"
+      - "/dev/:/dev/:rw"
+      - "/run/udev:/run/udev:rw"
+    devices:
+      - "/dev/dri/:/dev/dri/"
+      - "/dev/uinput:/dev/uinput"
+      - "/dev/uhid:/dev/uhid"
+    device_cgroup_rules:
+      - "c 13:* rmw"

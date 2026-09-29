@@ -1,0 +1,11 @@
+- name: Install and configure wolf
+  ansible.builtin.include_role:
+    name: container-app
+    public: false
+
+- name: Create wolf udev rules
+  ansible.builtin.get_url:
+    url: https://raw.githubusercontent.com/games-on-whales/wolf/stable/85-wolf.rules
+    dest: /etc/udev/rules.d/85-wolf.rules
+    mode: "0640"
+  notify: Reload udev rules
