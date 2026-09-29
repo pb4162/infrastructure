@@ -3,6 +3,27 @@ app_directories:
   - metadata
 app_networks:
   - garage
+app_templates:
+  - path: garage.toml
+    content: |
+      metadata_dir = "/var/lib/garage/meta"
+      data_dir = "/var/lib/garage/data"
+      metadata_snapshots_dir = "/var/lib/garage/data/snapshots"
+      metadata_auto_snapshot_interval = "6h"
+      db_engine = "sqlite"
+      use_local_tz = true
+      replication_factor = 1
+      consistency_mode = "consistent"
+      block_size = "1MiB"
+
+      rpc_bind_addr = "[::]:3901"
+
+      [s3_api]
+      s3_region = "garage"
+      api_bind_addr = "[::]:3900"
+
+      [admin]
+      api_bind_addr = "[::]:3903"
 app_containers:
   - image: "dxflrs/garage:{{ garage_version }}"
     name: garage
