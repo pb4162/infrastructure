@@ -127,7 +127,6 @@
   roles:
     - role: samba
       tags: [samba]
-    - role: garage
     - role: sriov
       tags: sriov
 
