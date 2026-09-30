@@ -53,3 +53,5 @@ spec:
         enabled: true
         additionalLabels:
           release: kube-prometheus-stack
+    networkPolicies:
+      restrictInternalTraffic: false
