@@ -1,0 +1,18 @@
+argument_specs:
+  main:
+    options:
+      sriov_vfs:
+        type: int
+        required: false
+        default: 7
+      sriov_pci_root_hub:
+        type: str
+        required: false
+        default: pci0000:00
+      sriov_pci_bdf:
+        type: str
+        required: false
+        default: "0000:00:02.0"
+      sriov_dkms_version:
+        type: str
+        required: true
