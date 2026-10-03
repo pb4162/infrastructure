@@ -5,10 +5,6 @@
     enabled: false
     state: stopped
 
-- name: "Set mailcow_dir"
-  ansible.builtin.set_fact:
-    mailcow_dir: "{{ (mailcow_install_path, 'mailcow-dockerized') | path_join }}"
-
 - name: "Clone mailcow git repo"
   ansible.builtin.git:
     repo: https://github.com/mailcow/mailcow-dockerized

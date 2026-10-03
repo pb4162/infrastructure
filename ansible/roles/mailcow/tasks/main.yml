@@ -1,3 +1,7 @@
+- name: Set mailcow_dir
+  ansible.builtin.set_fact:
+    mailcow_dir: "{{ (mailcow_install_path, 'mailcow-dockerized') | path_join }}"
+
 - ansible.builtin.import_tasks: install.yml
   when: mailcow_update is false
 
