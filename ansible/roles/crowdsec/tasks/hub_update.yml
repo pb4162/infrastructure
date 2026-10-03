@@ -1,0 +1,5 @@
+- name: Pull updates from crowdsec hub
+  ansible.builtin.command: cscli hub update
+  register: hub_update_info
+  changed_when: ("Nothing to do" not in hub_update_info.stdout)
+  notify: "Restart crowdsec ({{ ansible_distribution | lower }})"

@@ -1,0 +1,5 @@
+- name: Do crowdsec hub update
+  ansible.builtin.import_tasks: hub_update.yml
+
+- name: Upgrade crowdsec hub items to their latest versions
+  ansible.builtin.command: cscli hub upgrade

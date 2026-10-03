@@ -1,16 +1,14 @@
-- name: Do Debian-specific install tasks
-  ansible.builtin.import_tasks: install_debian.yml
-  when: ansible_distribution | lower == "debian"
+- notify: Do crowdsec hub update
+  block:
+  - name: Do Debian-specific install tasks
+    ansible.builtin.import_tasks: install_debian.yml
+    when: ansible_distribution | lower == "debian"
 
-- name: Do OpenBSD-specific install tasks
-  ansible.builtin.import_tasks: install_openbsd.yml
-  when: ansible_distribution | lower == "openbsd"
+  - name: Do OpenBSD-specific install tasks
+    ansible.builtin.import_tasks: install_openbsd.yml
+    when: ansible_distribution | lower == "openbsd"
 
-- name: "Pull updates from crowdsec hub"
-  ansible.builtin.shell: cscli hub update
-  register: hub_update_info
-  changed_when: ("Nothing to do" not in hub_update_info.stdout)
-  notify: "Restart crowdsec ({{ ansible_distribution | lower }})"
+- meta: flush_handlers
 
 - name: "Enroll in crowdsec console under name: {{ crowdsec_console_name }}"
   ansible.builtin.shell: >-
