@@ -47,11 +47,10 @@ While I aim to be reliant on as few external services as possible, there are sti
 
 Before running Ansible first check over group and host vars and populate any fields that are missing or outdated.
 
-OS provisioning is done in 2 stages. To apply the first stage:
-```ansible-playbook -Kk playbooks/[site]/[playbook].yml -t bootstrap -i [path to inventory] --diff```
+The main `site` playbook can be run by:
+```ansible-playbook -i [path to inventory] --diff playbooks/site.yml```
 
-For subsequent runs Semaphore UI is used. The command-line equivalent would be:
-```ansible-playbook -K playbooks/[site]/[playbook].yml -i [path to inventory] --diff```
+Once Semaphore UI is set up it can be used to take over playbook execution.
 
 ## Post Provisioning
 
