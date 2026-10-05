@@ -57,6 +57,20 @@ Once Semaphore UI is set up it can be used to take over playbook execution.
 - For new machines that are Tailscale subnet routers or exit nodes, enable their routes in Headscale
 - Tag disks in Longhorn with the `ssd` tag
 
+# Updates and Maintenance
+
+These routine tasks are separated into two playbooks, `update.yml` and `maintenance.yml`.
+
+To perform routine updates:
+```ansible-playbook -i [path to inventory] --diff playbooks/update.yml```
+
+To perform routine maintenance:
+```ansible-playbook -i [path to inventory] --diff playbooks/maintenance.yml```
+
+## Manual Updates
+
+Router updates are carried out by a selfhosted [attended-sysupgrade](https://github.com/openwrt/asu) server.
+
 # Credits
 
 - https://rpi4cluster.com

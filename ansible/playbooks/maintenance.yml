@@ -1,0 +1,33 @@
+- name: Do docker pruning on all docker hosts
+  hosts: docker
+  become: true
+  tags: [docker, containers]
+
+  tasks:
+    - name: Prune everything
+      community.docker.docker_prune:
+        containers: true
+        images: true
+        networks: true
+        volumes: true
+        builder_cache: true
+
+
+- name: Do podman pruning on all podman hosts
+  hosts: podman
+  become: true
+  tags: [podman, containers]
+
+  tasks:
+    - name: Prune everything (rootful)
+      containers.podman.podman_prune:
+        system: true
+        system_all: true
+        system_volumes: true
+
+    - name: Prune everything (rootless)
+      become: false
+      containers.podman.podman_prune:
+        system: true
+        system_all: true
+        system_volumes: true

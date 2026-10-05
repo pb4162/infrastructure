@@ -1,0 +1,61 @@
+- name: Update all hosts except for the router
+  hosts: all:!router
+  become: true
+  tags: [os]
+
+  serial: 1
+
+  roles:
+    - name: os-update
+
+
+- name: Fetch and update resources from crowdsec hub
+  hosts: remote
+  become: true
+  tags: [crowdsec]
+
+  tasks:
+    - name: Import hub upgrade tasks from crowdsec role
+      ansible.builtin.import_role:
+        name: crowdsec
+        tasks_from: hub_upgrade.yml
+
+
+- name: Update mailcow
+  hosts: misc_vps
+  become: true
+  tags: [mailcow]
+
+  roles:
+    - role: mailcow
+      vars:
+        mailcow_update: true
+
+
+- name: Update k3s
+  hosts: k8s_cluster
+  become: true
+  tags: [k3s]
+
+  serial: 1
+
+  roles:
+    - role: k3s
+      vars:
+        k3s_update: true
+
+
+- name: Update flux
+  hosts: k8s_first_master_node
+  become: true
+  tags: [flux]
+
+  roles:
+    - role: flux-cli
+      flux_update: true
+      tags:
+        - flux-cli
+    - role: flux-bootstrap
+      flux_update: true
+      tags:
+        - flux-bootstrap
