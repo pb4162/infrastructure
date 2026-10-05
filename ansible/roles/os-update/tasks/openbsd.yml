@@ -8,6 +8,10 @@
     name: '*'
     autoremove: true
 
+- name: Run syspatch
+  community.general.syspatch:
+  register: syspatch_result
+
 - name: Reboot
   ansible.builtin.reboot:
-  when: force_reboot is true
+  when: (syspatch_result.reboot_needed or force_reboot is true)
