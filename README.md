@@ -34,7 +34,7 @@ While I aim to be reliant on as few external services as possible, there are sti
   - `Router` - Vanilla OpenWRT
   - `Mini PCs` - Debian
   - `Raspberry Pi` - Raspberry Pi OS
-  - `Home Server` - Proxmox. TrueNAS and Debian are then installed into separate VMs.
+  - `Home Server` - Proxmox. Debian is then installed into two separate VMs.
 - Enable SSH and a separate user account in the OS install
 - Upload SSH keys
 - Assign static IPs
