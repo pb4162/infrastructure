@@ -13,7 +13,7 @@ This repository contains everything used to manage my infrastructure, including 
 - **Mini PC** (x3) - Main kubernetes nodes
 - **Router** (x1) - Primary router/firewall
 - **Home Server** (x1) - Primary NAS for bulk storage and miscellaneous workloads
-- **Raspberry Pi** (x1) - Runs Semaphore UI (to manage ansible playbooks), Technitium (for DNS) and miscellaneous workloads
+- **Raspberry Pi** (x2) - Both Pis run Technitium in a cluster for DNS while one Pi runs CI/CD tools like Semaphore UI
 
 # External Dependencies
 
