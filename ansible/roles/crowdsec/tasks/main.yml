@@ -78,3 +78,12 @@
   loop_control:
     label: "{{ item.key }}"
   notify: "Restart crowdsec ({{ ansible_distribution | lower }})"
+
+- name: Install custom files
+  ansible.builtin.copy:
+    content: "{{ item.content | to_nice_yaml }}"
+    dest: "{{ ('/etc/crowdsec', item.path) | path_join }}"
+  loop: "{{ crowdsec_custom_files }}"
+  loop_control:
+    label: "{{ item.path }}"
+  notify: "Restart crowdsec ({{ ansible_distribution | lower }})"

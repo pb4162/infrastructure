@@ -27,3 +27,7 @@ argument_specs:
         type: dict
         required: false
         default: {}
+      crowdsec_custom_files:
+        type: list
+        required: false
+        default: []
