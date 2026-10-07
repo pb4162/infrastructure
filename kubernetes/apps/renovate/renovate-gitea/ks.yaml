@@ -1,8 +1,0 @@
-apiVersion: kustomize.toolkit.fluxcd.io/v1
-kind: Kustomization
-metadata:
-  name: renovate-gitea
-  namespace: renovate
-spec:
-  path: ./kubernetes/apps/renovate/renovate-gitea
-  targetNamespace: renovate

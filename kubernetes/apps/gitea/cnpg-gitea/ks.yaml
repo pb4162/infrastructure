@@ -1,8 +1,0 @@
-apiVersion: kustomize.toolkit.fluxcd.io/v1
-kind: Kustomization
-metadata:
-  name: cnpg-gitea
-  namespace: gitea
-spec:
-  path: ./kubernetes/apps/gitea/cnpg-gitea
-  targetNamespace: gitea

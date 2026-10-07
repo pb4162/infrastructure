@@ -1,8 +1,0 @@
-apiVersion: kustomize.toolkit.fluxcd.io/v1
-kind: Kustomization
-metadata:
-  name: longhorn
-  namespace: longhorn-system
-spec:
-  path: ./kubernetes/apps/longhorn-system/longhorn
-  targetNamespace: longhorn-system

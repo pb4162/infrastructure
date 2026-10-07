@@ -1,8 +1,0 @@
-apiVersion: kustomize.toolkit.fluxcd.io/v1
-kind: Kustomization
-metadata:
-  name: garage
-  namespace: garage
-spec:
-  path: ./kubernetes/apps/garage/garage
-  targetNamespace: garage

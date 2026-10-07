@@ -1,8 +1,0 @@
-apiVersion: kustomize.toolkit.fluxcd.io/v1
-kind: Kustomization
-metadata:
-  name: alert-rules
-  namespace: monitoring
-spec:
-  path: ./kubernetes/apps/monitoring/alert-rules
-  targetNamespace: monitoring

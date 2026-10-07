@@ -1,8 +1,0 @@
-apiVersion: kustomize.toolkit.fluxcd.io/v1
-kind: Kustomization
-metadata:
-  name: cnpg-nextcloud
-  namespace: nextcloud
-spec:
-  path: ./kubernetes/apps/nextcloud/cnpg-nextcloud
-  targetNamespace: nextcloud

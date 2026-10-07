@@ -1,8 +1,0 @@
-apiVersion: kustomize.toolkit.fluxcd.io/v1
-kind: Kustomization
-metadata:
-  name: cnpg-linkwarden
-  namespace: linkwarden
-spec:
-  path: ./kubernetes/apps/linkwarden/cnpg-linkwarden
-  targetNamespace: linkwarden
