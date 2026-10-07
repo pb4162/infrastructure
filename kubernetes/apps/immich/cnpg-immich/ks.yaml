@@ -1,0 +1,8 @@
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: cnpg-immich
+  namespace: immich
+spec:
+  path: ./kubernetes/apps/immich/cnpg-immich
+  targetNamespace: immich

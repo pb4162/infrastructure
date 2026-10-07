@@ -1,0 +1,8 @@
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: traefik-tailscale-proxy
+  namespace: traefik
+spec:
+  path: ./kubernetes/apps/traefik/traefik-tailscale-proxy
+  targetNamespace: traefik

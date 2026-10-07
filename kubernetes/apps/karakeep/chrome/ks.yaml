@@ -1,0 +1,8 @@
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: chrome
+  namespace: karakeep
+spec:
+  path: ./kubernetes/apps/karakeep/chrome
+  targetNamespace: karakeep

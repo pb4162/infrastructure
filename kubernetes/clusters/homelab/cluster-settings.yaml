@@ -1,0 +1,20 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: cluster-settings
+  namespace: flux-system
+data:
+  LOCAL_ROOT_DOMAIN: "cluster.internal"
+  ROOT_DOMAIN: "pb4162.dev"
+  JELLYFIN_MEDIA_VOLUME_SIZE: "1536Gi"
+  NEXTCLOUD_STORAGE_VOLUME_SIZE: "1024Gi"
+  ABS_MEDIA_VOLUME_SIZE: "100Gi"
+  # renovate: datasource=docker depName=ghcr.io/tensorchord/cloudnative-vectorchord versioning=loose
+  CNPG_IMMICH_CONTAINER_VERSION: "16.14"
+  TRAEFIK_IP: 10.16.64.10
+  PIHOLE_IP: 10.16.64.11
+  NEXTCLOUD_TALK_HPB_IP: 10.16.64.14
+  PROXY_VPS_TAILSCALE_IP: 100.64.0.5
+  TAILSCALE_SUBNET: 100.64.0.0/16
+  NAS_URL: nas.pb4162.dev
+  PROXMOX_IP: 10.16.64.7

@@ -1,0 +1,8 @@
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: authentik
+  namespace: authentik
+spec:
+  path: ./kubernetes/apps/authentik/authentik
+  targetNamespace: authentik
