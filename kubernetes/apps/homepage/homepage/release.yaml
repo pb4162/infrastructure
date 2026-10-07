@@ -15,12 +15,12 @@ spec:
       interval: 5m
   releaseName: homepage
   values:
+    defaultPodOptions:
+      automountServiceAccountToken: true
     controllers:
       main:
         enabled: true
         replicas: 2
-        serviceAccount:
-          name: homepage
         annotations:
          reloader.stakater.com/auto: "true"
          reloader.stakater.com/rollout-strategy: "restart"
@@ -84,9 +84,6 @@ spec:
             path: /app/config/bookmarks.yaml
           - subPath: services.yaml
             path: /app/config/services.yaml
-    serviceAccount:
-      homepage:
-        enabled: true
     rbac:
       bindings:
         homepage:
