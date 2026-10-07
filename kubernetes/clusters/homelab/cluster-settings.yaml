@@ -3,6 +3,9 @@ kind: ConfigMap
 metadata:
   name: cluster-settings
   namespace: flux-system
+  annotations:
+    reflector.v1.k8s.emberstack.com/reflection-allowed: "true"
+    reflector.v1.k8s.emberstack.com/reflection-auto-enabled: "true"
 data:
   LOCAL_ROOT_DOMAIN: "cluster.internal"
   ROOT_DOMAIN: "pb4162.dev"
