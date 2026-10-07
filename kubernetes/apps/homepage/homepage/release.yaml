@@ -93,12 +93,9 @@ spec:
           enabled: true
           type: ClusterRoleBinding
           roleRef:
-            name: homepage
-            kind: ClusterRole
+            identifier: homepage
           subjects:
-            - kind: ServiceAccount
-              name: homepage
-              namespace: "{{ .Release.Namespace }}"
+            - identifier: homepage
       roles:
         homepage:
           enabled: true
