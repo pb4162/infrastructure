@@ -32,6 +32,40 @@ spec:
           path: /metadata/annotations
           value:
             kustomize.toolkit.fluxcd.io/prune: disabled
+    # TODO: remove these patches for top-level flux kustomizations
+    # common fields for all helm releases
+    - target:
+        kind: HelmRelease
+        group: helm.toolkit.fluxcd.io
+      patch: |
+        apiVersion: helm.toolkit.fluxcd.io/v2
+        kind: HelmRelease
+        metadata:
+          name: all
+        spec:
+          interval: 20m
+          timeout: 5m
+          driftDetection:
+            mode: enabled
+            ignore:
+            - paths: ["/spec/replicas"]
+              target:
+                kind: Deployment
+            - paths: ["/spec/replicas"]
+              target:
+                kind: StatefulSet
+
+    # common fields for all helm repositories
+    - target:
+        kind: HelmRepository
+        group: helm.toolkit.fluxcd.io
+      patch: |
+        apiVersion: helm.toolkit.fluxcd.io/v2
+        kind: HelmRepository
+        metadata:
+          name: all
+        spec:
+          interval: 20m
     # common fields for all child kustomizations
     - target:
         kind: Kustomization
