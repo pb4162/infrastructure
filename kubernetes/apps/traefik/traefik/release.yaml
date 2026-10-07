@@ -105,4 +105,4 @@ spec:
       - name: crowdsec-bouncer-secret
         mountPath: /etc/traefik/crowdsec
         type: secret
-        secretName: CROWDSEC_TRAEFIK_BOUNCER_KEY
+        secretName: bouncer-key
