@@ -4,5 +4,5 @@ metadata:
   name: navidrome
   namespace: navidrome
 spec:
-  path: ./kubernetes/apps/navidrome/navidrome
+  path: ./kubernetes/apps/navidrome/navidrome/app
   targetNamespace: navidrome
