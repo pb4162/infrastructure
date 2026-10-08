@@ -14,7 +14,7 @@ data:
   ABS_MEDIA_VOLUME_SIZE: "100Gi"
   # renovate: datasource=docker depName=ghcr.io/tensorchord/cloudnative-vectorchord versioning=loose
   CNPG_IMMICH_CONTAINER_VERSION: |
-    16.14
+    16.15
   TRAEFIK_IP: 10.16.64.10
   PIHOLE_IP: 10.16.64.11
   NEXTCLOUD_TALK_HPB_IP: 10.16.64.14
