@@ -14,6 +14,9 @@ spec:
       interval: 5m
   releaseName: meilisearch
   values:
+    image:
+      repository: getmeili/meilisearch
+      tag: v1.43.0
     environment:
       MEILI_NO_ANALYTICS: true
       MEILI_ENV: production
