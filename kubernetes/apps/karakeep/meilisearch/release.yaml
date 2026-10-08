@@ -22,3 +22,10 @@ spec:
     persistence:
       enabled: true
       size: 5Gi
+    command:
+      - tini
+      - --
+      - /bin/sh
+      - -c
+      - /bin/meilisearch
+      - --experimental-dumpless-upgrade
