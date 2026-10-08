@@ -22,7 +22,7 @@ spec:
           main:
             image:
               repository: ghcr.io/nextcloud-releases/aio-talk
-              tag: "20260825_084538"
+              tag: "20260929_105435"
             env:
               NC_DOMAIN: nextcloud.${ROOT_DOMAIN}
               TALK_PORT: 3478
