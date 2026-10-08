@@ -16,11 +16,11 @@ spec:
   values:
     image:
       repository: getmeili/meilisearch
-      tag: v1.50.0
+      tag: v1.51.0
     environment:
       MEILI_NO_ANALYTICS: true
       MEILI_ENV: production
-      MEILI_EXPERIMENTAL_DUMPLESS_UPGRADE: true
+      MEILI_UPGRADE_DB: true
     auth:
       existingMasterKeySecret: karakeep-secret
     persistence:
@@ -32,4 +32,4 @@ spec:
       - /bin/sh
       - -c
       - /bin/meilisearch
-      - --experimental-dumpless-upgrade
+      - --upgrade-db
