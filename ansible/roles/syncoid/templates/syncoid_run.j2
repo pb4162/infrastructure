@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+/usr/sbin/syncoid \
+  --recursive \
+  --no-privilege-elevation \
+  --sshkey ~/.ssh/id_rsa_zfs \
+  syncoid@{{ hostvars[syncoid_source].tailscale_ipv4_address }}:tank/data \
+  tank/backup

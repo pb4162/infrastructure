@@ -57,16 +57,34 @@
     name: "{{ syncoid_source }}"
     key: "{{ known_host_aliases | join(',') }} ssh-rsa {{ ssh_keyscan_info.stdout.split()[2] }}"
 
-- name: Create syncoid cron job
-  ansible.builtin.cron:
-    name: syncoid
-    minute: "0"
-    hour: "0"
-    user: root
-    job: >-
-      /usr/sbin/syncoid
-      --recursive
-      --no-privilege-elevation
-      --sshkey ~/.ssh/id_rsa_zfs
-      syncoid@{{ hostvars[syncoid_source].tailscale_ipv4_address }}:tank/data
-      tank/backup
+- name: Install syncoid_run script to /usr/local/bin
+  ansible.builtin.template:
+    dest: /usr/local/bin/syncoid_run
+    mode: a+x
+    owner: root
+    group: root
+    src: syncoid_run.j2
+
+- name: Install systemd service
+  ansible.builtin.template:
+    dest: /etc/systemd/system/syncoid.service
+    mode: 0660
+    owner: root
+    group: root
+    src: syncoid.service.j2
+  notify: Run systemctl daemon-reload
+
+- name: Install systemd timer
+  ansible.builtin.template:
+    dest: /etc/systemd/system/syncoid.timer
+    mode: 0660
+    owner: root
+    group: root
+    src: syncoid.timer.j2
+  notify: Run systemctl daemon-reload
+
+- name: Enable and start systemd timer
+  ansible.builtin.systemd_service:
+    name: syncoid.timer
+    state: started
+    enabled: true
