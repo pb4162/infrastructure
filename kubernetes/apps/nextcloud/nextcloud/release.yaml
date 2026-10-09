@@ -105,6 +105,7 @@ spec:
       enabled: true
     persistence:
       enabled: true
+      size: 20Gi
       nextcloudData:
         enabled: true
         existingClaim: nextcloud
