@@ -68,6 +68,8 @@ spec:
           $CONFIG = array (
           'overwrite.cli.url' => 'https://nextcloud.${ROOT_DOMAIN}',
           'overwriteprotocol' => 'https',
+          'overwritehost' => 'nextcloud.${ROOT_DOMAIN}',
+          'overwritewebroot' => '/',
           );
     internalDatabase:
       enabled: false
