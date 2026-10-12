@@ -1,0 +1,13 @@
+- when: ("k8s_first_master_node" in group_names)
+  block:
+    - name: Run community cert rotation script
+      ansible.builtin.command: /usr/local/bin/k3s-rotate-default-ca-certs.sh
+
+    - name: Do k3s CA certs rotation
+      ansible.builtin.command: k3s certificate rotate-ca --path=/var/lib/rancher/k3s/server/rotate-ca
+
+- name: Trigger restart k3s handler
+  ansible.builtin.debug:
+    msg: "Triggering restart k3s handler for node: {{ inventory_hostname }}"
+  changed_when: true
+  notify: "Restart k3s ({{ k3s_node_type }})"

@@ -6,3 +6,4 @@ k3s_master_config_private: {}
 k3s_registry_config: {}
 k3s_registry_config_private: {}
 k3s_resolv_conf: ""
+k3s_rotate_ca_certs: false

@@ -14,6 +14,13 @@
     mode: a+x
     force: "{{ k3s_update }}"
 
+- name: Download community cert rotation script
+  ansible.builtin.get_url:
+    url: https://github.com/k3s-io/k3s/raw/main/contrib/util/rotate-default-ca-certs.sh
+    dest: /usr/local/bin/k3s-rotate-default-ca-certs.sh
+    mode: a+x
+    force: "{{ k3s_update }}"
+
 - name: "Get k3s version info"
   ansible.builtin.command: kubectl version -o json
   register: k3s_version_info
@@ -34,6 +41,9 @@
       }}
 
 - ansible.builtin.import_tasks: config.yml
+
+- ansible.builtin.import_tasks: rotate_ca_certs.yml
+  when: (k3s_rotate_ca_certs is true)
 
 - ansible.builtin.import_tasks: first_master_node.yml
   when: ("k8s_first_master_node" in group_names)
