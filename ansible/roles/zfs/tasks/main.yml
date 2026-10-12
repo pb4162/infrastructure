@@ -30,3 +30,25 @@
   loop: "{{ zfs_pools | dict2items | subelements('value.datasets', skip_missing=true) }}"
   loop_control:
     label: "{{ item.0.key }}/{{ item.1.name | default(item.1) }}"
+
+- name: Configure ZED for ntfy notifications
+  ansible.builtin.replace:
+    dest: "/etc/zfs/zed.d/zed.rc"
+    regexp: '^#?({{ item.option }})=".*"$'
+    replace: '\1={{ item.value | quote }}'
+  loop:
+    - option: ZED_NTFY_TOPIC
+      value: "{{ zfs_ntfy_topic }}"
+    - option: ZED_NTFY_ACCESS_TOKEN
+      value: "{{ zfs_ntfy_token }}"
+    - option: ZED_NTFY_URL
+      value: "{{ zfs_ntfy_url }}"
+    - option: ZED_NOTIFY_VERBOSE
+      value: "1"
+  notify: Restart ZED
+
+- name: Start and enable ZED
+  ansible.builtin.systemd_service:
+    name: zed.service
+    state: started
+    enabled: true

@@ -1,0 +1,4 @@
+- name: Restart ZED
+  ansible.builtin.systemd_service:
+    name: zed.service
+    state: restarted

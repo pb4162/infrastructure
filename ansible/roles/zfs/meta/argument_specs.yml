@@ -4,3 +4,12 @@ argument_specs:
       zfs_pools:
         type: dict
         required: true
+      zfs_ntfy_topic:
+        type: str
+        required: true
+      zfs_ntfy_token:
+        type: str
+        required: true
+      zfs_ntfy_url:
+        type: str
+        required: true
