@@ -21,6 +21,15 @@ spec:
       profiles:
         - name: default
           pluginConfig:
+            - name: DefaultEvictor
+              args:
+                podProtections:
+                  defaultDisabled:
+                    - PodsWithLocalStorage
+                    - DaemonSetPods
+                    - PodsWithPVC
+                    - FailedBarePods
+                    - PodsWithoutPDB
             - name: RemoveDuplicates
             - name: RemovePodsViolatingInterPodAntiAffinity
             - name: RemovePodsViolatingNodeAffinity
