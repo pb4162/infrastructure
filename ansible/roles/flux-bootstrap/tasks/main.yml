@@ -27,12 +27,12 @@
     KUBECONFIG=/root/.kube/config
     {{ flux_repo_provider | upper }}_TOKEN={{ flux_token }}
     flux bootstrap {{ flux_repo_provider }}
-      --token-auth
-      --owner={{ flux_repo_username }}
-      --repository={{ flux_repo_name }}
-      --branch={{ flux_repo_branch }}
-      --path={{ flux_repo_path }}
-      --personal
-      --hostname={{ flux_repo_hostname }}
+    --token-auth
+    --owner={{ flux_repo_username }}
+    --repository={{ flux_repo_name }}
+    --branch={{ flux_repo_branch }}
+    --path={{ flux_repo_path }}
+    --personal
+    --hostname={{ flux_repo_hostname }}
   when: (("check failed" in flux_check.stdout) or flux_update)
 
