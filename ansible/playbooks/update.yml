@@ -45,6 +45,17 @@
         k3s_update: true
 
 
+- name: Rotate k3s CA certs
+  hosts: k8s_cluster
+  become: true
+  tags: [k3s-ca, never]
+
+  roles:
+    - role: k3s
+      vars:
+        k3s_rotate_ca_certs: true
+
+
 - name: Update flux
   hosts: k8s_first_master_node
   become: true
