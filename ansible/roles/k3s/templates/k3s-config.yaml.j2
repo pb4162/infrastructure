@@ -1,9 +1,11 @@
 {% if 'k8s_first_master_node' in group_names %}
-cluster-init: true
+{% set k3s_base_config = k3s_base_config | combine({"cluster-init": true}) %}
 {% endif %}
-
+{% set k3s_base_config = k3s_base_config | combine(k3s_base_config_private, recursive=true) %}
+{% if k3s_resolv_conf %}
+{% set k3s_base_config = k3s_base_config | combine({"resolv-conf": k3s_resolv_conf_path}) %}
+{% endif %}
 {% if k3s_node_type == "master" %}
-{{ k3s_base_config | combine(k3s_base_config_private, k3s_master_config, k3s_master_config_private, recursive=true) | to_nice_yaml }}
-{% elif k3s_node_type == "worker" %}
-{{ k3s_base_config | combine(k3s_base_config_private, recursive=true) | to_nice_yaml }}
+{% set k3s_base_config = k3s_base_config | combine(k3s_master_config, k3s_master_config_private, recursive=true) %}
 {% endif %}
+{{ k3s_base_config | to_nice_yaml }}

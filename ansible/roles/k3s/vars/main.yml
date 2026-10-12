@@ -1,0 +1,1 @@
+k3s_resolv_conf_path: /etc/rancher/k3s/resolv.conf

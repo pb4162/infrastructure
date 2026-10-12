@@ -19,3 +19,12 @@
     mode: 0640
   notify:
     - "Restart k3s ({{ k3s_node_type }})"
+
+- name: "Install resolv.conf"
+  ansible.builtin.template:
+    src: k3s-resolv.conf.j2
+    dest: "{{ k3s_resolv_conf_path }}"
+    mode: 0640
+  when: k3s_resolv_conf
+  notify:
+    - "Restart k3s ({{ k3s_node_type }})"

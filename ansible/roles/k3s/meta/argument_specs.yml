@@ -32,3 +32,7 @@ argument_specs:
         type: "bool"
         required: false
         default: false
+      k3s_resolv_conf:
+        type: str
+        required: false
+        default: ""
