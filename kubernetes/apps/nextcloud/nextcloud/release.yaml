@@ -34,6 +34,23 @@ spec:
         runAsUser: 33
         runAsGroup: 33
         runAsNonRoot: true
+      # https://github.com/bjw-s-labs/home-ops/blob/d101bff46996f0eb0524f4e7d19906168f5693da/kubernetes/apps/selfhosted/nextcloud/app/helmrelease.yaml#L52
+      extraInitContainers:
+        - name: init-redis-session-ini
+          image: docker.io/library/alpine:3.24
+          command:
+            - /bin/sh
+            - -c
+            - touch /php-confd/redis-session.ini
+          securityContext:
+            runAsUser: 33
+            runAsGroup: 33
+          volumeMounts:
+            - name: php-confd
+              mountPath: /php-confd
+      extraVolumes:
+        - name: php-confd
+          emptyDir: {}
       extraEnv:
         - name: APACHE_BODY_LIMIT
           value: "0"
