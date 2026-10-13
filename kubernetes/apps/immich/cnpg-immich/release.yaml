@@ -34,7 +34,7 @@ spec:
         secret:
           name: cnpg-immich-password
       storage:
-        size: 5Gi
+        size: 15Gi
       walStorage:
         enabled: true
         size: 40Gi
