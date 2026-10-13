@@ -1,0 +1,8 @@
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: shared-repos
+  namespace: flux-system
+spec:
+  path: ./kubernetes/apps/flux-system/shared-repos/app
+  targetNamespace: flux-system

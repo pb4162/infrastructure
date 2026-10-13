@@ -28,6 +28,8 @@ spec:
     metrics:
       addInternals: true
       prometheus:
+        # TODO: hack needed to install CRDs OOB with ansible
+        disableAPICheck: true
         serviceMonitor:
           enabled: true
           additionalLabels:
