@@ -17,6 +17,7 @@ spec:
     - file_mode=0770
     - uid=33
     - gid=33
+    - nosharesock
   csi:
     driver: smb.csi.k8s.io
     volumeHandle: "//${NAS_URL}/nextcloud##"

@@ -15,6 +15,7 @@ spec:
   mountOptions:
     - dir_mode=0770
     - file_mode=0770
+    - nosharesock
   csi:
     driver: smb.csi.k8s.io
     volumeHandle: "//${NAS_URL}/nextcloud##"
