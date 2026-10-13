@@ -30,10 +30,6 @@ spec:
     nextcloud:
       podSecurityContext:
         fsGroupChangePolicy: OnRootMismatch
-        fsGroup: 33
-        runAsUser: 33
-        runAsGroup: 33
-        runAsNonRoot: true
       extraEnv:
         - name: APACHE_BODY_LIMIT
           value: "0"
