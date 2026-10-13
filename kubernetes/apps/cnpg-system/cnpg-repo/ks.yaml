@@ -1,0 +1,8 @@
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: cnpg-repo
+  namespace: cnpg-system
+spec:
+  path: ./kubernetes/apps/cnpg-system/cnpg-repo/app
+  targetNamespace: cnpg-system
