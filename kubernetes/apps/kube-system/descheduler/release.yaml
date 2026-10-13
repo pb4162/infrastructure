@@ -29,7 +29,6 @@ spec:
                     - DaemonSetPods
                     - PodsWithPVC
                     - FailedBarePods
-                    - PodsWithoutPDB
             - name: RemoveDuplicates
             - name: RemovePodsViolatingInterPodAntiAffinity
             - name: RemovePodsViolatingNodeAffinity
