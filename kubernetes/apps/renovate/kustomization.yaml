@@ -4,4 +4,4 @@ namespace: renovate
 resources:
   - ./namespace.yaml
   - ./renovate/ks.yaml
-- ./renovate-gitea/ks.yaml
+  - ./renovate-gitea/ks.yaml

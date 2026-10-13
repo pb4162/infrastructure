@@ -4,4 +4,4 @@ namespace: cnpg-system
 resources:
   - ./namespace.yaml
   - ./plugin-barman-cloud/ks.yaml
-- ./cnpg/ks.yaml
+  - ./cnpg/ks.yaml

@@ -4,4 +4,4 @@ namespace: immich
 resources:
   - ./namespace.yaml
   - ./cnpg-immich/ks.yaml
-- ./immich/ks.yaml
+  - ./immich/ks.yaml

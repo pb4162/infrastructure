@@ -4,4 +4,4 @@ namespace: linkwarden
 resources:
   - ./namespace.yaml
   - ./linkwarden/ks.yaml
-- ./cnpg-linkwarden/ks.yaml
+  - ./cnpg-linkwarden/ks.yaml

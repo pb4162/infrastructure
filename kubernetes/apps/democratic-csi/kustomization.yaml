@@ -3,4 +3,3 @@ kind: Kustomization
 namespace: democratic-csi
 resources:
   - ./namespace.yaml
-  

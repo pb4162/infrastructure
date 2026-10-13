@@ -4,4 +4,4 @@ namespace: traefik
 resources:
   - ./namespace.yaml
   - ./traefik-tailscale-proxy/ks.yaml
-- ./traefik/ks.yaml
+  - ./traefik/ks.yaml

@@ -4,5 +4,5 @@ namespace: flux-system
 resources:
   - ./namespace.yaml
   - ./ww-gitops/ks.yaml
-- ./shared-repos/ks.yaml
-- ./flux-manifests/ks.yaml
+  - ./shared-repos/ks.yaml
+  - ./flux-manifests/ks.yaml

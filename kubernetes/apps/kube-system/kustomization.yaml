@@ -4,12 +4,12 @@ namespace: kube-system
 resources:
   - ./namespace.yaml
   - ./intel-device-plugin-operator/ks.yaml
-- ./intel-gpu-device-plugin/ks.yaml
-- ./csi-driver-smb/ks.yaml
-- ./snapshot-controller/ks.yaml
-- ./descheduler/ks.yaml
-- ./headlamp/ks.yaml
-- ./kube-vip/ks.yaml
-- ./reflector/ks.yaml
-- ./reloader/ks.yaml
-- ./intel-repo/ks.yaml
+  - ./intel-gpu-device-plugin/ks.yaml
+  - ./csi-driver-smb/ks.yaml
+  - ./snapshot-controller/ks.yaml
+  - ./descheduler/ks.yaml
+  - ./headlamp/ks.yaml
+  - ./kube-vip/ks.yaml
+  - ./reflector/ks.yaml
+  - ./reloader/ks.yaml
+  - ./intel-repo/ks.yaml

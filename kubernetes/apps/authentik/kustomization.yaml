@@ -4,4 +4,4 @@ namespace: authentik
 resources:
   - ./namespace.yaml
   - ./authentik/ks.yaml
-- ./cnpg-authentik/ks.yaml
+  - ./cnpg-authentik/ks.yaml

@@ -4,5 +4,5 @@ namespace: karakeep
 resources:
   - ./namespace.yaml
   - ./chrome/ks.yaml
-- ./meilisearch/ks.yaml
-- ./karakeep/ks.yaml
+  - ./meilisearch/ks.yaml
+  - ./karakeep/ks.yaml

@@ -4,5 +4,5 @@ namespace: gitea
 resources:
   - ./namespace.yaml
   - ./gitea/ks.yaml
-- ./cnpg-gitea/ks.yaml
-- ./gitea-actions/ks.yaml
+  - ./cnpg-gitea/ks.yaml
+  - ./gitea-actions/ks.yaml

@@ -4,6 +4,6 @@ namespace: nextcloud
 resources:
   - ./namespace.yaml
   - ./nextcloud/ks.yaml
-- ./cnpg-nextcloud/ks.yaml
-- ./nextcloud-talk-hpb/ks.yaml
-- ./nextcloud-talk-recording/ks.yaml
+  - ./cnpg-nextcloud/ks.yaml
+  - ./nextcloud-talk-hpb/ks.yaml
+  - ./nextcloud-talk-recording/ks.yaml

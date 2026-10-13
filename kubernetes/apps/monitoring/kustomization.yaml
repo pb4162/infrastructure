@@ -4,11 +4,11 @@ namespace: monitoring
 resources:
   - ./namespace.yaml
   - ./blackbox-exporter/ks.yaml
-- ./kube-prometheus-stack/ks.yaml
-- ./loki/ks.yaml
-- ./speedtest-exporter/ks.yaml
-- ./alert-rules/ks.yaml
-- ./alloy/ks.yaml
-- ./pve-exporter/ks.yaml
-- ./smartctl-exporter/ks.yaml
-- ./grafana-repos/ks.yaml
+  - ./kube-prometheus-stack/ks.yaml
+  - ./loki/ks.yaml
+  - ./speedtest-exporter/ks.yaml
+  - ./alert-rules/ks.yaml
+  - ./alloy/ks.yaml
+  - ./pve-exporter/ks.yaml
+  - ./smartctl-exporter/ks.yaml
+  - ./grafana-repos/ks.yaml
