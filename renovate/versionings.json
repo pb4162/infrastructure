@@ -6,7 +6,7 @@
       "maxMajorIncrement": 0
     },
     {
-      "matchDepNames": ["/^pbcr\\.local\\//"],
+      "matchDepNames": ["/^registry\\.pb4162\\.dev\\//"],
       "versioning": "regex:^v?(?<major>\\d+)\\.(?<minor>\\d+)\\.(?<patch>\\d+)(-(?<compatibility>.+))?-pb(?<build>\\d+)$"
     }
   ]
