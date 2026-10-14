@@ -5,4 +5,4 @@ metadata:
   namespace: democratic-csi
 spec:
   path: ./kubernetes/apps/democratic-csi/democratic-csi-repo/app
-  targetNamespace: cnpg-system
+  targetNamespace: democratic-csi
