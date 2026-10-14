@@ -27,7 +27,6 @@ spec:
                   defaultDisabled:
                     - PodsWithLocalStorage
                     - DaemonSetPods
-                    - PodsWithPVC
                     - FailedBarePods
             - name: RemoveDuplicates
             - name: RemovePodsViolatingInterPodAntiAffinity
