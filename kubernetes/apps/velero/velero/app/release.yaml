@@ -77,6 +77,7 @@ spec:
             - persistentVolumeClaim
             - certificates.cert-manager.io
           snapshotVolumes: true
+          snapshotMoveData: true
           storageLocation: local
           volumeSnapshotLocations:
             - local
