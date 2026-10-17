@@ -20,7 +20,7 @@ spec:
     image:
       registry: registry.pb4162.dev
       repository: pb/traefik
-      tag: v3.7.13-pb3
+      tag: v3.7.14-pb4
     api:
       disableDashboardAd: true
     deployment:
