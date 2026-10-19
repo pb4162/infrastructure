@@ -7,6 +7,13 @@ data:
   policy.json: |
     {
       "loadConcurrency": {
-        "globalConfig": 1
+        "globalConfig": 1,
+        "prepareQueueLength": 10
+      },
+      "backupPVC": {
+        "longhorn": {
+          "storageClass": "longhorn-backup",
+          "readOnly": true
+        }
       }
     }
