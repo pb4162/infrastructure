@@ -12,8 +12,7 @@ data:
       },
       "backupPVC": {
         "longhorn": {
-          "storageClass": "longhorn-backup",
-          "readOnly": true
+          "storageClass": "longhorn-backup"
         }
       }
     }
