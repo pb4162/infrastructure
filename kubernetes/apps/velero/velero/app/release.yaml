@@ -58,6 +58,7 @@ spec:
           provider: aws
     nodeAgent:
       extraArgs:
+        - "--data-mover-prepare-timeout=60m"
         - "--node-agent-configmap=node-agent-config"
     schedules:
       backup-daily: &backup-daily
