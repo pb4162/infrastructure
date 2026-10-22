@@ -20,7 +20,7 @@ steps:
       - git clone https://github.com/pb4162/infrastructure.git script_home
 
   - name: Run ansible_cd python script
-    image: python:3.15.0
+    image: python:3.15.1
     environment:
       SEMAPHOREUI_KEY:
         from_secret: semaphoreui_key
