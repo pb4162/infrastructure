@@ -59,6 +59,7 @@
     label: "{{ item.name }}"
   when: container_tool == "podman"
   register: podman_results
+  notify: "Restart app containers ({{ container_tool }})"
 
 - name: Run systemctl daemon-reload (user)
   become: false
