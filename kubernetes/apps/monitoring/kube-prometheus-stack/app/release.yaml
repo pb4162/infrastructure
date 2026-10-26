@@ -76,7 +76,7 @@ spec:
       ingress:
         enabled: true
         annotations:
-          traefik.ingress.kubernetes.io/router.middlewares: monitoring-prometheus-middleware-basic-auth@kubernetescrd
+          traefik.ingress.kubernetes.io/router.middlewares: monitoring-prometheus-basic-auth@kubernetescrd
           blackbox-exporter.pb4162.dev/auth: "true"
         hosts:
           - prometheus.${LOCAL_ROOT_DOMAIN}
