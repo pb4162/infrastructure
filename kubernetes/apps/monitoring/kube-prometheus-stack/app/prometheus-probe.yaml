@@ -12,14 +12,13 @@ spec:
   targets:
     ingress:
       labels:
-        matchLabels:
-          app: kube-prometheus-stack-prometheus
+        selector:
+          matchLabels:
+            app: kube-prometheus-stack-prometheus
   basicAuth:
     username:
-      secretKeyRef:
-        name: prometheus-basic-auth-secret
-        key: username
+      name: prometheus-basic-auth-secret
+      key: username
     password:
-      secretKeyRef:
-        name: prometheus-basic-auth-secret
-        key: password
+      name: prometheus-basic-auth-secret
+      key: password
