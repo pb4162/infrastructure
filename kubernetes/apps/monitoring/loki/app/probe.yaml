@@ -1,0 +1,23 @@
+apiVersion: monitoring.coreos.com/v1
+kind: Probe
+metadata:
+  name: loki-probe
+  namespace: monitoring
+  labels:
+    release: kube-prometheus-stack
+spec:
+  module: http_2xx
+  prober:
+    url: prometheus-blackbox-exporter.monitoring.svc.cluster.local:9115
+  targets:
+    ingress:
+      selector:
+        matchLabels:
+          app.kubernetes.io/name: loki
+  basicAuth:
+    username:
+      name: loki-probe-basic-auth
+      key: username
+    password:
+      name: loki-probe-basic-auth
+      key: password
