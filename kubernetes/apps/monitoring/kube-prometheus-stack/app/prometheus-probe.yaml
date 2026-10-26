@@ -16,8 +16,8 @@ spec:
           app: kube-prometheus-stack-prometheus
   basicAuth:
     username:
-      name: prometheus-basic-auth-secret
+      name: prometheus-probe-basic-auth
       key: username
     password:
-      name: prometheus-basic-auth-secret
+      name: prometheus-probe-basic-auth
       key: password
