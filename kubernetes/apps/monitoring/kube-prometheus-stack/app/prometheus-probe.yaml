@@ -11,10 +11,9 @@ spec:
     url: prometheus-blackbox-exporter.monitoring.svc.cluster.local:9115
   targets:
     ingress:
-      labels:
-        selector:
-          matchLabels:
-            app: kube-prometheus-stack-prometheus
+      selector:
+        matchLabels:
+          app: kube-prometheus-stack-prometheus
   basicAuth:
     username:
       name: prometheus-basic-auth-secret
