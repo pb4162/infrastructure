@@ -17,6 +17,13 @@ spec:
     - kind: Secret
       name: loki-values
   values:
+    ingress:
+      enabled: true
+      annotations:
+        # TODO: basic auth
+      hosts:
+        - loki.${LOCAL_ROOT_DOMAIN}
+        - loki.${ROOT_DOMAIN}
     deploymentMode: Monolithic
     monitoring:
       rules:
