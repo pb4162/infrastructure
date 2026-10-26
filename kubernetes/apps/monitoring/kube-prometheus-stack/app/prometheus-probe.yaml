@@ -1,0 +1,25 @@
+apiVersion: monitoring.coreos.com/v1
+kind: Probe
+metadata:
+  name: prometheus-probe
+  namespace: monitoring
+  labels:
+    release: kube-prometheus-stack
+spec:
+  module: http_2xx
+  prober:
+    url: prometheus-blackbox-exporter.monitoring.svc.cluster.local:9115
+  targets:
+    ingress:
+      labels:
+        matchLabels:
+          app: kube-prometheus-stack-prometheus
+  basicAuth:
+    username:
+      secretKeyRef:
+        name: prometheus-basic-auth-secret
+        key: username
+    password:
+      secretKeyRef:
+        name: prometheus-basic-auth-secret
+        key: password
