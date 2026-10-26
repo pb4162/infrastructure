@@ -112,9 +112,10 @@ spec:
               - source_labels: [__address__]
                 regex: flux-webhook.${ROOT_DOMAIN}
                 action: drop
+              # Drop all ingresses that have basic auth configured, probes will be defined manually
               - source_labels: [__meta_kubernetes_ingress_annotation_blackbox_exporter_pb4162_dev_auth]
                 regex: "true"
-                target_label: __param_module
+                action: drop
                 replacement: http_2xx_auth
               - source_labels: [__address__]
                 regex: (https?://.+)
