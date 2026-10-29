@@ -24,20 +24,6 @@
   loop: "{{ nginx_additional_modules }}"
   when: (ansible_distribution | lower) == "openbsd"
 
-- name: "Enable and start nginx service on OpenBSD"
-  ansible.builtin.service:
-    name: nginx
-    enabled: true
-    state: started
-  when: (ansible_distribution | lower) == "openbsd"
-
-- name: "Enable and start nginx service on Debian"
-  ansible.builtin.systemd_service:
-    name: nginx.service
-    enabled: true
-    state: started
-  when: (ansible_distribution | lower) == "debian"
-
 - name: "Install nginx config file"
   ansible.builtin.template:
     backup: true
@@ -95,3 +81,16 @@
   notify: "Restart nginx ({{ ansible_distribution | lower }})"
   when: ("stream" in nginx_additional_modules)
 
+- name: "Enable and start nginx service on OpenBSD"
+  ansible.builtin.service:
+    name: nginx
+    enabled: true
+    state: started
+  when: (ansible_distribution | lower) == "openbsd"
+
+- name: "Enable and start nginx service on Debian"
+  ansible.builtin.systemd_service:
+    name: nginx.service
+    enabled: true
+    state: started
+  when: (ansible_distribution | lower) == "debian"
