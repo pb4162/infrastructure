@@ -46,7 +46,7 @@
 
 - name: "Remove /etc/nginx/sites-enabled/default if present"
   ansible.builtin.file:
-    path: /etc/nginx/sites-available/default
+    path: /etc/nginx/sites-enabled/default
     state: absent
 
 - name: "Create /etc/nginx/conf.d directory"
