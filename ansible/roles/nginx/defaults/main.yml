@@ -1,7 +1,7 @@
 nginx_additional_modules: []
 nginx_stream_configs: {}
 nginx_proxy_params_config: |
-  proxy_set_header Host $http_host;
+  proxy_set_header Host $host$is_request_port$request_port;
   proxy_set_header X-Real-IP $remote_addr;
   proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
   proxy_set_header X-Forwarded-Proto $scheme;
