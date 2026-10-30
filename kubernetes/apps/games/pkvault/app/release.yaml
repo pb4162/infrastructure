@@ -25,9 +25,9 @@ spec:
               tag: 2.5.0
             env:
               BACKUP_FILE_COUNT_LIMIT: 30
-        resources:
-          limits:
-            memory: 512Mi
+            resources:
+              limits:
+                memory: 512Mi
     service:
       main:
         enabled: true
