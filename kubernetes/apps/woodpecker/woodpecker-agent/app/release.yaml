@@ -1,0 +1,26 @@
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: woodpecker-agent
+  namespace: woodpecker
+spec:
+  chart:
+    spec:
+      chart: woodpecker
+      version: 3.7.6
+      sourceRef:
+        kind: HelmRepository
+        name: woodpecker
+      interval: 5m
+  releaseName: woodpecker-agent
+  values:
+    server:
+      enabled: false
+    agent:
+      enabled: true
+      replicaCount: 2
+      env:
+        WOODPECKER_SERVER: "ci-grpc.${ROOT_DOMAIN}:443"
+      extraSecretNamesForEnvFrom:
+        - woodpecker-agent-secret
+
