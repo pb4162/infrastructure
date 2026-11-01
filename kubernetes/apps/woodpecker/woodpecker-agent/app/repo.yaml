@@ -4,4 +4,5 @@ metadata:
   name: woodpecker
   namespace: woodpecker
 spec:
+  type: oci
   url: oci://ghcr.io/woodpecker-ci/helm/woodpecker
