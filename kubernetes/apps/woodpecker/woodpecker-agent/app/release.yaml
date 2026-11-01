@@ -21,6 +21,7 @@ spec:
       replicaCount: 2
       env:
         WOODPECKER_SERVER: "ci-grpc.${ROOT_DOMAIN}:443"
+        WOODPECKER_GRPC_SECURE: "true"
       createAgentSecret: false
       mapAgentSecret: false
       extraSecretNamesForEnvFrom:
