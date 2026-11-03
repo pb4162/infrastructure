@@ -83,7 +83,12 @@
 - name: "Install acquisitions"
   ansible.builtin.copy:
     backup: true
-    content: "{{ item.value | to_nice_yaml }}"
+    content: |
+      {% if item.value is mapping %}
+      {{ item.value | to_nice_yaml }}
+      {% else %}
+      {{ item.value }}
+      {% endif %}
     dest: "/etc/crowdsec/acquis.d/{{ item.key }}.yaml"
   loop: "{{ crowdsec_acquisitions | dict2items }}"
   loop_control:
