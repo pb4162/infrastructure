@@ -1,0 +1,47 @@
+# TODO: find better way to manage versioning for main packwiz binary
+
+- name: "Create download directories"
+  ansible.builtin.file:
+    path: "~/{{ item }}"
+    state: directory
+  loop:
+    - "packwiz-downloads"
+    - "packwiz-downloads/{{ packwiz_gh_actions_run }}"
+    - "packwiz-downloads/{{ packwiz_gh_actions_run }}/extracted"
+    - "packwiz-installer-downloads"
+    - "packwiz-installer-downloads/{{ packwiz_installer_version }}"
+    - "packwiz-installer-bootstrap-downloads"
+    - "packwiz-installer-bootstrap-downloads/{{ packwiz_installer_bootstrap_version }}"
+
+- name: "Download packwiz archive from nightly.link"
+  ansible.builtin.get_url:
+    dest: "~/packwiz-downloads/{{ packwiz_gh_actions_run }}"
+    url: "https://nightly.link/packwiz/packwiz/actions/runs/{{ packwiz_gh_actions_run }}/Linux%2064-bit%20x86.zip"
+
+- name: "Unzip packwiz archive"
+  ansible.builtin.unarchive:
+    src: "~/packwiz-downloads/{{ packwiz_gh_actions_run }}/Linux 64-bit x86.zip"
+    dest: "~/packwiz-downloads/{{ packwiz_gh_actions_run }}/extracted"
+    remote_src: yes
+
+- name: "Copy packwiz binary to /usr/local/bin"
+  ansible.builtin.copy:
+    src: "~/packwiz-downloads/{{ packwiz_gh_actions_run }}/extracted/packwiz"
+    dest: /usr/local/bin
+    mode: a+x
+    remote_src: yes
+
+- name: "Download packwiz-installer from github releases"
+  ansible.builtin.get_url:
+    dest: "~/packwiz-installer-downloads/{{ packwiz_installer_version }}"
+    url: "https://github.com/packwiz/packwiz-installer/releases/download/{{ packwiz_installer_version }}/packwiz-installer.jar"
+
+- name: "Download packwiz-installer-bootstrap from github releases"
+  ansible.builtin.get_url:
+    dest: "~/packwiz-installer-bootstrap-downloads/{{ packwiz_installer_bootstrap_version }}"
+    url: "https://github.com/packwiz/packwiz-installer-bootstrap/releases/download/{{ packwiz_installer_bootstrap_version }}/packwiz-installer-bootstrap.jar"
+
+- name: "Create packwiz home directory"
+  ansible.builtin.file:
+    path: "{{ packwiz_home }}"
+    state: directory

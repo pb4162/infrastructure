@@ -1,0 +1,15 @@
+argument_specs:
+  main:
+    options:
+      packwiz_home:
+        type: str
+        required: true
+      packwiz_gh_actions_run:
+        type: str
+        required: true
+      packwiz_installer_version:
+        type: str
+        required: true
+      packwiz_installer_bootstrap_version:
+        type: str
+        required: true
