@@ -18,5 +18,10 @@
     name: crowdsec-firewall-bouncer.service
     state: restarted
 
+- name: Restart nginx (debian)
+  ansible.builtin.systemd_service:
+    name: nginx.service
+    state: restarted
+
 - name: Do crowdsec hub update
-  ansible.builtin.import_tasks: hub_update.yml
+  ansible.builtin.include_tasks: hub_update.yml
