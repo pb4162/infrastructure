@@ -1,0 +1,126 @@
+traefik_chown_user: "{{ getent_passwd[ansible_user][1] }}"
+traefik_chown_group: "{{ getent_passwd[ansible_user][2] }}"
+
+app_name: mc-proxy
+app_directories:
+  - nginx
+  - path: traefik
+    owner: "{{ traefik_chown_user }}"
+    group: "{{ traefik_chown_group }}"
+  - path: traefik/certs
+    owner: "{{ traefik_chown_user }}"
+    group: "{{ traefik_chown_group }}"
+
+app_containers:
+  - name: mc-proxy-nginx
+    state: quadlet
+    image: "docker.io/nginx:{{ mc_proxy_nginx_version }}"
+    network_mode: host
+    volumes:
+      - "{{ (app_base_dir, 'nginx') | path_join }}:/etc/nginx"
+    quadlet_options:
+      - |
+        [Install]
+        WantedBy=multi-user.target default.target
+  - image: "docker.io/traefik:{{ mc_proxy_traefik_version }}"
+    name: mc-proxy-traefik
+    network_mode: host
+    state: quadlet
+    env:
+      CLOUDFLARE_DNS_API_TOKEN: "{{ mc_proxy_traefik_cf_token }}"
+    volumes:
+      - "{{ (app_base_dir, 'traefik', 'traefik.yml') | path_join }}:/etc/traefik/traefik.yml:ro"
+      - "{{ (app_base_dir, 'traefik', 'dynamic.yml') | path_join }}:/etc/traefik/dynamic.yml:ro"
+      - "{{ (app_base_dir, 'traefik', 'certs') | path_join }}:/letsencrypt"
+    quadlet_options:
+      - |
+        [Install]
+        WantedBy=multi-user.target default.target
+
+app_templates:
+  - path: nginx/nginx.conf
+    content: |
+      events {
+        worker_connections 768;
+      }
+
+      stream {
+        upstream mc {
+          server localhost:25566;
+        }
+
+        upstream mc-bedrock {
+          server localhost:19133;
+        }
+
+        upstream mc-voice {
+          server localhost:24455;
+        }
+
+        server {
+          listen 25565;
+          listen 25565 udp;
+          server_name mc.{{ root_domain }};
+          proxy_pass mc;
+          proxy_protocol on;
+        }
+
+        server {
+          listen 19132 udp;
+          server_name mc.{{ root_domain }};
+          proxy_pass mc-bedrock;
+          proxy_protocol on;
+        }
+        
+        server {
+          listen 24454 udp;
+          server_name mc.{{ root_domain }};
+          proxy_pass mc-voice;
+        }
+      }
+
+  - path: traefik/traefik.yml
+    owner: "{{ traefik_chown_user }}"
+    group: "{{ traefik_chown_group }}"
+    content:
+      entryPoints:
+        mc-bedrock-signaling:
+          address: ":19132/tcp"
+          http:
+            tls: true
+      certificatesResolvers:
+          letsencrypt:
+              acme:
+                  dnsChallenge:
+                      provider: cloudflare
+                  email: "{{ mc_proxy_traefik_acme_email }}"
+                  storage: /letsencrypt/acme.json
+      providers:
+          file:
+              filename: /etc/traefik/dynamic.yml
+
+  - path: traefik/dynamic.yml
+    owner: "{{ traefik_chown_user }}"
+    group: "{{ traefik_chown_group }}"
+    inhibit_restart: true
+    content:
+      http:
+        routers:
+          mc-bedrock-signaling:
+            rule: "Host(`mc.{{ root_domain }}`)"
+            entryPoints: [mc-bedrock-signaling]
+            service: mc-bedrock-signaling
+        services:
+          mc-bedrock-signaling:
+            loadBalancer:
+              servers:
+                - url: "http://127.0.0.1:19134"
+      tls:
+        stores:
+          default:
+            defaultGeneratedCert:
+              domain:
+                 main: "mc.{{ root_domain }}"
+                 sans:
+                          - "mc.{{ root_domain }}"
+              resolver: letsencrypt
