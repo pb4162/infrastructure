@@ -21,6 +21,7 @@
     KUBECONFIG=/root/.kube/config flux check
   register: flux_check
   changed_when: false
+  failed_when: false
 
 - name: "Install flux to cluster"
   ansible.builtin.shell: >-
@@ -34,5 +35,5 @@
     --path={{ flux_repo_path }}
     --personal
     --hostname={{ flux_repo_hostname }}
-  when: (("check failed" in flux_check.stdout) or flux_update)
+  when: (flux_check is undefined or "check failed" in flux_check.stderr or flux_update)
 
