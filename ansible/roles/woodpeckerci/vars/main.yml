@@ -1,3 +1,23 @@
+# TODO: there *has* to be a better approach than this monstrosity
+workflow_files_raw: >-
+  {% set ns = namespace(data=[]) %}
+  {% set files = query('ansible.builtin.fileglob', (playbook_dir, '../../.woodpecker/*.yml') | path_join) %}
+  {% for f in files %}
+  {% set ns.data = ns.data + [
+    {
+      "path": ("config-extension/workflows", (f | basename)) | path_join,
+      "content": lookup('ansible.builtin.file', f)
+    }
+  ] %}
+  {% endfor %}
+  {{ ns.data }}
+config_extension_templates:
+  - path: config-extension/config/config.yml
+    content:
+      validate_requests: false
+      woodpecker_url: "https://ci.{{ root_domain }}"
+
+app_templates: "{{ workflow_files_raw | from_yaml + config_extension_templates }}"
 app_name: woodpeckerci
 app_directories:
   - path: server
@@ -6,6 +26,8 @@ app_directories:
   - path: agent
     owner: 1000
     group: 1000
+  - config-extension/config
+  - config-extension/workflows
 app_networks:
   - woodpecker
 app_containers:
@@ -48,6 +70,15 @@ app_containers:
       - "{{ (app_base_dir, 'agent') | path_join }}:/etc/woodpecker"
       # TODO: docker socket proxy?
       - "/var/run/docker.sock:/var/run/docker.sock"
+    networks:
+      - { name: woodpecker }
+
+  # TODO: renovate
+  - image: "pb4162/woodpecker-config-extension:latest"
+    name: woodpecker-config-extension
+    volumes:
+      - "{{ (app_base_dir, 'config-extension', 'config') | path_join }}:/config"
+      - "{{ (app_base_dir, 'config-extension', 'workflows') | path_join }}:/workflows"
     networks:
       - { name: woodpecker }
 
