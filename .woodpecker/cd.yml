@@ -4,6 +4,8 @@ when:
     path: 'ansible/**'
   - event: manual
 
+labels:
+  type: control-plane
 
 clone:
   git:
