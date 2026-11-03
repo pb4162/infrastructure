@@ -58,6 +58,17 @@
       - "Restart crowdsec ({{ ansible_distribution | lower }})"
     when: (crowdsec_firewall_bouncer_api_key is defined)
 
+- name: "Configure nginx bouncer to use appsec on Debian only"
+  when: (ansible_distribution | lower == "debian")
+  ansible.builtin.replace:
+    dest: "/etc/crowdsec/bouncers/crowdsec-nginx-bouncer.conf"
+    regexp: '^#?({{ item.option }})=.*$'
+    replace: '\1={{ item.value }}'
+  loop:
+    - option: APPSEC_URL
+      value: "http://127.0.0.1:{{ crowdsec_appsec_port }}"
+  notify: "Restart nginx ({{ ansible_distribution | lower }})"
+
 - name: "Install collections, parsers, etc. from crowdsec hub"
   ansible.builtin.shell: |
     cscli {{ item.type }}s install {{ item.name | quote }}

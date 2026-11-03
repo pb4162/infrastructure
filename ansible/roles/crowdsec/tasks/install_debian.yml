@@ -38,11 +38,22 @@
     update_cache: yes
   when: crowdsec_apt_repo_info.changed is true
 
-- name: "Install crowdsec and crowdsec-firewall-bouncer"
+- name: "Install nginx bouncer dependencies"
+  ansible.builtin.apt:
+    state: present
+    name:
+      - lua5.1
+      - libnginx-mod-http-lua
+      - luarocks
+      - gettext-base
+      - lua-cjson
+
+- name: "Install crowdsec and bouncers"
   ansible.builtin.apt:
     name:
       - crowdsec
       - crowdsec-firewall-bouncer
+      - crowdsec-nginx-bouncer
     state: present
 
 - name: "Enable and start crowdsec service"
