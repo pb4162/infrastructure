@@ -29,6 +29,11 @@ app_containers:
       traefik.docker.network: bridge
       traefik.http.routers.woodpecker.rule: "Host(`ci.{{ root_domain }}`)"
       traefik.http.services.woodpecker.loadbalancer.server.port: 8000
+      traefik.http.routers.woodpecker.service: woodpecker
+      traefik.http.routers.woodpecker-grpc.rule: "Host(`ci-grpc.{{ root_domain }}`)"
+      traefik.http.services.woodpecker-grpc.loadbalancer.server.port: 9000
+      traefik.http.routers.woodpecker-grpc.service: woodpecker-grpc
+      traefik.http.services.woodpecker-grpc.loadbalancer.server.scheme: h2c
 
   - image: "woodpeckerci/woodpecker-agent:{{ woodpecker_version }}"
     name: woodpecker-agent
