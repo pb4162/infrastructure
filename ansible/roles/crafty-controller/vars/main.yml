@@ -1,0 +1,32 @@
+app_name: crafty-controller
+app_containers:
+  - state: quadlet
+    image: "registry.gitlab.com/crafty-controller/crafty-4:{{ crafty_version }}"
+    name: crafty-controller
+    userns: keep-id
+    volumes:
+      - "{{ (app_base_dir, 'backups') | path_join }}:/crafty/backups"
+      - "{{ (app_base_dir, 'logs') | path_join }}:/crafty/logs"
+      - "{{ (app_base_dir, 'servers') | path_join }}:/crafty/servers"
+      - "{{ (app_base_dir, 'config') | path_join }}:/crafty/app/config"
+      - "{{ (app_base_dir, 'import') | path_join }}:/crafty/import"
+    publish:
+      - "8123:8123" # DYNMAP
+
+      - "25566:25565" # JAVA
+      - "19133:19132/udp" # BEDROCK
+      - "19134:19133" # NETHERNET SIGNALING
+      - "24455:24454/udp" # SIMPLE VOICE CHAT
+    network:
+      - bridge
+    labels:
+      traefik.enable: true
+      traefik.http.routers.crafty.rule: "Host(`mc.{{ root_domain }}`)"
+      traefik.http.routers.crafty.service: crafty
+      traefik.http.services.crafty.loadbalancer.server.port: 8443
+      traefik.http.services.crafty.loadbalancer.serverstransport: tls-noverify@file
+      traefik.http.services.crafty.loadbalancer.server.scheme: https
+    quadlet_options:
+      - |
+        [Install]
+        WantedBy=multi-user.target default.target

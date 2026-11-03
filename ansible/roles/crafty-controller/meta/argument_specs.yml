@@ -1,0 +1,6 @@
+argument_specs:
+  main:
+    options:
+      crafty_version:
+        type: str
+        required: true
