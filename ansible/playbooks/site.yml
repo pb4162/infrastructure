@@ -225,6 +225,52 @@
       tags: [host-sshkey]
 
 
+- name: Setup podman VM
+  hosts: podman
+  become: true
+
+  tasks:
+    - name: "Import packwiz role"
+      tags: [packwiz, mc]
+      ansible.builtin.import_role:
+        name: packwiz
+
+    - name: "Import crafty-controller role (public: false)"
+      tags: [crafty-controller, crafty, container-app, mc]
+      ansible.builtin.import_role:
+        name: crafty-controller
+        public: false
+
+    - name: "Include mc-modpack role for all modpacks (public: false)"
+      tags: [mc-modpack, mc]
+      ansible.builtin.include_role:
+        name: mc-modpack
+        public: false
+        apply:
+          tags: [mc-modpack, mc]
+      vars:
+        modpack_name: "{{ modpack.name }}"
+        modpack_path: "{{ modpack.path }}"
+        modpack_author: "{{ modpack.author }}"
+        modpack_version: "{{ modpack.version }}"
+        modpack_loader: "{{ modpack.loader }}"
+        modpack_fabric_version: "{{ modpack.fabric_version }}"
+        modpack_mc_version: "{{ modpack.mc_version }}"
+        modpack_crafty_server_id: "{{ modpack.crafty_server_id }}"
+        modpack_server_path: "{{ modpack.server_path }}"
+        modpack_mods: "{{ modpack.mods }}"
+      loop: "{{ mc_modpacks }}"
+      loop_control:
+        loop_var: "modpack"
+        label: "{{ modpack.name }}"
+
+    - name: "Import mc-proxy role (public: false)"
+      tags: [mc-proxy, container-app, mc]
+      ansible.builtin.import_role:
+        name: mc-proxy
+        public: false
+
+
 - name: Setup misc_vps
   hosts: misc_vps
   become: true
