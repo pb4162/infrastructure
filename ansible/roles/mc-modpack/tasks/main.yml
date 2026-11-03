@@ -1,0 +1,27 @@
+- name: Create modpack directory
+  ansible.builtin.file:
+    state: directory
+    path: "{{ modpack_home }}"
+
+- name: Run packwiz init to create a new modpack
+  ansible.builtin.shell: >-
+    packwiz init
+    --fabric-version={{ modpack_fabric_version | quote }}
+    --mc-version={{ modpack_mc_version | quote }}
+    --name={{ modpack_name | quote }}
+    --author={{ modpack_author | quote }}
+    --version={{ modpack_version | quote }}
+    --modloader={{ modpack_loader | quote }}
+  args:
+    chdir: "{{ modpack_home }}"
+  register: packwiz_init_result
+  failed_when: packwiz_init_result.rc not in [0, 1] or "Error" in packwiz_init_result.stdout
+  changed_when: ("Modpack metadata file already exists" not in packwiz_init_result.stdout)
+
+- name: "Install mods"
+  ansible.builtin.include_tasks: add-mod.yml
+  loop: "{{ modpack_mods }}"
+
+- name: "Update mods on the server"
+  ansible.builtin.include_tasks: server-update.yml
+  when: (mods_changed is true)

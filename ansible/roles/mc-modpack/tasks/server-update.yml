@@ -1,0 +1,31 @@
+- name: "Backup mods directory"
+  ansible.builtin.shell: |
+    mv mods "mods-{{ now(fmt='%Y-%m-%dT%H:%M:%S.%f') }}.bak"
+  args:
+    chdir: "{{ modpack_server_path }}"
+
+- name: "Use packwiz-installer to download and install new mods"
+  ansible.builtin.shell: >-
+    java -jar 
+    ~/packwiz-installer-bootstrap-downloads/{{ packwiz_installer_bootstrap_version }}/packwiz-installer-bootstrap.jar
+    --bootstrap-main-jar ~/packwiz-installer-downloads/{{ packwiz_installer_version }}/packwiz-installer.jar
+    --bootstrap-no-update
+    -g -s server {{ (modpack_home, "pack.toml") | path_join | quote }}
+  args:
+    chdir: "{{ modpack_server_path }}"
+
+- name: "Fix ownership for server directory"
+  ansible.builtin.file:
+    owner: "{{ ansible_user }}"
+    path: "{{ modpack_server_path }}"
+    recurse: true
+    state: directory
+
+- name: "Restart the minecraft server"
+  ansible.builtin.uri:
+    force: true
+    force_basic_auth: true
+    method: POST
+    headers:
+      Authorization: "Bearer {{ crafty_api_token }}"
+    url: "{{ crafty_domain }}/api/v2/servers/{{ modpack_crafty_server_id }}/action/restart_server"

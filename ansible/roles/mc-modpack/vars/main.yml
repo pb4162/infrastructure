@@ -1,0 +1,1 @@
+modpack_home: "{{ (packwiz_home, modpack_path) | path_join }}"

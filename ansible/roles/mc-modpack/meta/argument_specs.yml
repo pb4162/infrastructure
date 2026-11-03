@@ -1,0 +1,44 @@
+argument_specs:
+  main:
+    options:
+      modpack_home:
+        type: str
+        required: true
+      modpack_name:
+        type: str
+        required: true
+      modpack_fabric_version:
+        type: str
+        required: true
+      modpack_mc_version:
+        type: str
+        required: true
+      modpack_author:
+        type: str
+        required: true
+      modpack_version:
+        type: str
+        required: true
+      modpack_loader:
+        type: str
+        required: true
+      modpack_mods:
+        type: list
+        elements: dict
+        required: true
+      modpack_server_path:
+        type: str
+        required: true
+      crafty_domain:
+        type: str
+        required: true
+      crafty_api_token:
+        type: str
+        required: true
+      modpack_crafty_server_id:
+        type: str
+        required: true
+      mods_server_update:
+        type: bool
+        required: false
+        default: false

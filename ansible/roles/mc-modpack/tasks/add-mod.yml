@@ -1,0 +1,36 @@
+- when: item.title is undefined
+  block:
+  - name: "Check if {{ item.name }} is already installed (slug)"
+    ansible.builtin.stat:
+      path: "{{ (modpack_home, 'mods', item.name + '.pw.toml') | path_join }}"
+    register: mod_stat
+
+  - name: "Set mod_already_installed"
+    ansible.builtin.set_fact:
+      mod_already_installed: "{{ mod_stat.stat.exists }}"
+
+- when: item.title is defined
+  block:
+    - name: "Get list of installed mods"
+      ansible.builtin.shell: packwiz list
+      args:
+        chdir: "{{ modpack_home }}"
+      register: packwiz_list_result
+      changed_when: false
+
+    - name: "Set mod_already_installed"
+      ansible.builtin.set_fact:
+        mod_already_installed: "{{ item.title in packwiz_list_result.stdout_lines }}"
+
+- name: "Install {{ item.title is defined | ternary(item.title, item.name) }} to pack"
+  ansible.builtin.shell: |
+    packwiz {{ item.type }} add -y {{ item.name | quote }}
+  args:
+    chdir: "{{ modpack_home }}"
+  when: not mod_already_installed
+  register: packwiz_pack_add_result
+
+- name: "Set mods_changed"
+  ansible.builtin.set_fact:
+    mods_changed: true
+  when: packwiz_pack_add_result.changed
