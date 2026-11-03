@@ -73,8 +73,7 @@ app_containers:
     networks:
       - { name: woodpecker }
 
-  # TODO: renovate
-  - image: "pb4162/woodpecker-config-extension:latest"
+  - image: "pb4162/woodpecker-config-extension:{{ woodpecker_config_extension_version }}"
     name: woodpecker-config-extension
     volumes:
       - "{{ (app_base_dir, 'config-extension', 'config') | path_join }}:/config"

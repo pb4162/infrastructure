@@ -8,6 +8,9 @@ argument_specs:
       woodpecker_version:
         type: str
         required: true
+      woodpecker_config_extension_version:
+        type: str
+        required: true
       root_domain:
         type: str
         required: true
