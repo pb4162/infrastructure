@@ -62,7 +62,12 @@ if BEFORE_PUSH_COMMIT == "0"*40:
 else:
     diff_command.extend([BEFORE_PUSH_COMMIT, AFTER_PUSH_COMMIT])
 
-changed_files = subprocess.check_output(diff_command, text=True).split()
+CI_PIPELINE_RERUNS = os.getenv("CI_PIPELINE_RERUNS")
+
+if CI_PIPELINE_RERUNS is None:
+    changed_files = subprocess.check_output(diff_command, text=True).split()
+else:
+    changed_files = json.loads(os.getenv("CI_PIPELINE_FILES"))
 
 RUN_FULL_PLAYBOOK_PATHS = [
     f"{BASE_DIR}/{p}" for p in [
