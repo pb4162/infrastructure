@@ -17,7 +17,7 @@ spec:
     - file_mode=0770
   csi:
     driver: smb.csi.k8s.io
-    volumeHandle: "//${NAS_URL}/jellyfin##"
+    volumeHandle: "//${NAS_URL}/jellyfin#navidrome#"
     volumeAttributes:
       source: "//${NAS_URL}/jellyfin"
     nodeStageSecretRef:
