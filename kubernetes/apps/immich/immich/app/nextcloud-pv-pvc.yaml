@@ -18,7 +18,7 @@ spec:
     - nosharesock
   csi:
     driver: smb.csi.k8s.io
-    volumeHandle: "//${NAS_URL}/nextcloud##"
+    volumeHandle: "//${NAS_URL}/nextcloud#immich#"
     volumeAttributes:
       source: "//${NAS_URL}/nextcloud"
     nodeStageSecretRef:
