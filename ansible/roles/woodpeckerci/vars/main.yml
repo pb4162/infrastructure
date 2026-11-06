@@ -6,6 +6,7 @@ workflow_files_raw: >-
   {% set ns.data = ns.data + [
     {
       "path": ("config-extension/workflows", (f | basename)) | path_join,
+      "backup": false,
       "content": lookup('ansible.builtin.file', f)
     }
   ] %}
