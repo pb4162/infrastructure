@@ -1,5 +1,6 @@
 nginx_additional_modules: []
 nginx_stream_configs: {}
+nginx_http_configs_private: {}
 nginx_proxy_params_config: |
   proxy_set_header Host $host;
   proxy_set_header X-Real-IP $remote_addr;

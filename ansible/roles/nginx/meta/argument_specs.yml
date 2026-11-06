@@ -9,6 +9,10 @@ argument_specs:
       nginx_http_configs:
         type: dict
         required: true
+      nginx_http_configs_private:
+        type: dict
+        required: false
+        default: {}
       nginx_stream_configs:
         type: dict
         required: false

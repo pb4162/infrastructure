@@ -65,7 +65,7 @@
     backup: true
     content: "{{ item.value }}"
     dest: "/etc/nginx/conf.d/{{ item.key }}.conf"
-  loop: "{{ nginx_http_configs | dict2items }}"
+  loop: "{{ nginx_http_configs | combine(nginx_http_configs_private) | dict2items }}"
   loop_control:
     label: "{{ item.key }}"
   notify: "Restart nginx ({{ ansible_distribution | lower }})"
