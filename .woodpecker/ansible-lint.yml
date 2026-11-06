@@ -1,0 +1,18 @@
+variables:
+  include_paths: &include_paths
+    - ansible/**
+
+when:
+  - event: push
+    branch: main
+    path:
+      include: *include_paths
+  - event: [pull_request]
+    path:
+      include: *include_paths
+
+steps:
+  - name: ansible-lint
+    image: ghcr.io/ansible/community-ansible-dev-tools:v26.11.0
+    commands:
+      - cd ansible && ansible-lint

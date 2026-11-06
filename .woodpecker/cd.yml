@@ -7,6 +7,9 @@ when:
 labels:
   type: control-plane
 
+depends_on:
+  - ansible-lint
+
 clone:
   git:
     image: woodpeckerci/plugin-git
