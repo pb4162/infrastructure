@@ -1,0 +1,7 @@
+borgmatic_config:
+  exclude_patterns:
+    - "/var/lib/longhorn/"
+    - "/var/lib/rancher/k3s/data/"
+    - "/var/lib/rancher/k3s/agent/containerd/"
+    - "/var/lib/rancher/k3s/server/db/"
+    - "/var/lib/kubelet"

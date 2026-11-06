@@ -1,0 +1,36 @@
+# renovate: datasource=github-releases depName=k3s-io/k3s
+k3s_version: v1.36.4+k3s1
+k3s_master_config:
+  disable:
+    - servicelb
+    - local-storage
+    - traefik
+    - coredns
+  kubelet-arg: "allowed-unsafe-sysctls=net.ipv4.ip_forward,net.ipv6.conf.all.forwarding,net.ipv4.conf.all.src_valid_mark"
+  etcd-expose-metrics: true
+  etcd-snapshot-schedule-cron: "0 0 * * *"
+  etcd-snapshot-retention: 60
+  etcd-snapshot-compress: true
+  etcd-s3: true
+  etcd-s3-access-key: GKe6337d1188f5cfef326dd1f7
+  etcd-s3-bucket: k3s
+  etcd-s3-region: garage
+  etcd-s3-retention: 60
+  embedded-registry: true
+  flannel-backend: wireguard-native
+  log: warning
+  etcd-arg:
+    - heartbeat-interval: 250
+    - election-timeout: 2500
+    - snapshot-count: 100000
+    - auto-compaction-retention: 3
+
+k3s_registry_config:
+  mirrors:
+    "*":
+  configs:
+    registry.pb4162.dev:
+      auth:
+        username: pb
+
+k3s_resolv_conf: "nameserver {{ hostvars['router']['ansible_host'] }}"

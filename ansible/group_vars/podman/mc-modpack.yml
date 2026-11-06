@@ -1,0 +1,53 @@
+crafty_domain: "https://mc.{{ root_domain }}"
+
+mc_modpacks:
+  - name: "Test Server"
+    path: "test-server"
+    author: pb
+    version: 0.0.0
+    loader: "fabric"
+    fabric_version: 0.18.4
+    mc_version: "26.1.1"
+    crafty_server_id: 7e39abda-eee0-454d-89f1-ef0c58b0bd28
+    server_path: "/home/{{ ansible_user }}/podman/crafty-controller/servers/7e39abda-eee0-454d-89f1-ef0c58b0bd28"
+    mods:
+      - type: modrinth
+        name: easyauth
+      - type: modrinth
+        name: ferrite-core
+      - type: modrinth
+        name: no-chat-reports
+      - type: modrinth
+        name: floodgate
+      - type: modrinth
+        name: geyser
+      - type: modrinth
+        name: lithium
+      - type: modrinth
+        name: simple-voice-chat
+      - type: modrinth
+        name: styled-chat
+      - type: modrinth
+        name: worldedit
+      - type: modrinth
+        name: worldedit-cui
+      - type: modrinth
+        name: viafabric
+      - type: modrinth
+        name: viabackwards
+      - type: modrinth
+        name: krypton
+      - type: modrinth
+        name: scalablelux
+      - type: modrinth
+        name: sodium
+      - type: modrinth
+        name: c2me-fabric
+      - type: modrinth
+        name: enhanced-groups
+      - type: modrinth
+        name: proxy-protocol-support
+      - type: modrinth
+        name: vanish
+      - type: modrinth
+        name: luckperms

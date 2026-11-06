@@ -1,0 +1,27 @@
+borgmatic_scripts:
+  backup_router.sh: |
+    #!/usr/bin/env bash
+
+    set -euo pipefail
+
+    echo "INFO: Backing up router configuration"
+    mkdir -p ~/router-backups/
+
+    export TIMESTAMP="$(date +"%Y-%m-%d_%H-%M-%S")"
+    export BACKUP_FILE_NAME="router_${TIMESTAMP}.tar.gz"
+
+    export SSH_USER="{{ hostvars['router']['ansible_user'] }}"
+    export SSH_HOST="{{ hostvars['router']['ansible_host'] }}"
+    export SSH_LOCATION="${SSH_USER}@${SSH_HOST}"
+
+    ssh "$SSH_LOCATION" sysupgrade -b "/tmp/${BACKUP_FILE_NAME}"
+    scp "$SSH_LOCATION:/tmp/${BACKUP_FILE_NAME}" ~/router-backups/
+    ssh "${SSH_LOCATION}" rm "/tmp/${BACKUP_FILE_NAME}"
+
+    echo "INFO: Finished backup, deleting old archives"
+    find ~/router-backups/ -maxdepth 1 -mtime +7 -type f -delete
+    echo "INFO: Deletion complete"
+
+borgmatic_config:
+  before_backup:
+    - backup_router.sh

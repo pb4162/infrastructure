@@ -1,0 +1,20 @@
+crowdsec_console_name: openbsd-vps
+crowdsec_firewall_bouncer_name: openbsd-pf-bouncer
+crowdsec_hub_items:
+  - name: crowdsecurity/ssh-bf
+    type: scenario
+  - name: crowdsecurity/sshd-logs
+    type: parser
+  - name: crowdsecurity/syslog-logs
+    type: parser
+  - name: crowdsecurity/sshd
+    type: collection
+  - name: crowdsecurity/openbsd
+    type: collection
+crowdsec_acquisitions:
+  sshd:
+    source: file
+    filenames:
+      - /var/log/authlog
+    labels:
+      type: syslog

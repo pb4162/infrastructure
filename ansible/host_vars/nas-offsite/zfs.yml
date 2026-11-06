@@ -1,0 +1,9 @@
+zfs_pools:
+  tank:
+    mountpoint: /mnt/tank
+    fs_props:
+      compression: on
+    vdevs:
+      - type: stripe
+        disks:
+          - /dev/disk/by-id/scsi-0QEMU_QEMU_HARDDISK_drive-scsi1

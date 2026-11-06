@@ -1,0 +1,2 @@
+# renovate: datasource=github-releases depName=databus23/helm-diff
+helm_diff_plugin_version: v3.15.12

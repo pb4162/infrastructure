@@ -1,0 +1,62 @@
+borgmatic_exclude_patterns_map:
+  debian:
+    - /var/run/lock
+    - /var/run
+    - /var/tmp/
+    - /var/lib/apt/
+    - /var/lib/dhcpcd/
+    - /var/lib/dbus/
+    - /var/lib/dpkg/
+    - /var/lib/grub/
+    - /var/lib/systemd/
+    - /var/lib/ucf/
+    - /var/lib/wtmpdb/
+  # TODO:
+  openbsd: []
+
+borg_server_user: borg
+
+borgmatic_exclude_patterns: |
+  {{
+    [] +
+    (('backup_servers' in group_names) | ternary([('home', borg_server_user, 'repos') | path_join], [])) +
+    (borgmatic_exclude_patterns_map[ansible_distribution | lower] | default([]))
+  }}
+
+
+borgmatic_config_group:
+  repositories:
+    - path: "ssh://{{ borg_server_user }}@{{ 'localhost' if 'backup_servers' in group_names else hostvars[borg_server_host]['ansible_host'] }}:22/{{ ('/home', borg_server_user, 'repos', inventory_hostname) | path_join }}"
+      label: backup_server
+  source_directories:
+    - /var
+    - /root
+    - /home
+    - /etc
+    - "{{ '/srv' if (ansible_distribution | lower) != 'openbsd' else omit }}"
+  exclude_patterns: "{{ borgmatic_exclude_patterns }}"
+  keep_daily: 14
+  keep_weekly: 4
+  keep_monthly: 12
+  ntfy:
+      topic: backups
+      server: "https://ntfy.{{ root_domain }}"
+      start:
+        title: "{{ inventory_hostname }} backups started"
+        message: "Backups have started for {{ inventory_hostname }}"
+        priority: min
+        tags: borg,borgmatic,backup
+      finish:
+        title: "{{ inventory_hostname }} backups finished"
+        message: "Backups have finished for {{ inventory_hostname }}"
+        priority: min
+        tags: borg,borgmatic,backup,+1
+      fail:
+        title: "backups failed for {{ inventory_hostname }}"
+        message: "Backups have failed for {{ inventory_hostname }}"
+        priority: max
+        tags: borg,borgmatic,backup,-1
+      states:
+        - start
+        - finish
+        - fail

@@ -1,0 +1,2 @@
+# TODO: remove mailcow role's reliance on this variable?
+acme_home: "/etc/acme.sh"

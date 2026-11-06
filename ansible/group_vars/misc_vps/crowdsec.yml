@@ -1,0 +1,55 @@
+crowdsec_acquisitions:
+  nextcloud:
+    source: loki
+    log_level: info
+    url: "https://loki.{{ root_domain }}"
+    limit: 1000
+    no_ready_check: true
+    auth:
+      username: "{{ crowdsec_loki_username }}"
+      password: "{{ crowdsec_loki_password }}"
+    query: |
+      {container="nextcloud-logger"}
+    labels:
+      type: Nextcloud
+  gitea:
+    source: loki
+    log_level: info
+    url: "https://loki.{{ root_domain }}"
+    limit: 1000
+    no_ready_check: true
+    auth:
+      username: "{{ crowdsec_loki_username }}"
+      password: "{{ crowdsec_loki_password }}"
+    query: |
+      {container="gitea"}
+    labels:
+      type: gitea
+  mailcow: |
+    # postfix container
+    source: docker
+    container_name:
+      - mailcowdockerized-postfix-mailcow-1
+    labels:
+      type: syslog
+    ---
+    # dovecot container
+    source: docker
+    container_name:
+      - mailcowdockerized-dovecot-mailcow-1
+    labels:
+      type: syslog
+    ---
+    # netfilter-mailcow container (Mailcow-internal F2B)
+    source: docker
+    container_name:
+      - mailcowdockerized-netfilter-mailcow-1
+    labels:
+      type: mailcow-f2b
+  appsec:
+    appsec_configs:
+      - crowdsecurity/appsec-default
+    labels:
+      type: appsec
+    listen_addr: 127.0.0.1:7422
+    source: appsec

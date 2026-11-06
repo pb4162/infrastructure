@@ -1,0 +1,2 @@
+# renovate: datasource=docker depName=registry.gitlab.com/crafty-controller/crafty-4
+crafty_version: 4.11.0

@@ -1,0 +1,2 @@
+docker_data_dir: "/root/docker"
+container_data_dir: "/root/docker"

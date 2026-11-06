@@ -1,0 +1,10 @@
+acme_home_group: "root"
+acme_certificates:
+  - name: "{{ root_domain }}"
+    alt_names:
+      - "*.{{ root_domain }}"
+      - "*.nextcloud.{{ root_domain }}"
+    dns: dns_cf
+    reload_cmd: "systemctl reload nginx"
+    server: "letsencrypt"
+    renew_hook: "systemctl reload nginx"

@@ -1,0 +1,2 @@
+# renovate: datasource=docker depName=nginx
+mc_proxy_nginx_version: 1.31.8

@@ -1,0 +1,2 @@
+borg_server_local_path: "/home/{{ borg_server_user }}/repos"
+borg_server_local_path_dataset: tank/data/borg

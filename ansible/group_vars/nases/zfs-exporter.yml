@@ -1,0 +1,2 @@
+# renovate: datasource=github-releases depName=pdf/zfs_exporter
+zfs_exporter_version: v2.5.1

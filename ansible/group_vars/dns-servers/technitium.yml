@@ -1,0 +1,3 @@
+# renovate: datasource=docker depName=technitium/dns-server
+technitium_version: 15.4.0
+technitium_cluster_zone: dns

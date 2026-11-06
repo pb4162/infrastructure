@@ -1,0 +1,6 @@
+mailcow_domain: "mail.{{ root_domain }}"
+mailcow_install_path: "/root"
+mailcow_timezone: "{{ timezone }}"
+mailcow_release: "master"
+mailcow_http_port: 8083
+mailcow_external_unbound_certs: true

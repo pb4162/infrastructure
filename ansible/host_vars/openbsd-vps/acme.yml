@@ -1,0 +1,9 @@
+acme_certificates:
+  - name: "{{ root_domain }}"
+    alt_names:
+      - "*.{{ root_domain }}"
+    dns: dns_cf
+    reload_cmd: "rcctl reload nginx"
+    server: "letsencrypt"
+    renew_hook: "rcctl reload nginx"
+    force: false

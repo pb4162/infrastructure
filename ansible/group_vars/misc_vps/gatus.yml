@@ -1,0 +1,136 @@
+# renovate: datasource=docker depName=ghcr.io/twin/gatus
+gatus_version: v5.38.0
+gatus_port: 8082
+gatus_config:
+  storage:
+    type: sqlite
+    path: /data/data.db
+  alerting:
+    x-default-alert: &default-alert
+      enabled: true
+      failure-threshold: 3
+      success-threshold: 3
+      send-on-resolved: true
+
+    discord:
+      webhook-url: "${DISCORD_WEBHOOK_URL}"
+      default-alert: *default-alert
+
+    telegram:
+      token: "${TELEGRAM_BOT_TOKEN}"
+      id: "${TELEGRAM_CHAT_ID}"
+      default-alert: *default-alert
+
+    ntfy:
+      topic: gatus
+      url: "https://ntfy.{{ root_domain }}"
+      token: "${NTFY_API_TOKEN}"
+      default-alert: *default-alert
+
+  ui:
+    title: "pb's Health Dashboard :D ǀ Gatus"
+    dashboard-subheading: "Powered by Gatus"
+
+gatus_endpoints:
+  x-ui-hidden: &ui-hidden
+    hide-conditions: true
+    hide-hostname: true
+    hide-port: true
+    hide-url: true
+    hide-errors: true
+
+  x-alerts: &alerts
+    - type: discord
+    - type: telegram
+    - type: ntfy
+
+  endpoints:
+    - name: "mc.{{ root_domain }}"
+      group: Minecraft
+      url: "https://mc.{{ root_domain }}/api/v2/servers/${CRAFTY_SERVER_ID}/stats"
+      interval: 20s
+      alerts: *alerts
+      ui: *ui-hidden
+      client:
+        dns-resolver: tcp://100.100.100.100:53
+      headers:
+        Authorization: Bearer ${CRAFTY_API_TOKEN}
+      conditions:
+        - "[STATUS] == 200"
+        - "[BODY].data.running == true"
+
+    - name: "mc.{{ root_domain }} (java proxy)"
+      group: Minecraft
+      url: "tcp://mc.{{ root_domain }}:25565"
+      interval: 20s
+      alerts: *alerts
+      ui: *ui-hidden
+      conditions:
+        - "[CONNECTED] == true"
+
+    - name: "mc.{{ root_domain }} (bedrock proxy)"
+      group: Minecraft
+      url: "udp://mc.{{ root_domain }}:19132"
+      interval: 20s
+      alerts: *alerts
+      ui: *ui-hidden
+      conditions:
+        - "[CONNECTED] == true"
+
+    - name: Webmail
+      group: Misc
+      url: "https://mail.{{ root_domain }}"
+      interval: 20s
+      alerts: *alerts
+      ui: *ui-hidden
+      conditions:
+        - "[STATUS] == 200"
+
+    - name: Gitea
+      group: Misc
+      url: "https://gitea.{{ root_domain }}"
+      interval: 20s
+      alerts: *alerts
+      ui: *ui-hidden
+      conditions:
+        - "[STATUS] == 200"
+
+    - name: Nextcloud
+      group: Nextcloud
+      url: "https://nextcloud.{{ root_domain }}"
+      interval: 20s
+      alerts: *alerts
+      ui: *ui-hidden
+      conditions:
+        - "[STATUS] == 200"
+
+    - name: Nextcloud Talk Backend
+      group: Nextcloud
+      url: "https://talk-hpb.nextcloud.{{ root_domain }}/api/v1/welcome"
+      interval: 20s
+      alerts: *alerts
+      ui: *ui-hidden
+      conditions:
+        - "[STATUS] == 200"
+
+    - name: Nextcloud Collabora
+      group: Nextcloud
+      url: "https://collabora.nextcloud.{{ root_domain }}"
+      interval: 20s
+      alerts: *alerts
+      ui: *ui-hidden
+      conditions:
+        - "[STATUS] == 200"
+
+    - name: Prometheus
+      group: Internal
+      url: "https://prometheus.{{ root_domain }}"
+      interval: 20s
+      alerts: *alerts
+      client:
+        dns-resolver: tcp://100.100.100.100:53
+      headers:
+        Authorization: Basic ${PROMETHEUS_BASIC_AUTH_CREDS}
+      ui: *ui-hidden
+      conditions:
+        - "[STATUS] == 200"

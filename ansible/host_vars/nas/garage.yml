@@ -1,0 +1,7 @@
+# renovate: datasource=docker depName=dxflrs/garage
+garage_version: v2.5.0
+# renovate: datasource=docker depName=khairul169/garage-webui
+garage_webui_version: 1.1.0
+garage_data_path: /mnt/tank/data/garage
+garage_env:
+  RUST_LOG: garage=warn

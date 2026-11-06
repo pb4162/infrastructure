@@ -1,0 +1,18 @@
+crowdsec_console_name: debian-vps
+crowdsec_hub_items:
+  - name: crowdsecurity/ssh-bf
+    type: scenario
+  - name: crowdsecurity/syslog-logs
+    type: parser
+  - name: crowdsecurity/nginx
+    type: collection
+  - name: crowdsecurity/nextcloud
+    type: collection
+  - name: LePresidente/gitea
+    type: collection
+  - name: Guezli/mailcow
+    type: collection
+  - name: crowdsecurity/appsec-virtual-patching
+    type: collection
+  - name: crowdsecurity/appsec-generic-rules
+    type: collection

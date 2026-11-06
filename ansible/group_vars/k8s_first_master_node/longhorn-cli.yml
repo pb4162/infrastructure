@@ -1,0 +1,2 @@
+# renovate: datasource=github-releases depName=longhorn/cli
+longhorn_cli_version: v1.12.1

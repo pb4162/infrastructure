@@ -1,0 +1,4 @@
+borgmatic_config:
+  sqlite_databases:
+    - name: headscale
+      path: /var/db/headscale/db.sqlite

@@ -1,0 +1,22 @@
+zfs_pools:
+  tank:
+    mountpoint: /mnt/tank
+    fs_props:
+      compression: on
+    vdevs:
+      - type: mirror
+        disks:
+          - /dev/disk/by-id/scsi-0QEMU_QEMU_HARDDISK_drive-scsi1
+          - /dev/disk/by-id/scsi-0QEMU_QEMU_HARDDISK_drive-scsi2
+    datasets:
+      - data
+      - data/audiobookshelf-media
+      - data/audiobookshelf-metadata
+      - data/registry
+      - data/garage
+      - data/borg
+      - data/jellyfin
+      - data/nextcloud
+      - data/immich
+      - data/linkwarden
+      - data/vaultwarden-backup

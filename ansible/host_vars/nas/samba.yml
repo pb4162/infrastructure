@@ -1,0 +1,29 @@
+zfs_pool_tank_data_path: "{{ (zfs_pools['tank']['mountpoint'], 'data') | path_join }}"
+samba_shares:
+  - name: jellyfin
+    path: "{{ (zfs_pool_tank_data_path, 'jellyfin') | path_join }}"
+    valid_users: [kubernetes]
+
+  - name: nextcloud
+    path: "{{ (zfs_pool_tank_data_path, 'nextcloud') | path_join }}"
+    valid_users: [kubernetes]
+
+  - name: audiobookshelf-media
+    path: "{{ (zfs_pool_tank_data_path, 'audiobookshelf-media') | path_join }}"
+    valid_users: [kubernetes]
+
+  - name: audiobookshelf-metadata
+    path: "{{ (zfs_pool_tank_data_path, 'audiobookshelf-metadata') | path_join }}"
+    valid_users: [kubernetes]
+
+  - name: immich
+    path: "{{ (zfs_pool_tank_data_path, 'immich') | path_join }}"
+    valid_users: [kubernetes]
+
+  - name: linkwarden
+    path: "{{ (zfs_pool_tank_data_path, 'linkwarden') | path_join }}"
+    valid_users: [kubernetes]
+
+  - name: vaultwarden-backup
+    path: "{{ (zfs_pool_tank_data_path, 'vaultwarden-backup') | path_join }}"
+    valid_users: [kubernetes]

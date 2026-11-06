@@ -1,0 +1,7 @@
+packwiz_home: "/home/{{ ansible_user }}/packwiz"
+# TODO: renovate
+packwiz_gh_actions_run: "38494029406"
+# renovate: datasource=github-releases depName=packwiz/packwiz-installer
+packwiz_installer_version: "v0.5.14"
+# renovate: datasource=github-releases depName=packwiz/packwiz-installer-bootstrap
+packwiz_installer_bootstrap_version: "v0.0.3"

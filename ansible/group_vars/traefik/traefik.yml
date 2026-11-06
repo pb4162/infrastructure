@@ -1,0 +1,52 @@
+# renovate: datasource=docker depName=traefik
+traefik_version: v3.7.17
+
+traefik_static_config:
+  api:
+    dashboard: true
+    disabledashboardad: true
+  certificatesResolvers:
+    letsencrypt:
+      acme:
+        dnsChallenge:
+          provider: cloudflare
+        storage: /letsencrypt/acme.json
+  providers:
+    docker:
+      exposedByDefault: false
+  metrics:
+    prometheus:
+      entryPoint: websecure
+      manualRouting: true
+      buckets:
+        - 0.1
+        - 0.3
+        - 1.2
+        - 5.0
+
+traefik_dynamic_config:
+  http:
+    serversTransports:
+      tls-noverify:
+        insecureSkipVerify: true
+    routers:
+      dashboard:
+        rule: "Host(`traefik.{{ inventory_hostname }}.{{ root_domain }}`)"
+        service: api@internal
+        middlewares:
+          - auth
+      metrics:
+        rule: "Host(`traefik.{{ inventory_hostname }}.{{ root_domain }}`) && PathPrefix(`/metrics`)"
+        service: prometheus@internal
+        middlewares:
+          - auth
+  tls:
+    stores:
+      default:
+        defaultGeneratedCert:
+          resolver: letsencrypt
+          domain:
+            main: "{{ root_domain }}"
+            sans:
+              - "*.{{ root_domain }}"
+              - "*.{{ inventory_hostname }}.{{ root_domain }}"

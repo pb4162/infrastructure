@@ -1,0 +1,12 @@
+# renovate: datasource=github-releases depName=GoodiesHQ/headscale-admin
+headscale_ui_version: "v0.25.6"
+headscale_config:
+  server_url: "https://vpn.{{ root_domain }}"
+  listen_addr: "127.0.0.1:8081"
+  dns:
+    base_domain: "pb4162.local"
+    override_local_dns: true
+  randomize_client_port: false
+  policy:
+    mode: file
+    path: ''

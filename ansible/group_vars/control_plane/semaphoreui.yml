@@ -1,0 +1,2 @@
+# renovate: datasource=docker depName=registry.pb4162.dev/pb/semaphoreui
+semaphoreui_version: v2.19.12-pb1

@@ -1,0 +1,2 @@
+# renovate: datasource=github-releases depName=velero-io/velero
+velero_version: v1.18.4

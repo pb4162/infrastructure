@@ -1,0 +1,6 @@
+borgmatic_config:
+  sqlite_databases:
+    - name: semaphoreui
+      path: "{{ (docker_data_dir, 'semaphoreui/data/database.sqlite') | path_join }}"
+    - name: woodpeckerci
+      path: "{{ (docker_data_dir, 'woodpeckerci/server/woodpecker.sqlite') | path_join }}"

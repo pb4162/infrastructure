@@ -1,0 +1,2 @@
+container_tool: "podman"
+container_data_dir: "{{ ('/home', ansible_user, 'podman') | path_join }}"
