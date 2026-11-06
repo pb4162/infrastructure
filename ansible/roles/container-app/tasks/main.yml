@@ -30,7 +30,7 @@
 
 - name: Install config files
   ansible.builtin.copy:
-    backup: true
+    backup: "{{ item.backup | default(true) }}"
     content: "{{ item.content }}"
     dest: "{{ (app_base_dir, item.path) | path_join }}"
     owner: "{{ item.owner | default('root') }}"
