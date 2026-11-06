@@ -22,7 +22,7 @@ spec:
           main:
             image:
               repository: ghcr.io/chnapy/pkvault
-              tag: 2.5.0
+              tag: 2.5.2
             env:
               BACKUP_FILE_COUNT_LIMIT: 30
             resources:
