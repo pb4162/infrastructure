@@ -1,3 +1,4 @@
+---
 - name: "Install debian-archive-keyring, gnupg and apt-transport-https"
   ansible.builtin.apt:
     state: present
@@ -15,7 +16,7 @@
   ansible.builtin.get_url:
     url: https://packagecloud.io/crowdsec/crowdsec/gpgkey
     dest: /etc/apt/keyrings/crowdsec_crowdsec-archive-keyring.gpg
-    mode: 0644
+    mode: "0644"
 
 - name: "Add crowdsec apt repository"
   ansible.builtin.deb822_repository:
@@ -35,7 +36,7 @@
 
 - name: "apt: Update"
   ansible.builtin.apt:
-    update_cache: yes
+    update_cache: true
   when: crowdsec_apt_repo_info.changed is true
 
 - name: "Install nginx bouncer dependencies"

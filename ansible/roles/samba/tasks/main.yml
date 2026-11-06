@@ -1,3 +1,4 @@
+---
 - name: "Install packages"
   ansible.builtin.apt:
     state: present
@@ -90,7 +91,7 @@
     dest: /etc/samba/smb.conf
     owner: root
     group: root
-    mode: '0644'
+    mode: "0644"
     backup: true
     validate: "testparm -s %s"
   notify: Restart samba

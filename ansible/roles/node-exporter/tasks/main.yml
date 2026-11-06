@@ -1,3 +1,4 @@
+---
 - ansible.builtin.import_tasks: debian.yml
   when: ansible_distribution | lower == "debian"
 
@@ -21,8 +22,8 @@
         metricsPath: /metrics
         scrapeInterval: 20s
         staticConfigs:
-        - targets:
-            - "{{ tailscale_ipv4_address }}:{{ node_exporter_port }}"
+          - targets:
+              - "{{ tailscale_ipv4_address }}:{{ node_exporter_port }}"
         relabelings:
           - targetLabel: instance
             replacement: "{{ inventory_hostname }}"

@@ -1,3 +1,4 @@
+---
 argument_specs:
   main:
     options:
@@ -20,7 +21,7 @@ argument_specs:
       borg_server_host:
         type: "str"
         required: false
-        default: null
+        default:
       borgmatic_scripts:
         type: dict
         required: false

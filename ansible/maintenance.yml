@@ -1,3 +1,4 @@
+---
 - name: Do docker pruning on all docker hosts
   hosts: docker
   become: true
@@ -11,7 +12,6 @@
         networks: true
         volumes: true
         builder_cache: true
-
 
 - name: Do podman pruning on all podman hosts
   hosts: podman

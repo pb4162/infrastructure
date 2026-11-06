@@ -1,3 +1,4 @@
+---
 - name: Create downloads directory
   ansible.builtin.file:
     path: "~/longhorn-cli"
@@ -15,4 +16,4 @@
     src: "~/longhorn-cli/longhornctl-{{ longhorn_cli_version }}"
     dest: /usr/local/bin/longhornctl
     mode: a+x
-    remote_src: yes
+    remote_src: true

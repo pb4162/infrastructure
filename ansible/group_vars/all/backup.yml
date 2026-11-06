@@ -1,3 +1,4 @@
+---
 borgmatic_exclude_patterns_map:
   debian:
     - /var/run/lock
@@ -26,7 +27,8 @@ borgmatic_exclude_patterns: |
 
 borgmatic_config_group:
   repositories:
-    - path: "ssh://{{ borg_server_user }}@{{ 'localhost' if 'backup_servers' in group_names else hostvars[borg_server_host]['ansible_host'] }}:22/{{ ('/home', borg_server_user, 'repos', inventory_hostname) | path_join }}"
+    - path: "ssh://{{ borg_server_user }}@{{ 'localhost' if 'backup_servers' in group_names else hostvars[borg_server_host]['ansible_host'] }}:22/{{ ('/home', borg_server_user,
+        'repos', inventory_hostname) | path_join }}"
       label: backup_server
   source_directories:
     - /var
@@ -39,24 +41,24 @@ borgmatic_config_group:
   keep_weekly: 4
   keep_monthly: 12
   ntfy:
-      topic: backups
-      server: "https://ntfy.{{ root_domain }}"
-      start:
-        title: "{{ inventory_hostname }} backups started"
-        message: "Backups have started for {{ inventory_hostname }}"
-        priority: min
-        tags: borg,borgmatic,backup
-      finish:
-        title: "{{ inventory_hostname }} backups finished"
-        message: "Backups have finished for {{ inventory_hostname }}"
-        priority: min
-        tags: borg,borgmatic,backup,+1
-      fail:
-        title: "backups failed for {{ inventory_hostname }}"
-        message: "Backups have failed for {{ inventory_hostname }}"
-        priority: max
-        tags: borg,borgmatic,backup,-1
-      states:
-        - start
-        - finish
-        - fail
+    topic: backups
+    server: "https://ntfy.{{ root_domain }}"
+    start:
+      title: "{{ inventory_hostname }} backups started"
+      message: "Backups have started for {{ inventory_hostname }}"
+      priority: min
+      tags: borg,borgmatic,backup
+    finish:
+      title: "{{ inventory_hostname }} backups finished"
+      message: "Backups have finished for {{ inventory_hostname }}"
+      priority: min
+      tags: borg,borgmatic,backup,+1
+    fail:
+      title: "backups failed for {{ inventory_hostname }}"
+      message: "Backups have failed for {{ inventory_hostname }}"
+      priority: max
+      tags: borg,borgmatic,backup,-1
+    states:
+      - start
+      - finish
+      - fail

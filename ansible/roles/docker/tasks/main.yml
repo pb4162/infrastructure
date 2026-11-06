@@ -1,3 +1,4 @@
+---
 - name: "Install curl and ca-certificates"
   ansible.builtin.apt:
     state: present
@@ -9,7 +10,7 @@
   ansible.builtin.get_url:
     url: https://download.docker.com/linux/debian/gpg
     dest: /etc/apt/trusted.gpg.d/docker.asc
-    mode: 0644
+    mode: "0644"
 
 - name: "Add apt repository"
   ansible.builtin.deb822_repository:
@@ -27,7 +28,7 @@
 
 - name: "apt: Update"
   ansible.builtin.apt:
-    update_cache: yes
+    update_cache: true
   when: docker_apt_repo_add.changed is true
 
 - name: "Install docker packages"

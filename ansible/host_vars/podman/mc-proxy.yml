@@ -1,2 +1,3 @@
+---
 # renovate: datasource=docker depName=traefik
 mc_proxy_traefik_version: v3.7.17

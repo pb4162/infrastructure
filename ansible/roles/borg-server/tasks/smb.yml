@@ -1,21 +1,22 @@
+---
 - name: Install cifs-utils
   ansible.builtin.apt:
     name: cifs-utils
     state: present
 
-    # https://wiki.archlinux.org/title/Samba#Storing_share_passwords
+# https://wiki.archlinux.org/title/Samba#Storing_share_passwords
 - name: Create /etc/samba/credentials directory
   ansible.builtin.file:
     path: /etc/samba/credentials
     state: directory
     owner: root
     group: root
-    mode: 0700
+    mode: "0700"
 
 - name: Create smb credentials file
   ansible.builtin.template:
     dest: /etc/samba/credentials/borg
-    mode: 0600
+    mode: "0600"
     owner: root
     group: root
     src: smbcreds.j2

@@ -1,3 +1,4 @@
+---
 - name: Set app_base_dir
   ansible.builtin.set_fact:
     app_base_dir: "{{ (container_data_dir, app_name) | path_join }}"
@@ -41,8 +42,8 @@
   notify: "Restart app containers ({{ container_tool }})"
   register: app_template_copy
   changed_when:
-  - app_template_copy.changed
-  - not (item.inhibit_restart | default(false))
+    - app_template_copy.changed
+    - not (item.inhibit_restart | default(false))
 
 - name: Create app containers (docker)
   community.docker.docker_container: "{{ item | combine({'restart_policy': 'unless-stopped'}) }}"
@@ -84,17 +85,17 @@
 
 - when: container_tool == "docker"
   block:
-  - name: Create systemd service (docker)
-    ansible.builtin.template:
-      dest: "/etc/systemd/system/{{ app_name }}-docker.service"
-      mode: 0644
-      owner: root
-      group: root
-      src: docker-service.service.j2
-    notify: Run systemctl daemon-reload
+    - name: Create systemd service (docker)
+      ansible.builtin.template:
+        dest: "/etc/systemd/system/{{ app_name }}-docker.service"
+        mode: "0644"
+        owner: root
+        group: root
+        src: docker-service.service.j2
+      notify: Run systemctl daemon-reload
 
-  - name: Enable and start systemd service (docker)
-    ansible.builtin.systemd_service:
-      name: "{{ app_name }}-docker.service"
-      state: started
-      enabled: true
+    - name: Enable and start systemd service (docker)
+      ansible.builtin.systemd_service:
+        name: "{{ app_name }}-docker.service"
+        state: started
+        enabled: true

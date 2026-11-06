@@ -1,3 +1,4 @@
+---
 - name: "sysctl: Raise fs.inotify.max_user_instances to 1024"
   ansible.posix.sysctl:
     name: fs.inotify.max_user_instances

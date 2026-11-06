@@ -1,3 +1,4 @@
+---
 - name: Install tailscale
   community.general.openbsd_pkg:
     name: tailscale

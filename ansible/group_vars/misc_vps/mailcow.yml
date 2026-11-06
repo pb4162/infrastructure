@@ -1,3 +1,4 @@
+---
 mailcow_domain: "mail.{{ root_domain }}"
 mailcow_install_path: "/root"
 mailcow_timezone: "{{ timezone }}"

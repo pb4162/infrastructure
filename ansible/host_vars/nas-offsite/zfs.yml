@@ -1,8 +1,9 @@
+---
 zfs_pools:
   tank:
     mountpoint: /mnt/tank
     fs_props:
-      compression: on
+      compression: true
     vdevs:
       - type: stripe
         disks:

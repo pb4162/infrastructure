@@ -1,3 +1,4 @@
+---
 - name: "apt: Install ansible dependencies"
   ansible.builtin.apt:
     state: present
@@ -9,7 +10,7 @@
   ansible.builtin.get_url:
     url: https://packages.buildkite.com/helm-linux/helm-debian/gpgkey
     dest: /etc/apt/trusted.gpg.d/helm.asc
-    mode: 0644
+    mode: "0644"
 
 - name: "apt: Install apt-transport-https"
   ansible.builtin.apt:
@@ -43,7 +44,7 @@
   ansible.builtin.get_url:
     url: https://github.com/databus23.gpg
     dest: ~/databus23.gpg
-    mode: 0644
+    mode: "0644"
 
 - name: "Install helm-diff plugin gpg key"
   ansible.builtin.command: gpg --import ~/databus23.gpg

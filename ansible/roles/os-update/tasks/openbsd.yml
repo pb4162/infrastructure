@@ -1,11 +1,12 @@
+---
 - name: Update all packages on the system
   community.general.openbsd_pkg:
-    name: '*'
+    name: "*"
     state: latest
 
 - name: Remove all unused dependencies
   community.general.openbsd_pkg:
-    name: '*'
+    name: "*"
     autoremove: true
 
 - name: Run syspatch

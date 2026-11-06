@@ -1,3 +1,4 @@
+---
 - name: "Download install script"
   ansible.builtin.get_url:
     url: https://fluxcd.io/install.sh

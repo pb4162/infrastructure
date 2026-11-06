@@ -1,10 +1,11 @@
+---
 app_name: traefik
 chown_user: "{{ getent_passwd[ansible_user][1] if container_tool == 'podman' else omit }}"
 chown_group: "{{ getent_passwd[ansible_user][2] if container_tool == 'podman' else omit }}"
 
 quadlet_options: |-
-   [Install]
-   WantedBy=multi-user.target default.target
+  [Install]
+  WantedBy=multi-user.target default.target
 
 app_directories:
   - path: certs

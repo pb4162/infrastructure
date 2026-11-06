@@ -1,3 +1,4 @@
+---
 # - name: "Set net.ipv4.tcp_retries2 (workaround to https://github.com/juanfont/headscale/issues/2129)"
 #   ansible.posix.sysctl:
 #     name: net.ipv4.tcp_retries2
@@ -20,7 +21,7 @@
   ansible.builtin.template:
     backup: true
     dest: /etc/headscale/config.yaml
-    mode: 0660
+    mode: "0660"
     owner: _headscale
     group: _headscale
     src: config.yaml.j2

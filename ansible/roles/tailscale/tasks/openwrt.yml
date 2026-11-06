@@ -1,3 +1,4 @@
+---
 - name: "Install tailscale"
   community.general.apk:
     state: present

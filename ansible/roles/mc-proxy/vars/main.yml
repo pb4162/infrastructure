@@ -1,3 +1,4 @@
+---
 traefik_chown_user: "{{ getent_passwd[ansible_user][1] }}"
 traefik_chown_group: "{{ getent_passwd[ansible_user][2] }}"
 
@@ -71,7 +72,7 @@ app_templates:
           proxy_pass mc-bedrock;
           proxy_protocol on;
         }
-        
+
         server {
           listen 24454 udp;
           server_name mc.{{ root_domain }};
@@ -89,15 +90,15 @@ app_templates:
           http:
             tls: true
       certificatesResolvers:
-          letsencrypt:
-              acme:
-                  dnsChallenge:
-                      provider: cloudflare
-                  email: "{{ mc_proxy_traefik_acme_email }}"
-                  storage: /letsencrypt/acme.json
+        letsencrypt:
+          acme:
+            dnsChallenge:
+              provider: cloudflare
+            email: "{{ mc_proxy_traefik_acme_email }}"
+            storage: /letsencrypt/acme.json
       providers:
-          file:
-              filename: /etc/traefik/dynamic.yml
+        file:
+          filename: /etc/traefik/dynamic.yml
 
   - path: traefik/dynamic.yml
     owner: "{{ traefik_chown_user }}"
@@ -120,7 +121,7 @@ app_templates:
           default:
             defaultGeneratedCert:
               domain:
-                 main: "mc.{{ root_domain }}"
-                 sans:
-                          - "mc.{{ root_domain }}"
+                main: "mc.{{ root_domain }}"
+                sans:
+                  - "mc.{{ root_domain }}"
               resolver: letsencrypt

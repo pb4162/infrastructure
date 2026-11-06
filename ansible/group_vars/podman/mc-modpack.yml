@@ -1,3 +1,4 @@
+---
 crafty_domain: "https://mc.{{ root_domain }}"
 
 mc_modpacks:

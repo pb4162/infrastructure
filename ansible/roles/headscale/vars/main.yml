@@ -1,3 +1,4 @@
+---
 headscale_config_base:
   # headscale will look for a configuration file named `config.yaml` (or `config.json`) in the following order:
   #
@@ -170,23 +171,23 @@ headscale_config_base:
       # Set to 0 to disable automatic checkpointing.
       wal_autocheckpoint: 1000
 
-    # # Postgres config
-    # Please note that using Postgres is highly discouraged as it is only supported for legacy reasons.
-    # See database.type for more information.
-    # postgres:
-    #   # If using a Unix socket to connect to Postgres, set the socket path in the 'host' field and leave 'port' blank.
-    #   host: localhost
-    #   port: 5432
-    #   name: headscale
-    #   user: foo
-    #   pass: bar
-    #   max_open_conns: 10
-    #   max_idle_conns: 10
-    #   conn_max_idle_time_secs: 3600
+  # # Postgres config
+  # Please note that using Postgres is highly discouraged as it is only supported for legacy reasons.
+  # See database.type for more information.
+  # postgres:
+  #   # If using a Unix socket to connect to Postgres, set the socket path in the 'host' field and leave 'port' blank.
+  #   host: localhost
+  #   port: 5432
+  #   name: headscale
+  #   user: foo
+  #   pass: bar
+  #   max_open_conns: 10
+  #   max_idle_conns: 10
+  #   conn_max_idle_time_secs: 3600
 
-    #   # If other 'sslmode' is required instead of 'require(true)' and 'disabled(false)', set the 'sslmode' you need
-    #   # in the 'ssl' field. Refers to https://www.postgresql.org/docs/current/libpq-ssl.html Table 34.1.
-    #   ssl: false
+  #   # If other 'sslmode' is required instead of 'require(true)' and 'disabled(false)', set the 'sslmode' you need
+  #   # in the 'ssl' field. Refers to https://www.postgresql.org/docs/current/libpq-ssl.html Table 34.1.
+  #   ssl: false
 
   ### TLS configuration
   #
@@ -283,37 +284,36 @@ headscale_config_base:
         - 2606:4700:4700::1111
         - 2606:4700:4700::1001
 
-        # NextDNS (see https://tailscale.com/kb/1218/nextdns/).
-        # "abc123" is example NextDNS ID, replace with yours.
-        # - https://dns.nextdns.io/abc123
+      # NextDNS (see https://tailscale.com/kb/1218/nextdns/).
+      # "abc123" is example NextDNS ID, replace with yours.
+      # - https://dns.nextdns.io/abc123
 
       # Split DNS (see https://tailscale.com/kb/1054/dns/),
       # a map of domains and which DNS server to use for each.  #
-      split:
-        {}
-        # foo.bar.com:
-        #   - 1.1.1.1
-        # darp.headscale.net:
-        #   - 1.1.1.1
-        #   - 8.8.8.8
+      split: {}
+    # foo.bar.com:
+    #   - 1.1.1.1
+    # darp.headscale.net:
+    #   - 1.1.1.1
+    #   - 8.8.8.8
 
     # Set custom DNS search domains. With MagicDNS enabled,
     # your tailnet base_domain is always the first search domain.
     search_domains: []
 
-    # Extra DNS records
-    # so far only A and AAAA records are supported (on the tailscale side)
-    # See: docs/ref/dns.md
-    #   - name: "grafana.myvpn.example.com"
-    #     type: "A"
-    #     value: "100.64.0.3"
-    #
-    #   # you can also put it in one line
-    #   - { name: "prometheus.myvpn.example.com", type: "A", value: "100.64.0.3" }
-    #
-    # Alternatively, extra DNS records can be loaded from a JSON file.
-    # Headscale processes this file on each change.
-    # extra_records_path: /var/lib/headscale/extra-records.json
+  # Extra DNS records
+  # so far only A and AAAA records are supported (on the tailscale side)
+  # See: docs/ref/dns.md
+  #   - name: "grafana.myvpn.example.com"
+  #     type: "A"
+  #     value: "100.64.0.3"
+  #
+  #   # you can also put it in one line
+  #   - { name: "prometheus.myvpn.example.com", type: "A", value: "100.64.0.3" }
+  #
+  # Alternatively, extra DNS records can be loaded from a JSON file.
+  # Headscale processes this file on each change.
+  # extra_records_path: /var/lib/headscale/extra-records.json
 
   # Unix socket used for the CLI to connect without authentication
   # Note: for production you will want to set this to something like:

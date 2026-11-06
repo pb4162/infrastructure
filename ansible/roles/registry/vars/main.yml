@@ -1,3 +1,4 @@
+---
 container_data_dir: "{{ registry_base_dir }}"
 app_name: registry
 app_directories:
@@ -8,7 +9,7 @@ app_containers:
   - image: "registry:{{ registry_version }}"
     name: registry-server
     env:
-      REGISTRY_STORAGE_DELETE_ENABLED: 'true'
+      REGISTRY_STORAGE_DELETE_ENABLED: "true"
     volumes:
       - "{{ (app_base_dir, 'data') | path_join }}:/var/lib/registry"
     networks:

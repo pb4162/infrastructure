@@ -1,3 +1,4 @@
+---
 - name: Generate host's own OpenSSH key
   community.crypto.openssh_keypair:
     path: "~/.ssh/id_rsa"

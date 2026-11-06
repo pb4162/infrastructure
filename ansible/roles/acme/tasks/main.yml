@@ -1,3 +1,4 @@
+---
 - name: "Install acme.sh on OpenBSD"
   community.general.openbsd_pkg:
     state: present
@@ -16,7 +17,7 @@
     state: directory
     owner: "{{ acme_home_user }}"
     group: "{{ acme_home_group }}"
-    mode: 0770
+    mode: "0770"
 
 - name: "Issue first certificate(s)"
   ansible.builtin.shell: >-

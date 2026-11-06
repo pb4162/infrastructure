@@ -1,3 +1,4 @@
+---
 - name: Install cadvisor
   ansible.builtin.include_role:
     name: container-app
@@ -20,8 +21,8 @@
         metricsPath: /metrics
         scrapeInterval: 30s
         staticConfigs:
-        - targets:
-            - "{{ tailscale_ipv4_address }}:{{ cadvisor_port }}"
+          - targets:
+              - "{{ tailscale_ipv4_address }}:{{ cadvisor_port }}"
         relabelings:
           - targetLabel: instance
             replacement: "{{ inventory_hostname }}"

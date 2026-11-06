@@ -1,3 +1,4 @@
+---
 - name: Set release_arch
   ansible.builtin.set_fact:
     release_arch: >-

@@ -1,3 +1,4 @@
+---
 borgmatic_scripts:
   backup_router.sh: |
     #!/usr/bin/env bash

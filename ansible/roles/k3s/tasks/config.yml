@@ -1,3 +1,4 @@
+---
 - name: "Create config directory"
   ansible.builtin.file:
     path: /etc/rancher/k3s
@@ -8,7 +9,7 @@
   ansible.builtin.template:
     src: k3s-config.yaml.j2
     dest: /etc/rancher/k3s/config.yaml
-    mode: 0640
+    mode: "0640"
   notify:
     - "Restart k3s ({{ k3s_node_type }})"
 
@@ -16,7 +17,7 @@
   ansible.builtin.template:
     src: k3s-registry-config.yaml.j2
     dest: /etc/rancher/k3s/registries.yaml
-    mode: 0640
+    mode: "0640"
   notify:
     - "Restart k3s ({{ k3s_node_type }})"
 
@@ -24,7 +25,7 @@
   ansible.builtin.template:
     src: k3s-resolv.conf.j2
     dest: "{{ k3s_resolv_conf_path }}"
-    mode: 0640
+    mode: "0640"
   when: (k3s_resolv_conf != "")
   notify:
     - "Restart k3s ({{ k3s_node_type }})"

@@ -1,3 +1,4 @@
+---
 # renovate: datasource=github-releases depName=GoodiesHQ/headscale-admin
 headscale_ui_version: "v0.25.6"
 headscale_config:
@@ -9,4 +10,4 @@ headscale_config:
   randomize_client_port: false
   policy:
     mode: file
-    path: ''
+    path: ""

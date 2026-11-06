@@ -1,3 +1,4 @@
+---
 # TODO: find better way to manage versioning for main packwiz binary
 
 - name: "Create download directories"
@@ -22,14 +23,14 @@
   ansible.builtin.unarchive:
     src: "~/packwiz-downloads/{{ packwiz_gh_actions_run }}/Linux 64-bit x86.zip"
     dest: "~/packwiz-downloads/{{ packwiz_gh_actions_run }}/extracted"
-    remote_src: yes
+    remote_src: true
 
 - name: "Copy packwiz binary to /usr/local/bin"
   ansible.builtin.copy:
     src: "~/packwiz-downloads/{{ packwiz_gh_actions_run }}/extracted/packwiz"
     dest: /usr/local/bin
     mode: a+x
-    remote_src: yes
+    remote_src: true
 
 - name: "Download packwiz-installer from github releases"
   ansible.builtin.get_url:

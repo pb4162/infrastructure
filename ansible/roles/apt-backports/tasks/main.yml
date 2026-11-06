@@ -1,3 +1,4 @@
+---
 - name: "apt: Add backports repository"
   ansible.builtin.deb822_repository:
     state: present
@@ -14,5 +15,5 @@
 
 - name: "apt: Update"
   ansible.builtin.apt:
-    update_cache: yes
+    update_cache: true
   when: backports_apt_repo_add.changed is true

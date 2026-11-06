@@ -1,3 +1,4 @@
+---
 acme_certificates:
   - name: "{{ root_domain }}"
     alt_names:

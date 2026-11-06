@@ -1,3 +1,4 @@
+---
 - name: Connect to Wi-Fi
   community.general.nmcli:
     type: wifi

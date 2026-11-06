@@ -1,3 +1,4 @@
+---
 crowdsec_console_name: openbsd-vps
 crowdsec_firewall_bouncer_name: openbsd-pf-bouncer
 crowdsec_hub_items:

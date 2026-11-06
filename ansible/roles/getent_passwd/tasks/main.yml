@@ -1,3 +1,4 @@
+---
 - name: "Get user id for ansible_user"
   ansible.builtin.getent:
     database: passwd

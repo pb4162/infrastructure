@@ -1,3 +1,4 @@
+---
 - name: "Restart k3s (master)"
   ansible.builtin.systemd_service:
     name: k3s.service

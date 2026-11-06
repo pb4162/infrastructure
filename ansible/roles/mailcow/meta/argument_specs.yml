@@ -1,3 +1,4 @@
+---
 argument_specs:
   main:
     options:
@@ -17,7 +18,7 @@ argument_specs:
       mailcow_skip_clamd:
         type: str
         required: false
-        default: y
+        default: true
       mailcow_http_port:
         type: int
         required: false

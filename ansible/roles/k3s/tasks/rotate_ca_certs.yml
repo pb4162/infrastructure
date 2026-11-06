@@ -1,3 +1,4 @@
+---
 - when: ("k8s_first_master_node" in group_names)
   block:
     - name: Run community cert rotation script

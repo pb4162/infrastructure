@@ -1,3 +1,4 @@
+---
 - name: "Install packages"
   ansible.builtin.apt:
     state: present
@@ -20,7 +21,7 @@
   ansible.builtin.include_tasks: zpool.yml
   loop: "{{ zfs_pools | dict2items }}"
   loop_control:
-      label: "{{ item.key }}"
+    label: "{{ item.key }}"
 
 - name: Create datasets
   community.general.zfs:
@@ -35,7 +36,7 @@
   ansible.builtin.replace:
     dest: "/etc/zfs/zed.d/zed.rc"
     regexp: '^#?({{ item.option }})=".*"$'
-    replace: '\1={{ item.value | quote }}'
+    replace: "\\1={{ item.value | quote }}"
   loop:
     - option: ZED_NTFY_TOPIC
       value: "{{ zfs_ntfy_topic }}"

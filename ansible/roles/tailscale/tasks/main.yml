@@ -1,23 +1,24 @@
+---
 # TODO: structure tailscale state better as opposed to the raw cli flags
 
 - block:
-  - name: "Enable ipv4 forwarding for subnet routers/exit nodes"
-    ansible.posix.sysctl:
-      name: net.ipv4.ip_forward
-      value: "1"
-      sysctl_set: true
-      state: present
-      reload: true
-      sysctl_file: /etc/sysctl.d/90-ansible_managed.conf
+    - name: "Enable ipv4 forwarding for subnet routers/exit nodes"
+      ansible.posix.sysctl:
+        name: net.ipv4.ip_forward
+        value: "1"
+        sysctl_set: true
+        state: present
+        reload: true
+        sysctl_file: /etc/sysctl.d/90-ansible_managed.conf
 
-  - name: "Enable ipv6 forwarding for subnet routers/exit nodes"
-    ansible.posix.sysctl:
-      name: net.ipv6.conf.all.forwarding
-      value: "1"
-      sysctl_set: true
-      state: present
-      reload: true
-      sysctl_file: /etc/sysctl.d/90-ansible_managed.conf
+    - name: "Enable ipv6 forwarding for subnet routers/exit nodes"
+      ansible.posix.sysctl:
+        name: net.ipv6.conf.all.forwarding
+        value: "1"
+        sysctl_set: true
+        state: present
+        reload: true
+        sysctl_file: /etc/sysctl.d/90-ansible_managed.conf
   when: tailscale_flags is search("--advertise-exit-node|--advertise-routes")
 
 - ansible.builtin.import_tasks: openwrt.yml
@@ -62,4 +63,3 @@
   ansible.builtin.copy:
     content: "{{ tailscale_up_command }}"
     dest: "/root/tailscale_up_command.txt"
-

@@ -1,3 +1,4 @@
+---
 sanoid_conf: |
   [tank/data]
   use_template = base

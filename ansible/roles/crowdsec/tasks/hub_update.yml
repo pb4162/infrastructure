@@ -1,3 +1,4 @@
+---
 - name: Pull updates from crowdsec hub
   ansible.builtin.command: cscli hub update
   register: hub_update_info

@@ -1,3 +1,4 @@
+---
 - name: Check if zpool in import list
   ansible.builtin.set_fact:
     can_import_zpool: "{{ (zpool_import_info.stdout | regex_search('^\\s*pool:\\s*' ~ item.key, multiline=True)) is not none }}"

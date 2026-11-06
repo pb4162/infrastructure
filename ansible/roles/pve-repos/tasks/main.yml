@@ -1,3 +1,4 @@
+---
 - name: Add proxmox community repo
   ansible.builtin.deb822_repository:
     state: present

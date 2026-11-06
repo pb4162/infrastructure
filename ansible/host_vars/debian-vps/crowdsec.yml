@@ -1,3 +1,4 @@
+---
 crowdsec_console_name: debian-vps
 crowdsec_hub_items:
   - name: crowdsecurity/ssh-bf

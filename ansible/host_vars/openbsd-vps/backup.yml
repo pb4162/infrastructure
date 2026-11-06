@@ -1,3 +1,4 @@
+---
 borgmatic_config:
   sqlite_databases:
     - name: headscale

@@ -1,3 +1,4 @@
+---
 - name: "systemd: Disable and stop dphys-swapfile.service"
   ansible.builtin.systemd_service:
     name: dphys-swapfile.service
@@ -9,7 +10,6 @@
 - name: "systemd: Mask swap service"
   ansible.builtin.systemd_service:
     name: "{{ hostvars[ansible_host]['swap_path'] }}"
-    masked: yes
+    masked: true
   when: ("mini_pcs" in group_names)
   notify: Reboot
-

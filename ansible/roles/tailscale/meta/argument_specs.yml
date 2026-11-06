@@ -1,3 +1,4 @@
+---
 argument_specs:
   main:
     options:
@@ -7,4 +8,3 @@ argument_specs:
       tailscale_flags:
         type: "str"
         required: true
-

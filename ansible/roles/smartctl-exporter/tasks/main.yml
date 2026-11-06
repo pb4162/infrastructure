@@ -1,3 +1,4 @@
+---
 - name: "Install package"
   ansible.builtin.apt:
     state: present
@@ -6,13 +7,13 @@
 - name: "Install systemd service"
   ansible.builtin.template:
     dest: /etc/systemd/system/smartctl_exporter.service
-    mode: 0660
+    mode: "0660"
     owner: root
     group: root
     src: smartctl_exporter.service.j2
   notify:
-   - Run systemctl daemon-reload
-   - Restart smartctl_exporter service
+    - Run systemctl daemon-reload
+    - Restart smartctl_exporter service
 
 - name: "Enable and start systemd service"
   ansible.builtin.systemd_service:
@@ -37,8 +38,8 @@
         metricsPath: /metrics
         scrapeInterval: 60s
         staticConfigs:
-        - targets:
-            - "{{ tailscale_ipv4_address }}:{{ smartctl_exporter_port }}"
+          - targets:
+              - "{{ tailscale_ipv4_address }}:{{ smartctl_exporter_port }}"
         relabelings:
           - targetLabel: instance
             replacement: "{{ inventory_hostname }}"

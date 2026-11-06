@@ -1,3 +1,4 @@
+---
 semaphoreui_env:
   SEMAPHORE_ADMIN_NAME: Admin
   SEMAPHORE_ADMIN: admin

@@ -1,3 +1,4 @@
+---
 - name: Install and configure woodpeckerci
   ansible.builtin.include_role:
     name: container-app

@@ -1,3 +1,4 @@
+---
 - name: Update all hosts except for the router
   hosts: all:!router
   become: true
@@ -7,7 +8,6 @@
 
   roles:
     - name: os-update
-
 
 - name: Fetch and update resources from crowdsec hub
   hosts: remote
@@ -20,7 +20,6 @@
         name: crowdsec
         tasks_from: hub_upgrade.yml
 
-
 - name: Update mailcow
   hosts: misc_vps
   become: true
@@ -30,7 +29,6 @@
     - role: mailcow
       vars:
         mailcow_update: true
-
 
 - name: Update k3s
   hosts: k8s_cluster
@@ -44,7 +42,6 @@
       vars:
         k3s_update: true
 
-
 - name: Rotate k3s CA certs
   hosts: k8s_cluster
   become: true
@@ -54,7 +51,6 @@
     - role: k3s
       vars:
         k3s_rotate_ca_certs: true
-
 
 - name: Update flux
   hosts: k8s_first_master_node

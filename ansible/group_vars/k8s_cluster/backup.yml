@@ -1,3 +1,4 @@
+---
 borgmatic_config:
   exclude_patterns:
     - "/var/lib/longhorn/"

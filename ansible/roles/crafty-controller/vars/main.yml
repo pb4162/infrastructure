@@ -1,3 +1,4 @@
+---
 app_name: crafty-controller
 app_containers:
   - state: quadlet

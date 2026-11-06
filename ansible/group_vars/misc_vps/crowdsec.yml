@@ -1,3 +1,4 @@
+---
 crowdsec_acquisitions:
   nextcloud:
     source: loki

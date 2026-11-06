@@ -1,3 +1,4 @@
+---
 - name: "Install borg and borgmatic for OpenBSD"
   community.general.openbsd_pkg:
     name:
@@ -70,22 +71,15 @@
 
 - name: "Merge borgmatic_(config,config_base,config_private,config_group,config_group_private) into final config"
   ansible.builtin.set_fact:
-    borgmatic_config_final: "{{
-      borgmatic_config_base | combine(
-        borgmatic_config_group,
-        borgmatic_config_group_private,
-        borgmatic_config,
-        borgmatic_config_private,
-        recursive=true,
-        list_merge='append')
-      }}"
+    borgmatic_config_final: "{{ borgmatic_config_base | combine( borgmatic_config_group, borgmatic_config_group_private, borgmatic_config, borgmatic_config_private,
+      recursive=true, list_merge='append') }}"
 
 - name: "Copy final config to /etc/borgmatic/config.yaml"
   ansible.builtin.copy:
     backup: true
     content: "{{ borgmatic_config_final | to_nice_yaml }}"
     dest: /etc/borgmatic/config.yaml
-    mode: 0660
+    mode: "0660"
     validate: borgmatic --config %s config validate
 
 - name: "Create borg repo"

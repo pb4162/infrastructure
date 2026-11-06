@@ -1,3 +1,4 @@
+---
 - name: "Run install script (first master node)"
   ansible.builtin.shell: >-
     INSTALL_K3S_VERSION={{k3s_version}} ~/install_k3s.sh >> ~/k3s_install_log.txt
@@ -13,4 +14,3 @@
 - name: "Set node_token fact"
   ansible.builtin.set_fact:
     node_token: "{{ node_token_output.stdout_lines[0] }}"
-

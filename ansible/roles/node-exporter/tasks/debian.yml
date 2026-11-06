@@ -1,3 +1,4 @@
+---
 - name: Import apt-backports role
   ansible.builtin.import_role:
     name: apt-backports
@@ -10,13 +11,13 @@
 - name: Install config file
   ansible.builtin.template:
     dest: /etc/default/prometheus-node-exporter
-    mode: 0644
+    mode: "0644"
     owner: root
     group: root
     src: args.j2
   notify:
-   - Run systemctl daemon-reload
-   - Restart prometheus-node-exporter (debian)
+    - Run systemctl daemon-reload
+    - Restart prometheus-node-exporter (debian)
 
 - name: Create /etc/systemd/system/prometheus-node-exporter.service.d directory
   ansible.builtin.file:
@@ -26,7 +27,7 @@
 - name: Install systemd drop-in file
   ansible.builtin.copy:
     dest: /etc/systemd/system/prometheus-node-exporter.service.d/override.conf
-    mode: 0644
+    mode: "0644"
     owner: root
     group: root
     content: |
@@ -34,8 +35,8 @@
       After=tailscale-online.target
       Requires=tailscale-online.target
   notify:
-   - Run systemctl daemon-reload
-   - Restart prometheus-node-exporter (debian)
+    - Run systemctl daemon-reload
+    - Restart prometheus-node-exporter (debian)
 
 - name: Disable openipmi systemd service
   ansible.builtin.systemd_service:

@@ -1,3 +1,4 @@
+---
 app_name: cadvisor
 app_systemd_requires: [tailscale-online.target]
 app_systemd_after: [tailscale-online.target]
@@ -20,11 +21,11 @@ cadvisor_devices:
   - /dev/kmsg:/dev/kmsg
 # TODO: depend on tailscale-online.target while in rootless mode
 quadlet_options: |-
-   [Service]
-   ExecStartPre=/usr/bin/tailscale wait
+  [Service]
+  ExecStartPre=/usr/bin/tailscale wait
 
-   [Install]
-   WantedBy=multi-user.target default.target
+  [Install]
+  WantedBy=multi-user.target default.target
 
 app_containers:
   - state: "{{ 'quadlet' if container_tool == 'podman' else 'started' }}"
@@ -35,19 +36,19 @@ app_containers:
     publish: "{{ cadvisor_container_ports if container_tool == 'podman' else omit }}"
     command: "{{ cadvisor_command }}"
     volumes:
-    - "/:/rootfs:ro"
-    - "{{ cadvisor_socket }}:{{ cadvisor_socket }}:ro"
-    - "/sys:/sys:ro"
-    - "/sys/fs/cgroup:/sys/fs/cgroup:ro"
-    - >-
-      {{
-        ((('/home', ansible_user, '.local/share/containers') | path_join) ~ ':/var/lib/containers:ro')
-        if container_tool == "podman" else omit
-      }}
-    - "/dev/disk:/dev/disk:ro"
-    - "/etc/machine-id:/etc/machine-id:ro"
-    - "/var/run:/var/run:rw"
-    - "{{ '/var/lib/docker/:/var/lib/docker:ro' if container_tool == 'docker' else omit }}"
+      - "/:/rootfs:ro"
+      - "{{ cadvisor_socket }}:{{ cadvisor_socket }}:ro"
+      - "/sys:/sys:ro"
+      - "/sys/fs/cgroup:/sys/fs/cgroup:ro"
+      - >-
+        {{
+          ((('/home', ansible_user, '.local/share/containers') | path_join) ~ ':/var/lib/containers:ro')
+          if container_tool == "podman" else omit
+        }}
+      - "/dev/disk:/dev/disk:ro"
+      - "/etc/machine-id:/etc/machine-id:ro"
+      - "/var/run:/var/run:rw"
+      - "{{ '/var/lib/docker/:/var/lib/docker:ro' if container_tool == 'docker' else omit }}"
     device: "{{ cadvisor_devices if container_tool == 'podman' else omit }}"
     devices: "{{ cadvisor_devices if container_tool == 'docker' else omit }}"
     quadlet_options: |-

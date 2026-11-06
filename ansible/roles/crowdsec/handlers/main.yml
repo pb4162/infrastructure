@@ -1,3 +1,4 @@
+---
 - name: Restart crowdsec (openbsd)
   ansible.builtin.service:
     name: crowdsec

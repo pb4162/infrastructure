@@ -1,6 +1,6 @@
+---
 # renovate: datasource=docker depName=registry
 registry_version: 3.1.2
 # renovate: datasource=docker depName=joxit/docker-registry-ui
 registry_ui_version: 2.6.0
 registry_base_dir: "/mnt/tank/data"
-

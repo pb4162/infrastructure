@@ -1,3 +1,4 @@
+---
 - name: "apt: Install open-iscsi, nfs-common, cryptsetup and dmsetup"
   ansible.builtin.apt:
     state: present

@@ -1,2 +1,3 @@
+---
 # renovate: datasource=github-releases depName=strongtz/i915-sriov-dkms
 sriov_dkms_version: 2026.09.16

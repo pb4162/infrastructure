@@ -1,3 +1,4 @@
+---
 - name: Create modpack directory
   ansible.builtin.file:
     state: directory

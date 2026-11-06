@@ -1,3 +1,4 @@
+---
 - name: "Restart sshd (freebsd)"
   ansible.builtin.service:
     name: sshd

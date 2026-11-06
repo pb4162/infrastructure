@@ -1,3 +1,4 @@
+---
 doas_conf_path_map:
-  freebsd: '/usr/local/etc/doas.conf'
-  openbsd: '/etc/doas.conf'
+  freebsd: "/usr/local/etc/doas.conf"
+  openbsd: "/etc/doas.conf"

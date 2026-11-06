@@ -1,3 +1,4 @@
+---
 # renovate: datasource=docker depName=ghcr.io/twin/gatus
 gatus_version: v5.38.0
 gatus_port: 8082
@@ -15,18 +16,15 @@ gatus_config:
     discord:
       webhook-url: "${DISCORD_WEBHOOK_URL}"
       default-alert: *default-alert
-
     telegram:
       token: "${TELEGRAM_BOT_TOKEN}"
       id: "${TELEGRAM_CHAT_ID}"
       default-alert: *default-alert
-
     ntfy:
       topic: gatus
       url: "https://ntfy.{{ root_domain }}"
       token: "${NTFY_API_TOKEN}"
       default-alert: *default-alert
-
   ui:
     title: "pb's Health Dashboard :D ǀ Gatus"
     dashboard-subheading: "Powered by Gatus"

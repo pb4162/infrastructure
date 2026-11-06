@@ -1,7 +1,8 @@
+---
 - name: "Append 'dtoverlay=disable-wifi' to '/boot/firmware/config.txt'"
   ansible.builtin.lineinfile:
     state: present
-    insertafter: '^\[all\]\n'
+    insertafter: "^\\[all\\]\\n"
     line: "dtoverlay=disable-wifi"
     dest: /boot/firmware/config.txt
   notify: Reboot

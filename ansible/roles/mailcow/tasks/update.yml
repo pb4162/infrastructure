@@ -1,3 +1,4 @@
+---
 - name: "Check if updates are available"
   ansible.builtin.shell: >-
     ./update.sh --check

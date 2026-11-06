@@ -1,12 +1,13 @@
+---
 - notify: Do crowdsec hub update
   block:
-  - name: Do Debian-specific install tasks
-    ansible.builtin.import_tasks: install_debian.yml
-    when: ansible_distribution | lower == "debian"
+    - name: Do Debian-specific install tasks
+      ansible.builtin.import_tasks: install_debian.yml
+      when: ansible_distribution | lower == "debian"
 
-  - name: Do OpenBSD-specific install tasks
-    ansible.builtin.import_tasks: install_openbsd.yml
-    when: ansible_distribution | lower == "openbsd"
+    - name: Do OpenBSD-specific install tasks
+      ansible.builtin.import_tasks: install_openbsd.yml
+      when: ansible_distribution | lower == "openbsd"
 
 - meta: flush_handlers
 
@@ -25,45 +26,45 @@
 - name: "Register new firewall bouncer on OpenBSD only"
   when: (ansible_distribution | lower == "openbsd")
   block:
-  - name: "Create firewall bouncer with cscli"
-    ansible.builtin.shell: >-
-      cscli bouncers add {{ crowdsec_firewall_bouncer_name | quote }} -o json
-    register: crowdsec_firewall_bouncer_add_info
-    changed_when: ("already exists" not in crowdsec_firewall_bouncer_add_info.stderr)
-    failed_when: crowdsec_firewall_bouncer_add_info.rc not in [0, 1]
+    - name: "Create firewall bouncer with cscli"
+      ansible.builtin.shell: >-
+        cscli bouncers add {{ crowdsec_firewall_bouncer_name | quote }} -o json
+      register: crowdsec_firewall_bouncer_add_info
+      changed_when: ("already exists" not in crowdsec_firewall_bouncer_add_info.stderr)
+      failed_when: crowdsec_firewall_bouncer_add_info.rc not in [0, 1]
 
-  - name: "Get firewall bouncer API key"
-    ansible.builtin.set_fact:
-      crowdsec_firewall_bouncer_api_key: "{{ crowdsec_firewall_bouncer_add_info.stdout | from_json }}"
-    when: |
-      ("already exists" not in crowdsec_firewall_bouncer_add_info.stderr
-      and crowdsec_firewall_bouncer_api_key is undefined)
+    - name: "Get firewall bouncer API key"
+      ansible.builtin.set_fact:
+        crowdsec_firewall_bouncer_api_key: "{{ crowdsec_firewall_bouncer_add_info.stdout | from_json }}"
+      when: |
+        ("already exists" not in crowdsec_firewall_bouncer_add_info.stderr
+        and crowdsec_firewall_bouncer_api_key is undefined)
 
-  - name: "Set crowdsec_firewall_bouncer_config_path"
-    ansible.builtin.set_fact:
-      crowdsec_firewall_bouncer_config_path: >-
-        {{
-          "/etc/crowdsec-firewall-bouncer/crowdsec-firewall-bouncer.yaml" if ansible_distribution | lower == "openbsd"
-          else "/etc/crowdsec/bouncers/crowdsec-firewall-bouncer.yaml" if ansible_distribution | lower == "debian"
-        }}
+    - name: "Set crowdsec_firewall_bouncer_config_path"
+      ansible.builtin.set_fact:
+        crowdsec_firewall_bouncer_config_path: >-
+          {{
+            "/etc/crowdsec-firewall-bouncer/crowdsec-firewall-bouncer.yaml" if ansible_distribution | lower == "openbsd"
+            else "/etc/crowdsec/bouncers/crowdsec-firewall-bouncer.yaml" if ansible_distribution | lower == "debian"
+          }}
 
-  - name: "Replace ${API_KEY} in firewall bouncer config with API key"
-    ansible.builtin.replace:
-      backup: true
-      path: "{{ crowdsec_firewall_bouncer_config_path }}"
-      regexp: "\\${API_KEY}"
-      replace: "{{ crowdsec_firewall_bouncer_api_key }}"
-    notify:
-      - "Restart crowdsec-firewall-bouncer ({{ ansible_distribution | lower }})"
-      - "Restart crowdsec ({{ ansible_distribution | lower }})"
-    when: (crowdsec_firewall_bouncer_api_key is defined)
+    - name: "Replace ${API_KEY} in firewall bouncer config with API key"
+      ansible.builtin.replace:
+        backup: true
+        path: "{{ crowdsec_firewall_bouncer_config_path }}"
+        regexp: "\\${API_KEY}"
+        replace: "{{ crowdsec_firewall_bouncer_api_key }}"
+      notify:
+        - "Restart crowdsec-firewall-bouncer ({{ ansible_distribution | lower }})"
+        - "Restart crowdsec ({{ ansible_distribution | lower }})"
+      when: (crowdsec_firewall_bouncer_api_key is defined)
 
 - name: "Configure nginx bouncer to use appsec on Debian only"
   when: (ansible_distribution | lower == "debian")
   ansible.builtin.replace:
     dest: "/etc/crowdsec/bouncers/crowdsec-nginx-bouncer.conf"
-    regexp: '^#?({{ item.option }})=.*$'
-    replace: '\1={{ item.value }}'
+    regexp: "^#?({{ item.option }})=.*$"
+    replace: "\\1={{ item.value }}"
   loop:
     - option: APPSEC_URL
       value: "http://127.0.0.1:{{ crowdsec_appsec_port }}"

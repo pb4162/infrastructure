@@ -1,5 +1,6 @@
+---
 mailcow_update: false
-mailcow_skip_clamd: y
+mailcow_skip_clamd: true
 mailcow_release: master
 mailcow_http_port: 8080
 mailcow_https_port: 8443

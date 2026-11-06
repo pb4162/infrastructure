@@ -1,3 +1,4 @@
+---
 - name: Do borgmatic extract
   ansible.builtin.shell: >-
     borgmatic extract

@@ -1,3 +1,4 @@
+---
 - name: Upload ssh key
   hosts: all
   become: true
@@ -52,7 +53,6 @@
   roles:
     - role: sriov
       tags: sriov
-
 
 - name: Apply common configurations on all hosts except for the router
   hosts: all:!router
@@ -161,7 +161,6 @@
         name: gow
         public: false
 
-
 - name: Setup local dns records in /etc/hosts
   hosts: remote
   become: true
@@ -233,7 +232,6 @@
         name: woodpeckerci
         public: false
 
-
 - name: Setup podman VM
   hosts: podman
   become: true
@@ -279,7 +277,6 @@
         name: mc-proxy
         public: false
 
-
 - name: Setup misc_vps
   hosts: misc_vps
   become: true
@@ -298,7 +295,6 @@
   roles:
     - role: headscale
       tags: headscale
-
 
 - name: Setup tailscale
   hosts: all
@@ -321,7 +317,6 @@
     - role: inotify
       tags: inotify
 
-
 - name: "Setup k8s_first_master_node"
   hosts: k8s_first_master_node
   become: true
@@ -340,7 +335,6 @@
         - flux
         - flux-cli
 
-
 - name: "Install k3s on rest of nodes"
   hosts: k8s_cluster
   become: true
@@ -349,7 +343,6 @@
   roles:
     - role: k3s
       tags: k3s
-
 
 - name: "Bootstrap flux on k8s_first_master_node"
   hosts: k8s_first_master_node
@@ -361,7 +354,6 @@
         - flux
         - flux-bootstrap
 
-
 - name: Setup zfs replication on offsite NAS
   hosts: nas-offsite
   become: true
@@ -370,7 +362,6 @@
   roles:
     - role: syncoid
       tags: syncoid
-
 
 - name: Setup node-exporter on non-k8s hosts and except for the router
   hosts: all:!k8s_cluster:!router

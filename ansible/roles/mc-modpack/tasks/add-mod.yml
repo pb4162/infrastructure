@@ -1,13 +1,14 @@
+---
 - when: item.title is undefined
   block:
-  - name: "Check if {{ item.name }} is already installed (slug)"
-    ansible.builtin.stat:
-      path: "{{ (modpack_home, 'mods', item.name + '.pw.toml') | path_join }}"
-    register: mod_stat
+    - name: "Check if {{ item.name }} is already installed (slug)"
+      ansible.builtin.stat:
+        path: "{{ (modpack_home, 'mods', item.name + '.pw.toml') | path_join }}"
+      register: mod_stat
 
-  - name: "Set mod_already_installed"
-    ansible.builtin.set_fact:
-      mod_already_installed: "{{ mod_stat.stat.exists }}"
+    - name: "Set mod_already_installed"
+      ansible.builtin.set_fact:
+        mod_already_installed: "{{ mod_stat.stat.exists }}"
 
 - when: item.title is defined
   block:

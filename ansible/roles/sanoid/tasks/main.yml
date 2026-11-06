@@ -1,3 +1,4 @@
+---
 - name: Install sanoid
   ansible.builtin.apt:
     name: sanoid
@@ -7,13 +8,13 @@
   ansible.builtin.file:
     path: /etc/sanoid
     state: directory
-    mode: 0660
+    mode: "0660"
 
 - name: Install sanoid.conf
   ansible.builtin.template:
     backup: true
     dest: "/etc/sanoid/sanoid.conf"
-    mode: 0660
+    mode: "0660"
     owner: root
     group: root
     src: sanoid.conf.j2

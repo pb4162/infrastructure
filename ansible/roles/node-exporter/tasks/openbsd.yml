@@ -1,3 +1,4 @@
+---
 - name: Install package on OpenBSD
   community.general.openbsd_pkg:
     name: node_exporter
@@ -9,7 +10,7 @@
     line: "node_exporter_flags={{ node_exporter_args }}"
     owner: root
     group: wheel
-    mode: '0644'
+    mode: "0644"
 
 - name: Configure service
   ansible.builtin.service:

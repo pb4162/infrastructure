@@ -1,3 +1,4 @@
+---
 - name: "Backup mods directory"
   ansible.builtin.shell: |
     mv mods "mods-{{ now(fmt='%Y-%m-%dT%H:%M:%S.%f') }}.bak"
@@ -6,8 +7,7 @@
 
 - name: "Use packwiz-installer to download and install new mods"
   ansible.builtin.shell: >-
-    java -jar 
-    ~/packwiz-installer-bootstrap-downloads/{{ packwiz_installer_bootstrap_version }}/packwiz-installer-bootstrap.jar
+    java -jar  ~/packwiz-installer-bootstrap-downloads/{{ packwiz_installer_bootstrap_version }}/packwiz-installer-bootstrap.jar
     --bootstrap-main-jar ~/packwiz-installer-downloads/{{ packwiz_installer_version }}/packwiz-installer.jar
     --bootstrap-no-update
     -g -s server {{ (modpack_home, "pack.toml") | path_join | quote }}

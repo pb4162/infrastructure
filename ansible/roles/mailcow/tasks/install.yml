@@ -1,3 +1,4 @@
+---
 # https://github.com/mailcow/mailcow-dockerized/issues/6667
 - name: "Disable and stop exim4 on Debian Trixie"
   ansible.builtin.systemd_service:
@@ -26,8 +27,8 @@
 - name: "Make additional changes to generated mailcow config"
   ansible.builtin.replace:
     dest: "{{ (mailcow_dir, 'mailcow.conf') | path_join }}"
-    regexp: '^{{ item.regex }}$'
-    replace: '{{ item.replacement }}'
+    regexp: "^{{ item.regex }}$"
+    replace: "{{ item.replacement }}"
   loop:
     - regex: "HTTP_PORT=80"
       replacement: "HTTP_PORT={{ mailcow_http_port | quote }}"
@@ -45,13 +46,13 @@
 - name: "Disable ipv6 in unbound config"
   ansible.builtin.replace:
     dest: "{{ (mailcow_dir, 'data/conf/unbound/unbound.conf') | path_join }}"
-    regexp: '^{{ item.regex }}$'
-    replace: '{{ item.replacement }}'
+    regexp: "^{{ item.regex }}$"
+    replace: "{{ item.replacement }}"
   loop:
-    - regex: '(\s+interface: ::0)'
-      replacement: '# \1'
-    - regex: '(\s+do-ip6:) yes'
-      replacement: '\1 no'
+    - regex: "(\\s+interface: ::0)"
+      replacement: "# \\1"
+    - regex: "(\\s+do-ip6:) yes"
+      replacement: "\\1 no"
   notify: Restart mailcow
 
 - name: "Start mailcow"
@@ -84,33 +85,34 @@
     user: root
     job: >-
       PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
-      cd {{ mailcow_dir | quote }}; MAILCOW_BACKUP_LOCATION={{ mailcow_backup_dir | quote }} {{ (mailcow_dir, "helper-scripts/backup_and_restore.sh") | path_join }} backup mysql crypt redis --delete-days {{ mailcow_backup_delete_days | quote }}
+      cd {{ mailcow_dir | quote }}; MAILCOW_BACKUP_LOCATION={{ mailcow_backup_dir | quote }} {{ (mailcow_dir, "helper-scripts/backup_and_restore.sh") | path_join
+      }} backup mysql crypt redis --delete-days {{ mailcow_backup_delete_days | quote }}
 
 - when: mailcow_external_unbound_certs is true
   block:
   # https://www.bonfert.io/2021/02/running-mailcow-behind-a-reverse-proxy/
-  - name: "Create symlinks for external SSL certs"
-    ansible.builtin.file:
-      src: "{{ (acme_home, item.src) | path_join }}"
-      dest: "{{ (mailcow_dir, 'data/assets/ssl/', item.dest) | path_join }}"
-      state: hard
-    loop:
-      - { src: "{{ pb4162_cert_fullchain_path }}", dest: "cert.pem" }
-      - { src: "{{ pb4162_cert_key_path }}", dest: "key.pem" }
-    loop_control:
-      label: "{{ item.dest }}"
+    - name: "Create symlinks for external SSL certs"
+      ansible.builtin.file:
+        src: "{{ (acme_home, item.src) | path_join }}"
+        dest: "{{ (mailcow_dir, 'data/assets/ssl/', item.dest) | path_join }}"
+        state: hard
+      loop:
+        - { src: "{{ pb4162_cert_fullchain_path }}", dest: "cert.pem" }
+        - { src: "{{ pb4162_cert_key_path }}", dest: "key.pem" }
+      loop_control:
+        label: "{{ item.dest }}"
 
-  - name: "Install reload_mailcow_certs.sh to /usr/local/bin"
-    ansible.builtin.template:
-      dest: "/usr/local/bin/reload_mailcow_certs.sh"
-      src: reload_mailcow_certs.sh.j2
-      mode: a+x
+    - name: "Install reload_mailcow_certs.sh to /usr/local/bin"
+      ansible.builtin.template:
+        dest: "/usr/local/bin/reload_mailcow_certs.sh"
+        src: reload_mailcow_certs.sh.j2
+        mode: a+x
 
-  - name: "Create cronjob to reload external SSL certs if they have been renewed recently"
-    ansible.builtin.cron:
-      name: mailcow-reload-certs
-      minute: "0"
-      hour: "0"
-      user: root
-      job: >-
-        find {{ (mailcow_dir, 'data/assets/ssl/key.pem') | path_join }} -mmin -1440 -exec reload_mailcow_certs.sh \;
+    - name: "Create cronjob to reload external SSL certs if they have been renewed recently"
+      ansible.builtin.cron:
+        name: mailcow-reload-certs
+        minute: "0"
+        hour: "0"
+        user: root
+        job: >-
+          find {{ (mailcow_dir, 'data/assets/ssl/key.pem') | path_join }} -mmin -1440 -exec reload_mailcow_certs.sh \;

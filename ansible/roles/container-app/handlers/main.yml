@@ -1,3 +1,4 @@
+---
 - name: Restart app containers (docker)
   community.docker.docker_container: "{{ item | combine({'restart': true}, {'restart_policy': 'unless-stopped'}) }}"
   loop: "{{ app_containers }}"

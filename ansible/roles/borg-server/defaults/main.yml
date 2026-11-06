@@ -1,2 +1,3 @@
+---
 borg_server_user: "borg"
 borg_server_user_home_dir: "/home/{{ borg_server_user }}"

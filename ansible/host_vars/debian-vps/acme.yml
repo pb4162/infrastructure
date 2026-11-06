@@ -1,3 +1,4 @@
+---
 acme_home_group: "root"
 acme_certificates:
   - name: "{{ root_domain }}"

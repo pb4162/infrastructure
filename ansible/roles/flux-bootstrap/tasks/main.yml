@@ -1,3 +1,4 @@
+---
 - name: "Run flux pre-checks"
   ansible.builtin.shell: >-
     KUBECONFIG=/root/.kube/config flux check --pre
@@ -36,4 +37,3 @@
     --personal
     --hostname={{ flux_repo_hostname }}
   when: (flux_check is undefined or "check failed" in flux_check.stderr or flux_update)
-

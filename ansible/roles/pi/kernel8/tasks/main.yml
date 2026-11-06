@@ -1,7 +1,8 @@
+---
 - name: "Append 'kernel=kernel8.img' to '/boot/firmware/config.txt'"
   ansible.builtin.lineinfile:
     state: present
-    insertafter: '^\[all\]\n'
+    insertafter: "^\\[all\\]\\n"
     line: "kernel=kernel8.img"
     dest: /boot/firmware/config.txt
   notify: Reboot

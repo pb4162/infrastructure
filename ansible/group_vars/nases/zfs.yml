@@ -1,2 +1,3 @@
+---
 zfs_ntfy_topic: zfs
 zfs_ntfy_url: "https://ntfy.{{ root_domain }}"

@@ -1,3 +1,4 @@
+---
 - name: Do crowdsec hub update
   ansible.builtin.import_tasks: hub_update.yml
 

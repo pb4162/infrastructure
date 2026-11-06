@@ -1,2 +1,3 @@
+---
 # renovate: datasource=docker depName=ghcr.io/google/cadvisor
 cadvisor_version: 0.60.6

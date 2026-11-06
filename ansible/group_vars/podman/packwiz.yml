@@ -1,3 +1,4 @@
+---
 packwiz_home: "/home/{{ ansible_user }}/packwiz"
 # TODO: renovate
 packwiz_gh_actions_run: "38494029406"

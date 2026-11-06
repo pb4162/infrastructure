@@ -1,8 +1,9 @@
+---
 borgmatic_config_group: {}
 borgmatic_config_group_private: {}
 borgmatic_config: {}
 borgmatic_config_private: {}
-borg_server_host: null
+borg_server_host:
 borgmatic_scripts: {}
 borgmatic_do_restore: false
 borgmatic_restore_archive: latest

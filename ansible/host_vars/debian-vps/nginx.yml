@@ -1,3 +1,4 @@
+---
 pb4162_cert_fullchain_path: "pb4162.dev_ecc/fullchain.cer"
 pb4162_cert_key_path: "pb4162.dev_ecc/pb4162.dev.key"
 
@@ -71,13 +72,13 @@ nginx_http_configs:
             proxy_set_header Connection $connection_upgrade;
         }
 
-        # If running nginx on a subdomain (eg. nextcloud.example.com) of a domain that already has an wildcard ssl certificate from certbot on this machine, 
-        # the <your-nc-domain> in the below lines should be replaced with just the domain (eg. example.com), not the subdomain. 
+        # If running nginx on a subdomain (eg. nextcloud.example.com) of a domain that already has an wildcard ssl certificate from certbot on this machine,
+        # the <your-nc-domain> in the below lines should be replaced with just the domain (eg. example.com), not the subdomain.
         # In this case the subdomain should already be secured without additional actions
         ssl_certificate {{ (acme_home, pb4162_cert_fullchain_path) | path_join }};
         ssl_certificate_key {{ (acme_home, pb4162_cert_key_path) | path_join }};
 
-        # TODO: 
+        # TODO:
         # ssl_dhparam /etc/dhparam; # curl -L https://ssl-config.mozilla.org/ffdhe2048.txt -o /etc/dhparam
 
         ssl_early_data on;

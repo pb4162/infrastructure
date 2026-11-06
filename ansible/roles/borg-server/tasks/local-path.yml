@@ -1,3 +1,4 @@
+---
 - name: Change mountpoint of local path zfs dataset
   community.general.zfs:
     name: "{{ borg_server_local_path_dataset }}"
