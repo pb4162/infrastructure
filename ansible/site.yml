@@ -217,12 +217,21 @@
   roles:
     - role: wifi
       tags: [network, wifi]
-    - role: semaphoreui
-      tags: [semaphoreui, semaphore, containers, container-app]
-    - role: woodpeckerci
-      tags: [woodpeckerci, woodpecker, containers, container-app]
     - role: host-sshkey
       tags: [host-sshkey]
+
+  tasks:
+    - name: "Import semaphoreui role (public: false)"
+      tags: [semaphoreui, semaphore, containers, container-app]
+      ansible.builtin.import_role:
+        name: semaphoreui
+        public: false
+
+    - name: "Import woodpeckerci role (public: false)"
+      tags: [woodpeckerci, woodpecker, containers, container-app]
+      ansible.builtin.import_role:
+        name: woodpeckerci
+        public: false
 
 
 - name: Setup podman VM
