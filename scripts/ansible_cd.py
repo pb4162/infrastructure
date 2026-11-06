@@ -51,7 +51,7 @@ def run_playbooks(*, repo, tags=None, limits=None):
 
 # TODO: pull these from env
 BASE_DIR = "ansible"
-SITE_PLAYBOOK = "playbooks/site.yml"
+SITE_PLAYBOOK = "site.yml"
 
 BEFORE_PUSH_COMMIT = os.getenv("CI_PREV_COMMIT_SHA")
 AFTER_PUSH_COMMIT = os.getenv("CI_COMMIT_SHA")

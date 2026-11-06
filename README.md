@@ -48,7 +48,7 @@ While I aim to be reliant on as few external services as possible, there are sti
 Before running Ansible first check over group and host vars and populate any fields that are missing or outdated.
 
 The main `site` playbook can be run by:
-```ansible-playbook -i [path to inventory] --diff playbooks/site.yml```
+```ansible-playbook -i [path to inventory] --diff site.yml```
 
 Once Semaphore UI is set up it can be used to take over playbook execution.
 
@@ -62,10 +62,10 @@ Once Semaphore UI is set up it can be used to take over playbook execution.
 These routine tasks are separated into two playbooks, `update.yml` and `maintenance.yml`.
 
 To perform routine updates:
-```ansible-playbook -i [path to inventory] --diff playbooks/update.yml```
+```ansible-playbook -i [path to inventory] --diff update.yml```
 
 To perform routine maintenance:
-```ansible-playbook -i [path to inventory] --diff playbooks/maintenance.yml```
+```ansible-playbook -i [path to inventory] --diff maintenance.yml```
 
 ## Manual Updates
 
