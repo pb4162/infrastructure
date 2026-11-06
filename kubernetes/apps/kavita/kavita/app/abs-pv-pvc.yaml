@@ -18,7 +18,7 @@ spec:
     - nosharesock
   csi:
     driver: smb.csi.k8s.io
-    volumeHandle: "//${NAS_URL}/audiobookshelf-media#kavita#"
+    volumeHandle: "//${NAS_URL}/audiobookshelf-media##"
     volumeAttributes:
       source: "//${NAS_URL}/audiobookshelf-media"
     nodeStageSecretRef:
