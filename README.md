@@ -76,3 +76,4 @@ Router updates are carried out by a selfhosted [attended-sysupgrade](https://git
 - https://rpi4cluster.com
 - https://github.com/geerlingguy/internet-pi
 - https://github.com/geerlingguy/pi-cluster
+- https://github.com/home-operations
