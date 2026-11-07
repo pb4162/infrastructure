@@ -1,6 +1,6 @@
 ---
 # TODO: there *has* to be a better approach than this monstrosity
-workflow_files_raw: >-
+workflow_files_raw: |
   {% set ns = namespace(data=[]) %}
   {% set files = query('ansible.builtin.fileglob', (playbook_dir, '../.woodpecker/*.yml') | path_join) %}
   {% for f in files %}

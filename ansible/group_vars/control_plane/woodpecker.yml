@@ -2,7 +2,7 @@
 # renovate: datasource=docker depName=woodpeckerci/woodpecker-server
 woodpecker_version: v3.20.1
 # TODO: renovate
-woodpecker_config_extension_version: 50fc298
+woodpecker_config_extension_version: 05af264
 woodpecker_env_server:
   WOODPECKER_GITHUB: "true"
   WOODPECKER_EXTENSIONS_ALLOWED_HOSTS: woodpecker-config-extension
