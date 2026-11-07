@@ -10,6 +10,7 @@ when:
   - event: [pull_request]
     path:
       include: *include_paths
+  - event: manual
 
 steps:
   - name: ansible-lint
