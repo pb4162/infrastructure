@@ -52,3 +52,10 @@
   ansible.builtin.file:
     path: "{{ docker_data_dir }}"
     state: directory
+
+- name: "Login to private registry"
+  community.docker.docker_login:
+    registry_url: "{{ pbcr_registry_url }}"
+    username: "{{ pbcr_registry_username }}"
+    password: "{{ pbcr_registry_password }}"
+  when: pbcr_registry_enabled

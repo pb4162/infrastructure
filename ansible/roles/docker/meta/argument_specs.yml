@@ -6,3 +6,15 @@ argument_specs:
         type: "str"
         required: false
         default: "/root/docker"
+      pbcr_registry_enabled:
+        type: bool
+        required: false
+        default: false
+      pbcr_registry_username:
+        type: str
+        required: false
+        default:
+      pbcr_registry_password:
+        type: str
+        required: false
+        default:

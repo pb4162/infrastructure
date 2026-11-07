@@ -1,0 +1,2 @@
+pbcr_registry_enabled: true
+pbcr_registry_url: "registry.{{ root_domain }}"

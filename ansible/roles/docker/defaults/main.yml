@@ -1,2 +1,5 @@
 ---
 docker_data_dir: "/root/docker"
+pbcr_registry_enabled: false
+pbcr_registry_username:
+pbcr_registry_password:
