@@ -22,6 +22,7 @@ spec:
       env:
         WOODPECKER_SERVER: "ci-grpc.${ROOT_DOMAIN}:443"
         WOODPECKER_GRPC_SECURE: "true"
+        WOODPECKER_BACKEND_K8S_STORAGE_CLASS: longhorn-noretain
       createAgentSecret: false
       mapAgentSecret: false
       extraSecretNamesForEnvFrom:
