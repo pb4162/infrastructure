@@ -14,3 +14,4 @@ resources:
   - ./reloader/ks.yaml
   - ./intel-repo/ks.yaml
   - ./coredns/ks.yaml
+  - ./kata-deploy/ks.yaml
