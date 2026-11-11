@@ -5,4 +5,4 @@ metadata:
   namespace: kube-system
 spec:
   type: oci
-  url: oci://ghcr.io/kata-containers/kata-deploy-charts/kata-deploy
+  url: oci://ghcr.io/kata-containers/kata-deploy-charts
