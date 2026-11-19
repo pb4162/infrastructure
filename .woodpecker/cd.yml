@@ -20,7 +20,7 @@ clone:
 
 steps:
   - name: Pull repo with ansible_cd python script
-    image: alpine/git:v2.54.0
+    image: alpine/git:v2.54.1
     commands:
       - git clone https://github.com/pb4162/infrastructure.git script_home
 
