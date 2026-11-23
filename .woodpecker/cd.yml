@@ -9,6 +9,8 @@ labels:
 
 depends_on:
   - ansible-lint
+  - name: ci-tools
+    optional: true
 
 clone:
   git:
@@ -17,15 +19,9 @@ clone:
       depth: 0
       partial: false
 
-
 steps:
-  - name: Pull repo with ansible_cd python script
-    image: alpine/git:v2.54.0
-    commands:
-      - git clone https://github.com/pb4162/infrastructure.git script_home
-
-  - name: Run ansible_cd python script
-    image: python:3.15.2
+  - name: ansible-cd
+    image: registry.pb4162.dev/pb/ci-tools:latest
     environment:
       SEMAPHOREUI_KEY:
         from_secret: semaphoreui_key
@@ -38,6 +34,5 @@ steps:
       SEMAPHOREUI_PRIVATE_TASK_TEMPLATE_ID:
         from_secret: semaphoreui_private_task_template_id
     commands:
-      - pip install requests
-      - git config --global --add safe.directory '.'
-      - python script_home/scripts/ansible_cd.py
+      - git config --global --add safe.directory '$CI_WORKSPACE'
+      - python ansible_cd.py
