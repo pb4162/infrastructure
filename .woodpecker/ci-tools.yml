@@ -1,0 +1,64 @@
+variables:
+  repos: &repos
+  - registry.pb4162.dev/pb/ci-tools
+  platforms: &platforms linux/amd64,linux/arm64
+  logins: &logins
+    - registry: https://registry.pb4162.dev
+      username: pb
+      password:
+        from_secret: private_registry_password
+  include_paths: &include_paths
+    - ci-tools/**
+  exclude_paths: &exclude_paths
+    - ci-tools/*.md
+  tag_ref: &tag_ref refs/tags/release/ci-tools/*
+
+when:
+  - event: push
+    branch: main
+    path:
+      include: *include_paths
+      exclude: *exclude_paths
+  - event: [pull_request]
+    path:
+      include: *include_paths
+      exclude: *exclude_paths
+  - event: tag
+    ref: *tag_ref
+
+steps:
+  - name: push
+    when:
+      - event: push
+        branch: main
+    image: woodpeckerci/plugin-docker-buildx:6.1.2
+    settings:
+      repo: *repos
+      platforms: *platforms
+      logins: *logins
+      tags:
+        - ${CI_COMMIT_SHA}
+
+  - name: pull-request
+    when:
+      - event: pull_request
+    image: woodpeckerci/plugin-docker-buildx:6.1.2
+    settings:
+      repo: *repos
+      platforms: *platforms
+      logins: *logins
+      tags:
+        - pr-${CI_COMMIT_PULL_REQUEST}
+
+  - name: release-tag
+    when:
+      - event: tag
+        ref: *tag_ref
+    image: woodpeckerci/plugin-docker-buildx:6.1.2
+    settings:
+      repo: *repos
+      platforms: *platforms
+      logins: *logins
+      tags:
+        - ${CI_COMMIT_TAG##release/ci-tools/}
+        - latest

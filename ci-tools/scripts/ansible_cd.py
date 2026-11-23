@@ -1,9 +1,8 @@
 import os
 import sys
 import json
-import subprocess
-import textwrap
 import requests
+from common import get_changed_files
 
 
 def run_playbooks(*, repo, tags=None, limits=None):
@@ -52,23 +51,6 @@ def run_playbooks(*, repo, tags=None, limits=None):
 # TODO: pull these from env
 BASE_DIR = "ansible"
 SITE_PLAYBOOK = "site.yml"
-
-BEFORE_PUSH_COMMIT = os.getenv("CI_PREV_COMMIT_SHA")
-AFTER_PUSH_COMMIT = os.getenv("CI_COMMIT_SHA")
-
-diff_command = ["git", "diff", "--name-only"]
-if BEFORE_PUSH_COMMIT == "0"*40:
-    diff_command.append("HEAD~1")
-else:
-    diff_command.extend([BEFORE_PUSH_COMMIT, AFTER_PUSH_COMMIT])
-
-CI_PIPELINE_RERUNS = os.getenv("CI_PIPELINE_RERUNS")
-
-if CI_PIPELINE_RERUNS is None:
-    changed_files = subprocess.check_output(diff_command, text=True).split()
-else:
-    changed_files = json.loads(os.getenv("CI_PIPELINE_FILES"))
-
 RUN_FULL_PLAYBOOK_PATHS = [
     f"{BASE_DIR}/{p}" for p in [
         SITE_PLAYBOOK,
@@ -79,8 +61,12 @@ RUN_FULL_PLAYBOOK_PATHS = [
     ]
 ]
 
+changed_files = get_changed_files()
+print("Got changed files:", changed_files)
+
 if any(p in changed_files for p in RUN_FULL_PLAYBOOK_PATHS):
     run_playbooks(repo=os.getenv("CI_REPO_NAME"))
+    print("Running full playbook for repo:", os.getenv("CI_REPO_NAME"))
     sys.exit(0)
 
 tags = []
