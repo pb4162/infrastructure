@@ -35,4 +35,4 @@ steps:
         from_secret: semaphoreui_private_task_template_id
     commands:
       - git config --global --add safe.directory '$CI_WORKSPACE'
-      - python ansible_cd.py
+      - python /scripts/ansible_cd.py
