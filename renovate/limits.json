@@ -1,4 +1,4 @@
 {
-  "prConcurrentLimit": 20,
-  "prHourlyLimit": 4
+  "prConcurrentLimit": 40,
+  "prHourlyLimit": 8
 }
