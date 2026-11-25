@@ -125,6 +125,9 @@ spec:
         labels:
           release: kube-prometheus-stack
     collabora:
+      resources:
+        limits:
+          memory: 512Mi
       enabled: true
       collabora:
         aliasgroups:
