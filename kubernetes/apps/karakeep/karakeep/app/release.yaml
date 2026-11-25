@@ -23,6 +23,9 @@ spec:
             image:
               repository: ghcr.io/karakeep-app/karakeep
               tag: 0.34.1
+            resources:
+              limits:
+                memory: 512Mi
             env:
               MEILI_ADDR: http://meilisearch.karakeep.svc.cluster.local:7700
               BROWSER_WEB_URL: http://chrome.karakeep.svc.cluster.local:9222
