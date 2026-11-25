@@ -127,7 +127,7 @@ spec:
     collabora:
       resources:
         limits:
-          memory: 512Mi
+          memory: 1Gi
       enabled: true
       collabora:
         aliasgroups:
