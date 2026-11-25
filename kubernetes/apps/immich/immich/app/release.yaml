@@ -30,6 +30,7 @@ spec:
               VIPS_NOVECTOR: 1
             resources:
               limits:
+                memory: 4Gi
                 gpu.intel.com/i915: 1
             probes:
               liveness:
