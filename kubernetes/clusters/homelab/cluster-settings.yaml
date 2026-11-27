@@ -13,7 +13,7 @@ data:
   NEXTCLOUD_STORAGE_VOLUME_SIZE: "1024Gi"
   ABS_MEDIA_VOLUME_SIZE: "100Gi"
   # renovate: datasource=docker versioning=loose depName=ghcr.io/tensorchord/cloudnative-vectorchord
-  CNPG_IMMICH_CONTAINER_VERSION: "16.15"
+  CNPG_IMMICH_CONTAINER_VERSION: "18.6"
   TRAEFIK_IP: 10.16.64.10
   PIHOLE_IP: 10.16.64.11
   NEXTCLOUD_TALK_HPB_IP: 10.16.64.14
