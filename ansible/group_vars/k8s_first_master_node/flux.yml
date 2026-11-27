@@ -1,6 +1,6 @@
 ---
 # renovate: datasource=github-releases depName=fluxcd/flux2
-flux_version: v2.10.0
+flux_version: v2.10.1
 flux_repo_provider: github
 flux_repo_username: pb4162
 flux_repo_name: infrastructure
