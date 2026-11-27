@@ -14,6 +14,6 @@ when:
 
 steps:
   - name: ansible-lint
-    image: ghcr.io/ansible/community-ansible-dev-tools:v26.11.0
+    image: ghcr.io/ansible/community-ansible-dev-tools:v26.11.1
     commands:
       - cd ansible && ansible-lint
