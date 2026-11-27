@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: LimitRange
+metadata:
+  name: woodpecker-resource-limits
+spec:
+  limits:
+    - type: Container
+      default:
+        memory: 2Gi
+      defaultRequest:
+        memory: 64Mi
