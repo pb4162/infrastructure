@@ -12,3 +12,6 @@ data:
           enabled: true
     env:
       RENOVATE_X_SQLITE_PACKAGE_CACHE: true
+    resources:
+      limits:
+        memory: 750Mi
